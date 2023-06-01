@@ -1,5 +1,7 @@
 import React from 'react';
 import '~/components/Footer/Footer.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebookMessenger, faGooglePlus } from '@fortawesome/free-brands-svg-icons';
 
 export default function Footer() {
   return (
@@ -27,10 +29,10 @@ export default function Footer() {
               </form>
               <div className="footer__widget__social">
                 <a href="#">
-                  <i className="fa fa-facebook"></i>
+                  <FontAwesomeIcon icon={faFacebookMessenger} bounce size="xl" style={{ color: '#478eff' }} />
                 </a>
                 <a href="#">
-                  <i className="fa fa-google-plus"></i>
+                <FontAwesomeIcon icon={faGooglePlus} bounce size="xl" style={{ color: '#d50101' }} />
                 </a>
               </div>
             </div>

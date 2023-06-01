@@ -601,3 +601,96 @@
 .humberger__open {
   display: none;
 }
+
+// Hero search
+
+.hero__search {
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.hero__search__form {
+  width: 610px;
+  height: 50px;
+  border: 1px solid #ebebeb;
+  position: relative;
+  float: left;
+}
+
+.hero__search__form form .hero__search__categories {
+  width: 30%;
+  float: left;
+  font-size: 16px;
+  color: #1c1c1c;
+  font-weight: 700;
+  padding-left: 18px;
+  padding-top: 11px;
+  position: relative;
+}
+
+.hero__search__form form .hero__search__categories span {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+}
+
+.arrow_carrot-down {
+  font-family: 'ElegantIcons';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hero__search__form form input {
+  width: 70%;
+  border: none;
+  height: 48px;
+  font-size: 16px;
+  color: #b2b2b2;
+  padding-left: 20px;
+}
+
+.site-btn {
+  font-size: 14px;
+  color: #ffffff;
+  font-weight: 800;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 13px 30px 12px;
+  background: #669966;
+  border: none;
+}
+
+.hero__search__form form button {
+  position: absolute;
+  right: 0;
+  top: -1px;
+  height: 50px;
+}
+
+.hero__search__phone {
+  float: right;
+}
+
+.hero__search__phone__text {
+  overflow: hidden;
+}
+
+.header__cart ul li a i {
+  font-size: 18px;
+  color: #1c1c1c;
+}
+
+.fa {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
