@@ -2,15 +2,95 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap');
 
 :root {
+  --primary-color: #7fad39;
+  --seconday-color: #120851;
+  --white-color: #ffffff;
+  --heading-color: #111111;
+  --para-color: #6f6f6f;
+  --black-color: #000000;
+  --heading-color-2: #252525;
+  --normal-color: #1c1c1c;
+  --background: #f5f5f5;
+  --background-2: #f2f2f2;
+  --border: #ebebeb;
+  --border-1: #e1e1e1;
+
+  --fm-unna: 'Unna', serif;
+  --fm-nunito: 'Nunito Sans', sans-serif;
 }
 
-html {
-  font-size: 62.5%;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+html,
 body {
+  height: 100%;
   font-family: 'Cairo', sans-serif;
-  font-size: 1.6rem;
-  line-height: 1.5;
-  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  color: #111111;
+  font-weight: 400;
+  font-family: 'Cairo', sans-serif;
+}
+
+h1 {
+  font-size: 70px;
+}
+
+h2 {
+  font-size: 36px;
+}
+
+h3 {
+  font-size: 30px;
+}
+
+h4 {
+  font-size: 24px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
+h6 {
+  font-size: 16px;
+}
+
+p {
+  font-size: 16px;
+  font-family: 'Cairo', sans-serif;
+  color: #6f6f6f;
+  font-weight: 400;
+  line-height: 26px;
+  margin: 0 0 15px 0;
+}
+
+img {
+  max-width: 100%;
+}
+
+input:focus,
+select:focus,
+button:focus,
+textarea:focus {
+  outline: none;
+}
+
+ul,
+ol {
+  padding: 0;
+  margin: 0;
 }
