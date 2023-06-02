@@ -1,5 +1,6 @@
 import React from 'react';
-import '~/components/Layouts/DefaultLayout/Footer/Footer.scss';
+import '~/sass/_footer.scss';
+import '~/sass/_responsive.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookMessenger, faGooglePlus } from '@fortawesome/free-brands-svg-icons';
 
@@ -32,7 +33,7 @@ export default function Footer() {
                   <FontAwesomeIcon icon={faFacebookMessenger} bounce size="xl" style={{ color: '#478eff' }} />
                 </a>
                 <a href="#">
-                <FontAwesomeIcon icon={faGooglePlus} bounce size="xl" style={{ color: '#d50101' }} />
+                  <FontAwesomeIcon icon={faGooglePlus} bounce size="xl" style={{ color: '#d50101' }} />
                 </a>
               </div>
             </div>
