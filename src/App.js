@@ -1,27 +1,34 @@
+import { Fragment } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home/Home';
-import ShopGrid from './pages/Shop/ShopGrid';
-import ShopDetail from './pages/Shop/ShopDetail';
-import ShopingCart from './pages/Shop/ShopingCart';
-import CheckOut from './pages/Shop/CheckOut';
-import Contact from './pages/Contact/Contact';
-import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
+import { publicRoutes } from '~/routes';
+import { DefaultLayout } from '~/components/Layouts';
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <Header />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/shop-grid" element={<ShopGrid />} />
-          <Route path="/shop-details" element={<ShopDetail />} />
-          <Route path="/shoping-cart" element={<ShopingCart />} />
-          <Route path="/checkout" element={<CheckOut />} />
-          <Route path="/contact" element={<Contact />} />
+          {publicRoutes.map((route, index) => {
+            const Page = route.component;
+            let Layout = DefaultLayout;
+            if (route.layout) {
+              Layout = route.layout;
+            } else if (route.layout === null) {
+              Layout = Fragment;
+            }
+            return (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
+            );
+          })}
         </Routes>
-        <Footer/>
       </div>
     </Router>
   );

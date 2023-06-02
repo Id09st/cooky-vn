@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '~/components/Header/Header.scss';
+import '~/components/Layouts/DefaultLayout/Header/Header.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBasketShopping, faHeart } from '@fortawesome/free-solid-svg-icons';
+import logo from '~/assets/images/logo.png';
 
 export default function Header() {
   return (
@@ -13,10 +14,7 @@ export default function Header() {
             <div class="col-lg-3">
               <div class="header__logo">
                 <Link to="/">
-                  <img
-                    src="https://o.remove.bg/downloads/ec011f8c-d27c-4963-9be6-ebab13206eb3/logo-removebg-preview.png"
-                    alt=""
-                  />
+                  <img src={logo} alt="/" />
                 </Link>
               </div>
             </div>
@@ -33,7 +31,7 @@ export default function Header() {
                     <a href="#">Pages</a>
                     <ul className="header__menu__dropdown">
                       <li>
-                        <Link to="/shop-details">Shop Details</Link>
+                        <Link to="/shop-detail">Shop Detail</Link>
                       </li>
                       <li>
                         <Link to="/shoping-cart">Shoping Cart</Link>
