@@ -3,6 +3,7 @@ import { Related } from '../Home/HomImage';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CropFreeIcon from '@mui/icons-material/CropFree';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 export default function ShopDetail() {
   useEffect(() => {
@@ -101,7 +102,7 @@ export default function ShopDetail() {
                     ADD TO CARD
                   </a>
                   <a href="#" className="heart-icon">
-                    <span className="icon_heart_alt" />
+                    <FavoriteBorderIcon color="success" sx={{ fontSize: 20 }} />
                   </a>
                   <ul>
                     <li>

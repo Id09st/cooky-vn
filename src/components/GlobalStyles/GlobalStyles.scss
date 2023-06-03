@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap');
 
 :root {
-  --primary-color: #7fad39;
+  --primary-color: #669966;
   --seconday-color: #120851;
   --white-color: #ffffff;
   --heading-color: #111111;
@@ -124,7 +124,7 @@ ol {
   right: 0;
   height: 4px;
   width: 80px;
-  background: #7fad39;
+  background: #669966;
   content: '';
   margin: 0 auto;
 }
@@ -162,7 +162,7 @@ ol {
   color: #ffffff;
   text-transform: uppercase;
   font-weight: 700;
-  background: #7fad39;
+  background: #669966;
   letter-spacing: 2px;
 }
 
@@ -173,7 +173,7 @@ ol {
   text-transform: uppercase;
   display: inline-block;
   padding: 13px 30px 12px;
-  background: #7fad39;
+  background: #669966;
   border: none;
 }
 
@@ -276,7 +276,7 @@ ol {
 }
 
 .hero__categories__all {
-  background: #7fad39;
+  background: #669966;
   position: relative;
   padding: 10px 25px 10px 40px;
   cursor: pointer;
@@ -389,7 +389,7 @@ ol {
 
 .hero__search__phone__icon {
   font-size: 18px;
-  color: #7fad39;
+  color: #669966;
   height: 50px;
   width: 50px;
   background: #f5f5f5;
@@ -427,7 +427,7 @@ ol {
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 4px;
-  color: #7fad39;
+  color: #669966;
 }
 
 .hero__text h2 {
@@ -529,7 +529,7 @@ ol {
   bottom: -2px;
   width: 100%;
   height: 2px;
-  background: #7fad39;
+  background: #669966;
   content: '';
   opacity: 0;
 }
@@ -577,8 +577,8 @@ ol {
 }
 
 .featured__item__pic__hover li:hover a {
-  background: #7fad39;
-  border-color: #7fad39;
+  background: #669966;
+  border-color: #669966;
 }
 
 .featured__item__pic__hover li:hover a i {
@@ -1013,8 +1013,8 @@ ol {
 }
 
 .product__item__pic__hover li:hover a {
-  background: #7fad39;
-  border-color: #7fad39;
+  background: #669966;
+  border-color: #669966;
 }
 
 .product__item__pic__hover li:hover a i {
@@ -1212,7 +1212,7 @@ ol {
 }
 
 .filter__option span:hover {
-  color: #7fad39;
+  color: #669966;
 }
 
 .product__item {
@@ -1253,8 +1253,8 @@ ol {
 }
 
 .product__item__pic__hover li:hover a {
-  background: #7fad39;
-  border-color: #7fad39;
+  background: #669966;
+  border-color: #669966;
 }
 
 .product__item__pic__hover li:hover a i {
@@ -1334,8 +1334,8 @@ ol {
 
 .product__pagination a:hover,
 .blog__pagination a:hover {
-  background: #7fad39;
-  border-color: #7fad39;
+  background: #669966;
+  border-color: #669966;
   color: #ffffff;
 }
 
@@ -1401,7 +1401,7 @@ ol {
 }
 
 .product__details__text .primary-btn {
-  padding: 16px 28px 14px;
+  padding: 16px 28px 15px;
   margin-right: 6px;
   margin-bottom: 5px;
 }
@@ -1410,7 +1410,7 @@ ol {
   display: inline-block;
   font-size: 16px;
   color: #6f6f6f;
-  padding: 13px 16px 13px;
+  padding: 10px 13px 10px;
   background: #f5f5f5;
 }
 
@@ -1843,8 +1843,8 @@ ol {
 }
 
 .checkout__input__checkbox label input:checked ~ .checkmark {
-  background: #7fad39;
-  border-color: #7fad39;
+  background: #669966;
+  border-color: #669966;
 }
 
 .checkout__input__checkbox label input:checked ~ .checkmark:after {
@@ -2071,7 +2071,7 @@ ol {
 }
 
 .blog__sidebar__item ul li a:hover {
-  color: #7fad39;
+  color: #669966;
 }
 
 .blog__sidebar__search {
@@ -2291,7 +2291,7 @@ ol {
 }
 
 .blog__details__widget .blog__details__social a:hover {
-  color: #7fad39;
+  color: #669966;
 }
 
 .blog__details__widget .blog__details__social a:last-child {
@@ -2317,7 +2317,7 @@ ol {
 
 .contact__widget span {
   font-size: 36px;
-  color: #7fad39;
+  color: #669966;
 }
 
 .contact__widget h4 {
@@ -2356,7 +2356,7 @@ ol {
 
 .map .map-inside i {
   font-size: 48px;
-  color: #7fad39;
+  color: #669966;
   position: absolute;
   bottom: -75px;
   left: 50%;
@@ -2613,7 +2613,7 @@ ol {
   .humberger__menu__cart ul li a span {
     height: 13px;
     width: 13px;
-    background: #7fad39;
+    background: #669966;
     font-size: 10px;
     color: #ffffff;
     line-height: 13px;
@@ -2679,7 +2679,7 @@ ol {
     -webkit-border-radius: 0;
     border-radius: 0;
     background: transparent;
-    color: #7fad39;
+    color: #669966;
   }
   .humberger__menu__wrapper .slicknav_nav .slicknav_row,
   .humberger__menu__wrapper .slicknav_nav a {
@@ -2871,7 +2871,7 @@ ol {
   .humberger__menu__cart ul li a span {
     height: 13px;
     width: 13px;
-    background: #7fad39;
+    background: #669966;
     font-size: 10px;
     color: #ffffff;
     line-height: 13px;
@@ -2937,7 +2937,7 @@ ol {
     -webkit-border-radius: 0;
     border-radius: 0;
     background: transparent;
-    color: #7fad39;
+    color: #669966;
   }
   .humberger__menu__wrapper .slicknav_nav .slicknav_row,
   .humberger__menu__wrapper .slicknav_nav a {
