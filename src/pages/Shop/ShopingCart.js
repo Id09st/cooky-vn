@@ -87,7 +87,7 @@ export default function ShopingCart() {
                       <tr>
                         <td className="shoping__cart__item">
                           <img src="img/cart/cart-3.jpg" alt="" />
-                          <h5>Organic Bananas</h5>
+                          <h5>NiceCookc Bananas</h5>
                         </td>
                         <td className="shoping__cart__price">$69.00</td>
                         <td className="shoping__cart__quantity">

@@ -6,6 +6,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import logo from '~/assets/images/logo.png';
 
+
 export default function Header() {
   return (
     <>
@@ -71,9 +72,6 @@ export default function Header() {
         </div>
       </header>
       <>
-        {/* Hero Section Begin */}
-        
-        {/* Hero Section End */}
       </>
     </>
   );

@@ -6,7 +6,7 @@ export default function index({ children }) {
   return (
     <div>
       <Header />
-      <div className="content">{children}</div>
+      <div className="content down_header">{children}</div>
       <Footer />
     </div>
   );
