@@ -61,7 +61,7 @@
 
 .map .map-inside .inside-widget {
   width: 350px;
-  background: #ffffff;
+  background: var(--white-color);
   text-align: center;
   padding: 23px 0;
   position: relative;
@@ -78,7 +78,7 @@
   -ms-transform: translateX(-6px);
   transform: translateX(-6px);
   border: 12px solid transparent;
-  border-top: 30px solid #ffffff;
+  border-top: 30px solid var(--white-color);
   content: '';
   z-index: -1;
 }

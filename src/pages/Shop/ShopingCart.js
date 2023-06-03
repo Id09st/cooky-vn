@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function ShopingCart() {
   useEffect(() => {
@@ -22,7 +23,7 @@ export default function ShopingCart() {
                 <div className="breadcrumb__text">
                   <h2>Shopping Cart</h2>
                   <div className="breadcrumb__option">
-                    <a href="./index.html">Home</a>
+                    <Link to="/">Home</Link>
                     <span>Shopping Cart</span>
                   </div>
                 </div>
@@ -143,9 +144,9 @@ export default function ShopingCart() {
                       Total <span>$454.98</span>
                     </li>
                   </ul>
-                  <a href="#" className="primary-btn">
+                  <Link to="/checkout" className="primary-btn">
                     PROCEED TO CHECKOUT
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

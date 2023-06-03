@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function CheckOut() {
   useEffect(() => {
@@ -21,7 +22,7 @@ export default function CheckOut() {
               <div className="breadcrumb__text">
                 <h2>Checkout</h2>
                 <div className="breadcrumb__option">
-                  <a href="./index.html">Home</a>
+                  <Link to="/">Home</Link>
                   <span>Checkout</span>
                 </div>
               </div>
@@ -36,7 +37,7 @@ export default function CheckOut() {
           <div className="row">
             <div className="col-lg-12">
               <h6>
-                <span className="icon_tag_alt" /> Have a coupon? <a href="#">Click here</a> to enter your code
+                <span className="icon_tag_alt" /> Have a coupon? <Link to="/">Click here</Link> to enter your code
               </h6>
             </div>
           </div>

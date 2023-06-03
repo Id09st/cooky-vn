@@ -4,6 +4,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CropFreeIcon from '@mui/icons-material/CropFree';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { Link } from 'react-router-dom';
 
 export default function ShopDetail() {
   useEffect(() => {
@@ -27,8 +28,8 @@ export default function ShopDetail() {
                 <div className="breadcrumb__text">
                   <h2>Vegetable’s Package</h2>
                   <div className="breadcrumb__option">
-                    <a href="./index.html">Home</a>
-                    <a href="./index.html">Vegetables</a>
+                    <Link to="/">Home</Link>
+                    <Link to="/">Vegetables</Link>
                     <span>Vegetable’s Package</span>
                   </div>
                 </div>
@@ -98,9 +99,9 @@ export default function ShopDetail() {
                       </div>
                     </div>
                   </div>
-                  <a href="#" className="primary-btn">
+                  <Link to="/shoping-cart" className="primary-btn">
                     ADD TO CARD
-                  </a>
+                  </Link>
                   <a href="#" className="heart-icon">
                     <FavoriteBorderIcon color="success" sx={{ fontSize: 20 }} />
                   </a>
@@ -249,9 +250,9 @@ export default function ShopDetail() {
                           </a>
                         </li>
                         <li>
-                          <a href="#">
+                          <Link to="/shop-detail">
                             <CropFreeIcon />
-                          </a>
+                          </Link>
                         </li>
                         <li>
                           <a href="#">
@@ -262,7 +263,7 @@ export default function ShopDetail() {
                     </div>
                     <div className="product__item__text">
                       <h6>
-                        <a href="#">{related.title}</a>
+                        <Link to="/">{related.title}</Link>
                       </h6>
                       <h5>{related.price}</h5>
                     </div>

@@ -27,7 +27,7 @@ export default function Home() {
               <div className="col-lg-3" key={categories.id}>
                 <div className="categories__item set-bg" data-setbg={categories.url}>
                   <h5>
-                    <a href="#">{categories.title}</a>
+                    <Link to="/#">{categories.title}</Link>
                   </h5>
                 </div>
               </div>
@@ -70,9 +70,9 @@ export default function Home() {
                           </a>
                         </li>
                         <li>
-                          <a href="#">
+                          <Link to="/shop-detail">
                             <CropFreeIcon />
-                          </a>
+                          </Link>
                         </li>
                         <li>
                           <Link to="/shoping-cart">
@@ -83,7 +83,7 @@ export default function Home() {
                     </div>
                     <div className="featured__item__text">
                       <h6>
-                        <a href="#">{featured.title}</a>
+                        <Link to="/#">{featured.title}</Link>
                       </h6>
                       <h5>{featured.price}</h5>
                     </div>

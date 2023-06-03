@@ -5,6 +5,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CropFreeIcon from '@mui/icons-material/CropFree';
 import { Product } from '../Home/HomImage';
+import { Link } from 'react-router-dom';
 
 export default function ShopGrid() {
   useEffect(() => {
@@ -28,7 +29,7 @@ export default function ShopGrid() {
                 <div className="breadcrumb__text">
                   <h2>NiceCook Shop</h2>
                   <div className="breadcrumb__option">
-                    <a href="./index.html">Home</a>
+                    <Link to="/">Home</Link>
                     <span>Shop</span>
                   </div>
                 </div>
@@ -252,14 +253,14 @@ export default function ShopGrid() {
                                 </a>
                               </li>
                               <li>
-                                <a href="#">
+                                <Link to="/shop-detail">
                                   <CropFreeIcon />
-                                </a>
+                                </Link>
                               </li>
                               <li>
-                                <a href="#">
+                                <Link to="/shoping-cart">
                                   <ShoppingCartIcon />
-                                </a>
+                                </Link>
                               </li>
                             </ul>
                           </div>
@@ -288,14 +289,14 @@ export default function ShopGrid() {
                                 </a>
                               </li>
                               <li>
-                                <a href="#">
+                                <Link to="/shop-detail">
                                   <CropFreeIcon />
-                                </a>
+                                </Link>
                               </li>
                               <li>
-                                <a href="#">
+                                <Link to="/shoping-cart">
                                   <ShoppingCartIcon />
-                                </a>
+                                </Link>
                               </li>
                             </ul>
                           </div>
@@ -324,14 +325,14 @@ export default function ShopGrid() {
                                 </a>
                               </li>
                               <li>
-                                <a href="#">
+                                <Link to="/shop-detail">
                                   <CropFreeIcon />
-                                </a>
+                                </Link>
                               </li>
                               <li>
-                                <a href="#">
+                                <Link to="/shoping-cart">
                                   <ShoppingCartIcon />
-                                </a>
+                                </Link>
                               </li>
                             </ul>
                           </div>
@@ -360,14 +361,14 @@ export default function ShopGrid() {
                                 </a>
                               </li>
                               <li>
-                                <a href="#">
+                                <Link to="/shop-detail">
                                   <CropFreeIcon />
-                                </a>
+                                </Link>
                               </li>
                               <li>
-                                <a href="#">
+                                <Link to="/shoping-cart">
                                   <ShoppingCartIcon />
-                                </a>
+                                </Link>
                               </li>
                             </ul>
                           </div>
@@ -396,14 +397,14 @@ export default function ShopGrid() {
                                 </a>
                               </li>
                               <li>
-                                <a href="#">
+                                <Link to="/shop-detail">
                                   <CropFreeIcon />
-                                </a>
+                                </Link>
                               </li>
                               <li>
-                                <a href="#">
+                                <Link to="/shoping-cart">
                                   <ShoppingCartIcon />
-                                </a>
+                                </Link>
                               </li>
                             </ul>
                           </div>
@@ -432,14 +433,14 @@ export default function ShopGrid() {
                                 </a>
                               </li>
                               <li>
-                                <a href="#">
+                                <Link to="/shop-detail">
                                   <CropFreeIcon />
-                                </a>
+                                </Link>
                               </li>
                               <li>
-                                <a href="#">
+                                <Link to="/shoping-cart">
                                   <ShoppingCartIcon />
-                                </a>
+                                </Link>
                               </li>
                             </ul>
                           </div>

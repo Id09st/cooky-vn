@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import { PhoneAndroid } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 export default function Contact() {
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function Contact() {
               <div className="breadcrumb__text">
                 <h2>Contact Us</h2>
                 <div className="breadcrumb__option">
-                  <a href="./index.html">Home</a>
+                  <Link to="/">Home</Link>
                   <span>Contact Us</span>
                 </div>
               </div>

@@ -9,7 +9,7 @@
   left: 0;
   width: 100%;
   z-index: 9999;
-  background-color: #ffffff;
+  background-color: var(--primary-color);
 }
 
 .header__top {
@@ -232,7 +232,7 @@
         }
 
         & > a {
-          color: var(--primary-color);
+          color: var(--white-color) 7b;
         }
       }
 
@@ -242,7 +242,7 @@
 
       a {
         font-size: 14px;
-        color: var(--heading-color-2);
+        color: var(--white-color);
         text-transform: uppercase;
         font-weight: 700;
         letter-spacing: 2px;
@@ -273,6 +273,7 @@
 
       a {
         position: relative;
+        color: var(--white-color);
 
         i {
           font-size: 18px;
@@ -300,11 +301,11 @@
 
   .header__cart__price {
     font-size: 14px;
-    color: #6f6f6f;
+    color: var(--white-color);
     display: inline-block;
 
     span {
-      color: var(--heading-color-2);
+      color: var(--white-color);
       font-weight: 700;
     }
   }
