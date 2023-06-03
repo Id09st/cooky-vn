@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '~/sass/_shop-grid.scss';
 import '~/sass/_responsive.scss';
 import { Product } from '../Home/HomImage';
 import { Link } from 'react-router-dom';
 import { FavoriteBorderRounded, FullscreenOutlined, ShoppingCartOutlined } from '@mui/icons-material';
+import { Slider, TextField } from '@mui/material';
 
 export default function ShopGrid() {
   useEffect(() => {
@@ -16,6 +17,31 @@ export default function ShopGrid() {
     };
     setBgImages();
   }, []);
+
+  const [minAmount, setMinAmount] = useState(0);
+  const [maxAmount, setMaxAmount] = useState(5000000);
+
+  const handleMinAmountChange = (event) => {
+    let value = Number(event.target.value);
+    value = Math.min(value, maxAmount); // Giới hạn giá trị không vượt quá maxAmount
+    setMinAmount(value);
+  };
+
+  const handleMaxAmountChange = (event) => {
+    let value = Number(event.target.value);
+    value = Math.max(value, minAmount); // Giới hạn giá trị không nhỏ hơn minAmount
+    setMaxAmount(value);
+  };
+
+  const handleSliderChange = (event, newValue) => {
+    setMinAmount(newValue[0]);
+    setMaxAmount(newValue[1]);
+  };
+
+  const formatCurrency = (value) => {
+    return `$${value}`;
+  };
+
   return (
     <>
       <>
@@ -80,19 +106,35 @@ export default function ShopGrid() {
                   <div className="sidebar__item">
                     <h4>Price</h4>
                     <div className="price-range-wrap">
-                      <div
-                        className="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                        data-min={10}
-                        data-max={540}
-                      >
-                        <div className="ui-slider-range ui-corner-all ui-widget-header" />
-                        <span tabIndex={0} className="ui-slider-handle ui-corner-all ui-state-default" />
-                        <span tabIndex={0} className="ui-slider-handle ui-corner-all ui-state-default" />
-                      </div>
+                      <Slider
+                        value={[minAmount, maxAmount]}
+                        min={0}
+                        max={5000000}
+                        onChange={handleSliderChange}
+                        valueLabelDisplay="auto"
+                        valueLabelFormat={formatCurrency}
+                      />
                       <div className="range-slider">
                         <div className="price-input">
-                          <input type="text" id="minamount" />
-                          <input type="text" id="maxamount" />
+                          <TextField
+                            type="number"
+                            value={minAmount}
+                            onChange={handleMinAmountChange}
+                            inputProps={{ max: maxAmount }}
+                            InputProps={{
+                              endAdornment: <span>$</span>,
+                            }}
+                          />
+                          <span>-</span>
+                          <TextField
+                            type="number"
+                            value={maxAmount}
+                            onChange={handleMaxAmountChange}
+                            inputProps={{ min: minAmount }}
+                            InputProps={{
+                              endAdornment: <span>$</span>,
+                            }}
+                          />
                         </div>
                       </div>
                     </div>
