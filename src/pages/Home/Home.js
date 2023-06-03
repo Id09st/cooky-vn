@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Image, Image2, Image3 } from './HomImage';
-import OwlCarousel from 'react-owl-carousel';
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import 'owl.carousel/dist/assets/owl.theme.default.css';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import CropFreeIcon from '@mui/icons-material/CropFree';
 
 export default function Home() {
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function Home() {
       <section className="categories">
         <div className="container">
           <div className="row">
-            <OwlCarousel className="owl-carousel">
+            <div class="categories__slider owl-carousel">
               {Image.map((image) => (
                 <div className="col-lg-3" key={image.id}>
                   <div className="categories__item set-bg" data-setbg={image.url}>
@@ -32,7 +32,7 @@ export default function Home() {
                   </div>
                 </div>
               ))}
-            </OwlCarousel>
+            </div>
           </div>
         </div>
       </section>
@@ -67,17 +67,17 @@ export default function Home() {
                       <ul className="featured__item__pic__hover">
                         <li>
                           <a href="#">
-                            <i className="fa fa-heart" />
+                            <FavoriteIcon />
                           </a>
                         </li>
                         <li>
                           <a href="#">
-                            <i className="fa fa-retweet" />
+                            <CropFreeIcon />
                           </a>
                         </li>
                         <li>
                           <a href="#">
-                            <i className="fa fa-shopping-cart" />
+                            <ShoppingCartIcon />
                           </a>
                         </li>
                       </ul>
@@ -122,19 +122,19 @@ export default function Home() {
               <div className="latest-product__text">
                 <h4>Latest Products</h4>
                 <div class="latest-product__slider">
-                    <div className="latest-prdouct__slider__item">
-                      {Image3.map((image) => (
-                        <a href="#" className="latest-product__item">
-                          <div className="latest-product__item__pic">
-                            <img src={image.url} alt="" />
-                          </div>
-                          <div className="latest-product__item__text">
-                            <h6>{image.title}</h6>
-                            <span>{image.price}</span>
-                          </div>
-                        </a>
-                      ))}
-                    </div>
+                  <div className="latest-prdouct__slider__item">
+                    {Image3.map((image) => (
+                      <a href="#" className="latest-product__item">
+                        <div className="latest-product__item__pic">
+                          <img src={image.url} alt="" />
+                        </div>
+                        <div className="latest-product__item__text">
+                          <h6>{image.title}</h6>
+                          <span>{image.price}</span>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
