@@ -5,7 +5,6 @@ import '~/sass/_responsive.scss';
 import logo from '~/assets/images/logo.png';
 import { FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
 
-
 export default function Header() {
   return (
     <>

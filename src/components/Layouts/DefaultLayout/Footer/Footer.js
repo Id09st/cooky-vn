@@ -1,9 +1,8 @@
 import React from 'react';
 import '~/sass/_footer.scss';
 import '~/sass/_responsive.scss';
-import FacebookTwoToneIcon from '@mui/icons-material/FacebookTwoTone';
-import GoogleIcon from '@mui/icons-material/Google';
 import { red } from '@mui/material/colors';
+import { FacebookTwoTone, Google } from '@mui/icons-material';
 
 export default function Footer() {
   return (
@@ -31,10 +30,10 @@ export default function Footer() {
               </form>
               <div className="footer__widget__social">
                 <a href="#">
-                  <FacebookTwoToneIcon color="primary" sx={{ fontSize: 40 }} />
+                  <FacebookTwoTone color="primary" sx={{ fontSize: 40 }} />
                 </a>
                 <a href="#">
-                  <GoogleIcon sx={{ color: red[600], fontSize: 40 }} />
+                  <Google sx={{ color: red[500], fontSize: 40 }} />
                 </a>
               </div>
             </div>

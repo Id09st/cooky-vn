@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
 import '~/sass/_shop-grid.scss';
 import '~/sass/_responsive.scss';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import CropFreeIcon from '@mui/icons-material/CropFree';
 import { Product } from '../Home/HomImage';
 import { Link } from 'react-router-dom';
+import { FavoriteBorderRounded, FullscreenOutlined, ShoppingCartOutlined } from '@mui/icons-material';
 
 export default function ShopGrid() {
   useEffect(() => {
@@ -249,17 +247,17 @@ export default function ShopGrid() {
                             <ul className="product__item__pic__hover">
                               <li>
                                 <a href="#">
-                                  <FavoriteIcon />
+                                  <FavoriteBorderRounded />
                                 </a>
                               </li>
                               <li>
                                 <Link to="/shop-detail">
-                                  <CropFreeIcon />
+                                  <FullscreenOutlined />
                                 </Link>
                               </li>
                               <li>
                                 <Link to="/shoping-cart">
-                                  <ShoppingCartIcon />
+                                  <ShoppingCartOutlined />
                                 </Link>
                               </li>
                             </ul>
@@ -285,17 +283,17 @@ export default function ShopGrid() {
                             <ul className="product__item__pic__hover">
                               <li>
                                 <a href="#">
-                                  <FavoriteIcon />
+                                  <FavoriteBorderRounded />
                                 </a>
                               </li>
                               <li>
                                 <Link to="/shop-detail">
-                                  <CropFreeIcon />
+                                  <FullscreenOutlined />
                                 </Link>
                               </li>
                               <li>
                                 <Link to="/shoping-cart">
-                                  <ShoppingCartIcon />
+                                  <ShoppingCartOutlined />
                                 </Link>
                               </li>
                             </ul>
@@ -321,17 +319,17 @@ export default function ShopGrid() {
                             <ul className="product__item__pic__hover">
                               <li>
                                 <a href="#">
-                                  <FavoriteIcon />
+                                  <FavoriteBorderRounded />
                                 </a>
                               </li>
                               <li>
                                 <Link to="/shop-detail">
-                                  <CropFreeIcon />
+                                  <FullscreenOutlined />
                                 </Link>
                               </li>
                               <li>
                                 <Link to="/shoping-cart">
-                                  <ShoppingCartIcon />
+                                  <ShoppingCartOutlined />
                                 </Link>
                               </li>
                             </ul>
@@ -357,17 +355,17 @@ export default function ShopGrid() {
                             <ul className="product__item__pic__hover">
                               <li>
                                 <a href="#">
-                                  <FavoriteIcon />
+                                  <FavoriteBorderRounded />
                                 </a>
                               </li>
                               <li>
                                 <Link to="/shop-detail">
-                                  <CropFreeIcon />
+                                  <FullscreenOutlined />
                                 </Link>
                               </li>
                               <li>
                                 <Link to="/shoping-cart">
-                                  <ShoppingCartIcon />
+                                  <ShoppingCartOutlined />
                                 </Link>
                               </li>
                             </ul>
@@ -393,17 +391,17 @@ export default function ShopGrid() {
                             <ul className="product__item__pic__hover">
                               <li>
                                 <a href="#">
-                                  <FavoriteIcon />
+                                  <FavoriteBorderRounded />
                                 </a>
                               </li>
                               <li>
                                 <Link to="/shop-detail">
-                                  <CropFreeIcon />
+                                  <FullscreenOutlined />
                                 </Link>
                               </li>
                               <li>
                                 <Link to="/shoping-cart">
-                                  <ShoppingCartIcon />
+                                  <ShoppingCartOutlined />
                                 </Link>
                               </li>
                             </ul>
@@ -429,17 +427,17 @@ export default function ShopGrid() {
                             <ul className="product__item__pic__hover">
                               <li>
                                 <a href="#">
-                                  <FavoriteIcon />
+                                  <FavoriteBorderRounded />
                                 </a>
                               </li>
                               <li>
                                 <Link to="/shop-detail">
-                                  <CropFreeIcon />
+                                  <FullscreenOutlined />
                                 </Link>
                               </li>
                               <li>
                                 <Link to="/shoping-cart">
-                                  <ShoppingCartIcon />
+                                  <ShoppingCartOutlined />
                                 </Link>
                               </li>
                             </ul>
@@ -492,17 +490,17 @@ export default function ShopGrid() {
                           <ul className="product__item__pic__hover">
                             <li>
                               <a href="#">
-                                <FavoriteIcon />
+                                <FavoriteBorderRounded />
                               </a>
                             </li>
                             <li>
                               <a href="#">
-                                <CropFreeIcon />
+                                <FullscreenOutlined />
                               </a>
                             </li>
                             <li>
                               <a href="#">
-                                <ShoppingCartIcon />
+                                <ShoppingCartOutlined />
                               </a>
                             </li>
                           </ul>

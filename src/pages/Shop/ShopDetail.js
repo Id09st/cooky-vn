@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
 import { Related } from '../Home/HomImage';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import CropFreeIcon from '@mui/icons-material/CropFree';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Link } from 'react-router-dom';
+import { FullscreenOutlined, FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
 
 export default function ShopDetail() {
   useEffect(() => {
@@ -103,7 +100,7 @@ export default function ShopDetail() {
                     ADD TO CARD
                   </Link>
                   <a href="#" className="heart-icon">
-                    <FavoriteBorderIcon color="success" sx={{ fontSize: 20 }} />
+                    <FavoriteBorderRounded color="success" sx={{ fontSize: 20 }} />
                   </a>
                   <ul>
                     <li>
@@ -246,17 +243,17 @@ export default function ShopDetail() {
                       <ul className="product__item__pic__hover">
                         <li>
                           <a href="#">
-                            <FavoriteIcon />
+                            <FavoriteBorderRounded />
                           </a>
                         </li>
                         <li>
                           <Link to="/shop-detail">
-                            <CropFreeIcon />
+                            <FullscreenOutlined />
                           </Link>
                         </li>
                         <li>
                           <a href="#">
-                            <ShoppingCartIcon />
+                            <ShoppingCartOutlined />
                           </a>
                         </li>
                       </ul>

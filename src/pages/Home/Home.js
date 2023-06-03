@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
-import { Categories, Featured, Lasted, Image4 } from './HomImage';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import CropFreeIcon from '@mui/icons-material/CropFree';
+import { Categories, Featured, Lasted } from './HomImage';
 import { Link } from 'react-router-dom';
+import { FullscreenOutlined, FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
 
 export default function Home() {
   useEffect(() => {
@@ -66,17 +64,17 @@ export default function Home() {
                       <ul className="featured__item__pic__hover">
                         <li>
                           <a href="#">
-                            <FavoriteIcon />
+                            <FavoriteBorderRounded />
                           </a>
                         </li>
                         <li>
                           <Link to="/shop-detail">
-                            <CropFreeIcon />
+                            <FullscreenOutlined />
                           </Link>
                         </li>
                         <li>
                           <Link to="/shoping-cart">
-                            <ShoppingCartIcon />
+                            <ShoppingCartOutlined />
                           </Link>
                         </li>
                       </ul>
