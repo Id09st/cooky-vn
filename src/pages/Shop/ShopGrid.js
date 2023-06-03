@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '~/sass/_shop-grid.scss';
 import '~/sass/_responsive.scss';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import CropFreeIcon from '@mui/icons-material/CropFree';
+import { Product } from '../Home/HomImage';
 
 export default function ShopGrid() {
+  useEffect(() => {
+    const setBgImages = () => {
+      const elements = document.getElementsByClassName('set-bg');
+      Array.from(elements).forEach((element) => {
+        const bg = element.dataset.setbg;
+        element.style.backgroundImage = `url(${bg})`;
+      });
+    };
+    setBgImages();
+  }, []);
   return (
     <>
       <>
@@ -234,17 +248,17 @@ export default function ShopGrid() {
                             <ul className="product__item__pic__hover">
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-heart" />
+                                  <FavoriteIcon />
                                 </a>
                               </li>
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-retweet" />
+                                  <CropFreeIcon />
                                 </a>
                               </li>
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-shopping-cart" />
+                                  <ShoppingCartIcon />
                                 </a>
                               </li>
                             </ul>
@@ -270,17 +284,17 @@ export default function ShopGrid() {
                             <ul className="product__item__pic__hover">
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-heart" />
+                                  <FavoriteIcon />
                                 </a>
                               </li>
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-retweet" />
+                                  <CropFreeIcon />
                                 </a>
                               </li>
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-shopping-cart" />
+                                  <ShoppingCartIcon />
                                 </a>
                               </li>
                             </ul>
@@ -306,17 +320,17 @@ export default function ShopGrid() {
                             <ul className="product__item__pic__hover">
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-heart" />
+                                  <FavoriteIcon />
                                 </a>
                               </li>
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-retweet" />
+                                  <CropFreeIcon />
                                 </a>
                               </li>
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-shopping-cart" />
+                                  <ShoppingCartIcon />
                                 </a>
                               </li>
                             </ul>
@@ -342,17 +356,17 @@ export default function ShopGrid() {
                             <ul className="product__item__pic__hover">
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-heart" />
+                                  <FavoriteIcon />
                                 </a>
                               </li>
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-retweet" />
+                                  <CropFreeIcon />
                                 </a>
                               </li>
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-shopping-cart" />
+                                  <ShoppingCartIcon />
                                 </a>
                               </li>
                             </ul>
@@ -378,17 +392,17 @@ export default function ShopGrid() {
                             <ul className="product__item__pic__hover">
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-heart" />
+                                  <FavoriteIcon />
                                 </a>
                               </li>
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-retweet" />
+                                  <CropFreeIcon />
                                 </a>
                               </li>
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-shopping-cart" />
+                                  <ShoppingCartIcon />
                                 </a>
                               </li>
                             </ul>
@@ -414,17 +428,17 @@ export default function ShopGrid() {
                             <ul className="product__item__pic__hover">
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-heart" />
+                                  <FavoriteIcon />
                                 </a>
                               </li>
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-retweet" />
+                                  <CropFreeIcon />
                                 </a>
                               </li>
                               <li>
                                 <a href="#">
-                                  <i className="fa fa-shopping-cart" />
+                                  <ShoppingCartIcon />
                                 </a>
                               </li>
                             </ul>
@@ -470,354 +484,37 @@ export default function ShopGrid() {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-lg-4 col-md-6 col-sm-6">
-                    <div className="product__item">
-                      <div className="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
-                        <ul className="product__item__pic__hover">
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-heart" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-retweet" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-shopping-cart" />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="product__item__text">
-                        <h6>
-                          <a href="#">Crab Pool Security</a>
-                        </h6>
-                        <h5>$30.00</h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-md-6 col-sm-6">
-                    <div className="product__item">
-                      <div className="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
-                        <ul className="product__item__pic__hover">
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-heart" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-retweet" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-shopping-cart" />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="product__item__text">
-                        <h6>
-                          <a href="#">Crab Pool Security</a>
-                        </h6>
-                        <h5>$30.00</h5>
+                  {Product.map((product) => (
+                    <div className="col-lg-4 col-md-6 col-sm-6">
+                      <div className="product__item">
+                        <div className="product__item__pic set-bg" data-setbg={product.url}>
+                          <ul className="product__item__pic__hover">
+                            <li>
+                              <a href="#">
+                                <FavoriteIcon />
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#">
+                                <CropFreeIcon />
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#">
+                                <ShoppingCartIcon />
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="product__item__text">
+                          <h6>
+                            <a href="#">{product.title}</a>
+                          </h6>
+                          <h5>{product.price}</h5>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-lg-4 col-md-6 col-sm-6">
-                    <div className="product__item">
-                      <div className="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">
-                        <ul className="product__item__pic__hover">
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-heart" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-retweet" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-shopping-cart" />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="product__item__text">
-                        <h6>
-                          <a href="#">Crab Pool Security</a>
-                        </h6>
-                        <h5>$30.00</h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-md-6 col-sm-6">
-                    <div className="product__item">
-                      <div className="product__item__pic set-bg" data-setbg="img/product/product-4.jpg">
-                        <ul className="product__item__pic__hover">
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-heart" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-retweet" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-shopping-cart" />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="product__item__text">
-                        <h6>
-                          <a href="#">Crab Pool Security</a>
-                        </h6>
-                        <h5>$30.00</h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-md-6 col-sm-6">
-                    <div className="product__item">
-                      <div className="product__item__pic set-bg" data-setbg="img/product/product-5.jpg">
-                        <ul className="product__item__pic__hover">
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-heart" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-retweet" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-shopping-cart" />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="product__item__text">
-                        <h6>
-                          <a href="#">Crab Pool Security</a>
-                        </h6>
-                        <h5>$30.00</h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-md-6 col-sm-6">
-                    <div className="product__item">
-                      <div className="product__item__pic set-bg" data-setbg="img/product/product-6.jpg">
-                        <ul className="product__item__pic__hover">
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-heart" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-retweet" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-shopping-cart" />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="product__item__text">
-                        <h6>
-                          <a href="#">Crab Pool Security</a>
-                        </h6>
-                        <h5>$30.00</h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-md-6 col-sm-6">
-                    <div className="product__item">
-                      <div className="product__item__pic set-bg" data-setbg="img/product/product-7.jpg">
-                        <ul className="product__item__pic__hover">
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-heart" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-retweet" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-shopping-cart" />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="product__item__text">
-                        <h6>
-                          <a href="#">Crab Pool Security</a>
-                        </h6>
-                        <h5>$30.00</h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-md-6 col-sm-6">
-                    <div className="product__item">
-                      <div className="product__item__pic set-bg" data-setbg="img/product/product-8.jpg">
-                        <ul className="product__item__pic__hover">
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-heart" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-retweet" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-shopping-cart" />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="product__item__text">
-                        <h6>
-                          <a href="#">Crab Pool Security</a>
-                        </h6>
-                        <h5>$30.00</h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-md-6 col-sm-6">
-                    <div className="product__item">
-                      <div className="product__item__pic set-bg" data-setbg="img/product/product-9.jpg">
-                        <ul className="product__item__pic__hover">
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-heart" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-retweet" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-shopping-cart" />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="product__item__text">
-                        <h6>
-                          <a href="#">Crab Pool Security</a>
-                        </h6>
-                        <h5>$30.00</h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-md-6 col-sm-6">
-                    <div className="product__item">
-                      <div className="product__item__pic set-bg" data-setbg="img/product/product-10.jpg">
-                        <ul className="product__item__pic__hover">
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-heart" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-retweet" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-shopping-cart" />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="product__item__text">
-                        <h6>
-                          <a href="#">Crab Pool Security</a>
-                        </h6>
-                        <h5>$30.00</h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-md-6 col-sm-6">
-                    <div className="product__item">
-                      <div className="product__item__pic set-bg" data-setbg="img/product/product-11.jpg">
-                        <ul className="product__item__pic__hover">
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-heart" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-retweet" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-shopping-cart" />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="product__item__text">
-                        <h6>
-                          <a href="#">Crab Pool Security</a>
-                        </h6>
-                        <h5>$30.00</h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-md-6 col-sm-6">
-                    <div className="product__item">
-                      <div className="product__item__pic set-bg" data-setbg="img/product/product-12.jpg">
-                        <ul className="product__item__pic__hover">
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-heart" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-retweet" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-shopping-cart" />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="product__item__text">
-                        <h6>
-                          <a href="#">Crab Pool Security</a>
-                        </h6>
-                        <h5>$30.00</h5>
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
                 <div className="product__pagination">
                   <a href="#">1</a>

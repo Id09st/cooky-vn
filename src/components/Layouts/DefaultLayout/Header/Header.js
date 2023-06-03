@@ -57,9 +57,9 @@ export default function Header() {
                     </a>
                   </li>
                   <li>
-                    <a href="#">
+                    <Link to="/shoping-cart">
                       <ShoppingCartIcon color="success" sx={{ fontSize: 25 }} /> <span>3</span>
-                    </a>
+                    </Link>
                   </li>
                 </ul>
                 <div class="header__cart__price">

@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { Image, Image2, Image3 } from './HomImage';
+import { Categories, Featured, Lasted, Image4 } from './HomImage';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CropFreeIcon from '@mui/icons-material/CropFree';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   useEffect(() => {
@@ -22,17 +23,15 @@ export default function Home() {
       <section className="categories">
         <div className="container">
           <div className="row">
-            <div class="categories__slider owl-carousel">
-              {Image.map((image) => (
-                <div className="col-lg-3" key={image.id}>
-                  <div className="categories__item set-bg" data-setbg={image.url}>
-                    <h5>
-                      <a href="#">{image.title}</a>
-                    </h5>
-                  </div>
+            {Categories.map((categories) => (
+              <div className="col-lg-3" key={categories.id}>
+                <div className="categories__item set-bg" data-setbg={categories.url}>
+                  <h5>
+                    <a href="#">{categories.title}</a>
+                  </h5>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -59,11 +58,11 @@ export default function Home() {
             </div>
           </div>
           <div className="row featured__filter">
-            {Image2.map((image) => (
+            {Featured.map((featured) => (
               <div className="col-lg-3 col-md-4 col-sm-6">
-                <div className={image.class}>
+                <div className={featured.class}>
                   <div className="featured__item">
-                    <div className="featured__item__pic set-bg" data-setbg={image.url}>
+                    <div className="featured__item__pic set-bg" data-setbg={featured.url}>
                       <ul className="featured__item__pic__hover">
                         <li>
                           <a href="#">
@@ -76,17 +75,17 @@ export default function Home() {
                           </a>
                         </li>
                         <li>
-                          <a href="#">
+                          <Link to="/shoping-cart">
                             <ShoppingCartIcon />
-                          </a>
+                          </Link>
                         </li>
                       </ul>
                     </div>
                     <div className="featured__item__text">
                       <h6>
-                        <a href="#">{image.title}</a>
+                        <a href="#">{featured.title}</a>
                       </h6>
-                      <h5>{image.price}</h5>
+                      <h5>{featured.price}</h5>
                     </div>
                   </div>
                 </div>
@@ -123,14 +122,14 @@ export default function Home() {
                 <h4>Latest Products</h4>
                 <div class="latest-product__slider">
                   <div className="latest-prdouct__slider__item">
-                    {Image3.map((image) => (
+                    {Lasted.map((lasted) => (
                       <a href="#" className="latest-product__item">
                         <div className="latest-product__item__pic">
-                          <img src={image.url} alt="" />
+                          <img src={lasted.url} alt="" />
                         </div>
                         <div className="latest-product__item__text">
-                          <h6>{image.title}</h6>
-                          <span>{image.price}</span>
+                          <h6>{lasted.title}</h6>
+                          <span>{lasted.price}</span>
                         </div>
                       </a>
                     ))}
@@ -143,14 +142,14 @@ export default function Home() {
                 <h4>Top Rated Products</h4>
                 <div className="latest-product__slider">
                   <div className="latest-prdouct__slider__item">
-                    {Image3.map((image) => (
+                    {Lasted.map((lasted) => (
                       <a href="#" className="latest-product__item">
                         <div className="latest-product__item__pic">
-                          <img src={image.url} alt="" />
+                          <img src={lasted.url} alt="" />
                         </div>
                         <div className="latest-product__item__text">
-                          <h6>{image.title}</h6>
-                          <span>{image.price}</span>
+                          <h6>{lasted.title}</h6>
+                          <span>{lasted.price}</span>
                         </div>
                       </a>
                     ))}
@@ -163,14 +162,14 @@ export default function Home() {
                 <h4>Review Products</h4>
                 <div className="latest-product__slider">
                   <div className="latest-prdouct__slider__item">
-                    {Image3.map((image) => (
+                    {Lasted.map((lasted) => (
                       <a href="#" className="latest-product__item">
                         <div className="latest-product__item__pic">
-                          <img src={image.url} alt="" />
+                          <img src={lasted.url} alt="" />
                         </div>
                         <div className="latest-product__item__text">
-                          <h6>{image.title}</h6>
-                          <span>{image.price}</span>
+                          <h6>{lasted.title}</h6>
+                          <span>{lasted.price}</span>
                         </div>
                       </a>
                     ))}

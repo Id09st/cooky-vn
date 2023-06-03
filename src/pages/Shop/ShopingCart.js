@@ -1,6 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export default function ShopingCart() {
+  useEffect(() => {
+    const setBgImages = () => {
+      const elements = document.getElementsByClassName('set-bg');
+      Array.from(elements).forEach((element) => {
+        const bg = element.dataset.setbg;
+        element.style.backgroundImage = `url(${bg})`;
+      });
+    };
+    setBgImages();
+  }, []);
   return (
     <>
       <>
