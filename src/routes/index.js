@@ -5,6 +5,7 @@ import ShopingCart from '~/pages/Shop/ShopingCart';
 import CheckOut from '~/pages/Shop/CheckOut';
 import Contact from '~/pages/Contact/Contact';
 import Admin from '~/pages/Admin/Admin';
+import SignIn from '~/pages/SignIn/SignIn';
 
 // Public Routes
 const publicRoutes = [
@@ -15,6 +16,7 @@ const publicRoutes = [
   { path: '/checkout', component: CheckOut },
   { path: '/contact', component: Contact },
   { path: '/admin', component: Admin, layout: null },
+  { path: '/signin', component: SignIn, layout: null },
 ];
 
 const privateRoutes = [];
