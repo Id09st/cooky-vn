@@ -87,7 +87,7 @@ export default function Header() {
               </div>
             </div>
             <div className="col-lg-4">
-              <Search style={{ marginTop: '20px' }}>
+              <Search style={{ marginTop: '25px' }}>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
@@ -100,14 +100,18 @@ export default function Header() {
                   <li>
                     <IconButton aria-label="cart">
                       <StyledBadge badgeContent={4} color="secondary">
-                        <FavoriteBorderRounded />
+                        <Link to='#'>
+                          <FavoriteBorderRounded />
+                        </Link>
                       </StyledBadge>
                     </IconButton>
                   </li>
                   <li>
                     <IconButton aria-label="cart">
                       <StyledBadge badgeContent={4} color="secondary">
-                        <ShoppingCartOutlined />
+                        <Link to="/shoping-cart">
+                          <ShoppingCartOutlined />
+                        </Link>
                       </StyledBadge>
                     </IconButton>
                   </li>
@@ -118,8 +122,8 @@ export default function Header() {
               </div>
             </div>
             <div className="col-lg-2">
-              <Button style={{ marginTop: '15px' }} aria-label="Example" onClick={handleOpen} sx={{ fontSize: 40 }}  >
-                <AccountCircleIcon fontSize='lagre' />
+              <Button style={{ marginTop: '15px' }} aria-label="Example" onClick={handleOpen} sx={{ fontSize: 40 }}>
+                <AccountCircleIcon fontSize="lagre" />
               </Button>
               <Dialog open={open} onClose={handleClose}>
                 <IconButton

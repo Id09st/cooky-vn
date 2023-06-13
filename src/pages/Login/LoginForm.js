@@ -87,11 +87,6 @@ function SignIn() {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <RouterLink to="#" variant="body2">
-                  Forgot password?
-                </RouterLink>
-              </Grid>
               <Grid item>
                 <RouterLink to="#" variant="body2" onClick={handleSignInClick}>
                   {"Don't have an account? Sign Up"}
@@ -112,6 +107,7 @@ function SignInPopup({ onClose }) {
     console.log({
       email: data.get('email'),
       password: data.get('password'),
+      phone: data.get('phone'),
     });
   };
 
@@ -172,6 +168,17 @@ function SignInPopup({ onClose }) {
                 <TextField
                   required
                   fullWidth
+                  name="phone"
+                  label="Phone Number"
+                  type="text"
+                  id="phone"
+                  autoComplete="tel"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
                   name="password"
                   label="Password"
                   type="password"
@@ -189,7 +196,7 @@ function SignInPopup({ onClose }) {
                   id="confirmPassword"
                   autoComplete="new-password"
                 />
-              </Grid>
+              </Grid>           
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
