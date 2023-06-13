@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '~/sass/_header.scss';
 import '~/sass/_responsive.scss';
@@ -6,8 +6,11 @@ import Badge from '@mui/material/Badge';
 import { styled, alpha } from '@mui/material/styles';
 import logo from '~/assets/images/logo.png';
 import { FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
-import { IconButton, InputBase } from '@mui/material';
+import { IconButton, InputBase, Dialog, DialogContent, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from '@mui/icons-material/Close';
+import LoginForm from '~/pages/Login/LoginForm';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 export default function Header() {
   const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -61,6 +64,16 @@ export default function Header() {
     },
   }));
 
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       <header className="header">
@@ -73,45 +86,16 @@ export default function Header() {
                 </Link>
               </div>
             </div>
-            <div className="=col-lg-9">
-              <Search>
+            <div className="col-lg-4">
+              <Search style={{ marginTop: '20px' }}>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
                 <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
               </Search>
             </div>
-            {/* <div className="col-lg-6">
-              <nav className="header__menu">
-                <ul>
-                  <li className="active">
-                    <Link to="/">Home</Link>
-                  </li>
-                  <li>
-                    <Link to="/shop-grid">Shop</Link>
-                  </li>
-                  <li>
-                    <a href="#">Pages</a>
-                    <ul className="header__menu__dropdown">
-                      <li>
-                        <Link to="/shop-detail">Shop Detail</Link>
-                      </li>
-                      <li>
-                        <Link to="/shoping-cart">Shoping Cart</Link>
-                      </li>
-                      <li>
-                        <Link to="/checkout">Check Out</Link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <Link to="/contact">Contact</Link>
-                  </li>
-                </ul>
-              </nav>
-            </div> */}
             <div className="col-lg-3">
-              <div class="header__cart">
+              <div className="header__cart">
                 <ul>
                   <li>
                     <IconButton aria-label="cart">
@@ -121,9 +105,6 @@ export default function Header() {
                     </IconButton>
                   </li>
                   <li>
-                    {/* <Link to="/shoping-cart">
-                      <ShoppingCartOutlined sx={{ fontSize: 26 }} /> <span>3</span>
-                    </Link> */}
                     <IconButton aria-label="cart">
                       <StyledBadge badgeContent={4} color="secondary">
                         <ShoppingCartOutlined />
@@ -131,20 +112,29 @@ export default function Header() {
                     </IconButton>
                   </li>
                 </ul>
-                <div class="header__cart__price">
+                <div className="header__cart__price">
                   item: <span>$150.00</span>
                 </div>
-
-                <Dialog open={open} onClose={handleClose}>
-                  <DialogTitle>Registration Successful</DialogTitle>
-                  <DialogContent>
-                    <Typography>Thank you for registering! Your account has been created successfully.</Typography>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleClose}>Close</Button>
-                  </DialogActions>
-                </Dialog>
               </div>
+            </div>
+            <div className="col-lg-2">
+              <Button style={{ marginTop: '15px' }} aria-label="Example" onClick={handleOpen} sx={{ fontSize: 40 }}  >
+                <AccountCircleIcon fontSize='lagre' />
+              </Button>
+              <Dialog open={open} onClose={handleClose}>
+                <IconButton
+                  edge="end"
+                  color="inherit"
+                  onClick={handleClose}
+                  aria-label="close"
+                  sx={{ position: 'absolute', right: 8, top: 8 }}
+                >
+                  <CloseIcon />
+                </IconButton>
+                <DialogContent>
+                  <LoginForm />
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>
