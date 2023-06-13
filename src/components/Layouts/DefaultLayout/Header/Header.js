@@ -134,6 +134,16 @@ export default function Header() {
                 <div class="header__cart__price">
                   item: <span>$150.00</span>
                 </div>
+
+                <Dialog open={open} onClose={handleClose}>
+                  <DialogTitle>Registration Successful</DialogTitle>
+                  <DialogContent>
+                    <Typography>Thank you for registering! Your account has been created successfully.</Typography>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose}>Close</Button>
+                  </DialogActions>
+                </Dialog>
               </div>
             </div>
           </div>
