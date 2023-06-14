@@ -17,25 +17,26 @@ import {
   Breadcrumbs,
   TextField,
 } from '@mui/material';
-import { Delete } from '@mui/icons-material';
+import { Add, Delete, Remove } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
 const ShoppingCart = () => {
   const [cartItems, setCartItems] = useState([
-    { id: 1, name: 'Product 1', price: 10, quantity: 2, image: '/img/cart/cart-1.jpg' },
-    { id: 2, name: 'Product 2', price: 15, quantity: 3, image: '/img/cart/cart-2.jpg' },
+    { id: 1, name: 'Product 1', price: 10, quantity: 1, image: '/img/cart/cart-1.jpg' },
+    { id: 2, name: 'Product 2', price: 15, quantity: 1, image: '/img/cart/cart-2.jpg' },
     { id: 3, name: 'Product 3', price: 20, quantity: 1, image: '/img/cart/cart-3.jpg' },
   ]);
 
   const [couponCode, setCouponCode] = useState('');
   const [couponAmount, setCouponAmount] = useState(0);
 
-  const handleQuantityChange = (itemId, amount) => {
+  const handleQuantityChange = (itemId, value) => {
     const updatedCartItems = cartItems.map((item) => {
       if (item.id === itemId) {
+        const newQuantity = Math.max(1, Math.min(value, 10));
         return {
           ...item,
-          quantity: item.quantity + amount,
+          quantity: newQuantity,
         };
       }
       return item;
@@ -67,27 +68,81 @@ const ShoppingCart = () => {
     <Container maxWidth="lg" style={{ padding: '20px' }}>
       {isMobile ? (
         <div>
+          {/* Bắt đầu breadcrumb */}
+          <Box
+            component="section"
+            sx={{
+              backgroundImage: 'url(img/breadcrumb.jpg)',
+              backgroundSize: 'cover',
+              py: 4,
+            }}
+          >
+            <Container maxWidth="lg">
+              <Box textAlign="center">
+                <Typography variant="h4" style={{ color: 'var(--white-color)' }}>
+                  Shopping Cart
+                </Typography>
+                <Breadcrumbs
+                  aria-label="breadcrumb"
+                  separator="›"
+                  style={{ color: 'var(--white-color)' }}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Link underline="hover" to="/">
+                    <Typography style={{ color: 'var(--white-color)' }}>Home</Typography>
+                  </Link>
+                  <Typography style={{ color: 'var(--white-color)' }} variant="body1">
+                    Shopping Cart
+                  </Typography>
+                </Breadcrumbs>
+              </Box>
+            </Container>
+          </Box>
+          {/* Kết thúc breadcrumb */}
+
           {cartItems.map((item) => (
             <Card key={item.id} style={{ marginBottom: '10px' }}>
               <CardContent>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <div>
-                    <img src={item.image} alt={item.name} style={{ width: '100px', height: '100px' }} />
+                    <img src={item.image} alt={item.name} style={{ width: '86px', height: '86px' }} />
                   </div>
-                  <div style={{ marginLeft: '5px' }}>
+                  <div style={{ marginLeft: '20px' }}>
                     <div>
-                      Quantity:
-                      <IconButton onClick={() => handleQuantityChange(item.id, -1)}>-</IconButton>
+                      <Typography variant="subtitle1" component="subtitle1">
+                        Quantity:
+                      </Typography>
+                      <IconButton onClick={() => handleQuantityChange(item.id, item.quantity - 1)}>
+                        <Remove sx={{ fontSize: 10 }} />
+                      </IconButton>
                       {item.quantity}
-                      <IconButton onClick={() => handleQuantityChange(item.id, 1)}>+</IconButton>
+                      <IconButton onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>
+                        <Add sx={{ fontSize: 10 }} />
+                      </IconButton>
                     </div>
-                    <div>Total: ${item.price * item.quantity}</div>
+                    <div>
+                      <Typography variant="subtitle1" component="subtitle1">
+                        Total:{' '}
+                      </Typography>
+                      ${item.price * item.quantity}
+                    </div>
                   </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: '15px' }}>
                   <div style={{ flex: '1' }}>
-                    <div>{item.name}</div>
-                    <div>Price: ${item.price}</div>
+                    <Typography variant="h6" component="h6">
+                      <div>{item.name}</div>
+                    </Typography>
+                    <div>
+                      <Typography variant="subtitle1" component="subtitle1">
+                        Price:{' '}
+                      </Typography>
+                      ${item.price}
+                    </div>
                   </div>
                   <IconButton onClick={() => handleDelete(item.id)}>
                     <Delete />
@@ -136,6 +191,7 @@ const ShoppingCart = () => {
         </div>
       ) : (
         <>
+          {/* Bắt đầu breadcrumb */}
           <Box
             component="section"
             sx={{
@@ -169,15 +225,32 @@ const ShoppingCart = () => {
               </Box>
             </Container>
           </Box>
+          {/* Kết thúc breadcrumb */}
 
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Products</TableCell>
-                  <TableCell>Price</TableCell>
-                  <TableCell>Quantity</TableCell>
-                  <TableCell>Total</TableCell>
+                  <TableCell>
+                    <Typography variant="h5" component="h5">
+                      Products
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h5" component="h5">
+                      Price
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h5" component="h5">
+                      Quantity
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h5" component="h5">
+                      Total
+                    </Typography>
+                  </TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
@@ -187,16 +260,34 @@ const ShoppingCart = () => {
                     <TableCell>
                       <div style={{ display: 'flex', alignItems: 'center' }}>
                         <img src={item.image} alt={item.name} style={{ width: '100px', height: '100px' }} />
-                        <span style={{ marginLeft: '10px' }}>{item.name}</span>
+                        <span style={{ marginLeft: '20px' }}>
+                          <Typography variant="h6" component="h6">
+                            {item.name}
+                          </Typography>
+                        </span>
                       </div>
                     </TableCell>
-                    <TableCell>${item.price}</TableCell>
                     <TableCell>
-                      <IconButton onClick={() => handleQuantityChange(item.id, -1)}>-</IconButton>
-                      {item.quantity}
-                      <IconButton onClick={() => handleQuantityChange(item.id, 1)}>+</IconButton>
+                      <Typography variant="subtitle1" component="subtitle1">
+                        ${item.price}
+                      </Typography>
                     </TableCell>
-                    <TableCell>${item.price * item.quantity}</TableCell>
+                    <TableCell>
+                      <IconButton onClick={() => handleQuantityChange(item.id, item.quantity - 1)}>
+                        <Remove sx={{ fontSize: 15 }} />
+                      </IconButton>
+                      <Typography variant="subtitle1" component="subtitle1">
+                        {item.quantity}
+                      </Typography>
+                      <IconButton onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>
+                        <Add sx={{ fontSize: 15 }} />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle1" component="subtitle1">
+                        ${item.price * item.quantity}
+                      </Typography>
+                    </TableCell>
                     <TableCell>
                       <IconButton onClick={() => handleDelete(item.id)}>
                         <Delete />
