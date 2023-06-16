@@ -33,7 +33,7 @@ const ShoppingCart = () => {
   const handleQuantityChange = (itemId, value) => {
     const updatedCartItems = cartItems.map((item) => {
       if (item.id === itemId) {
-        const newQuantity = Math.max(1, Math.min(value, 10));
+        const newQuantity = Math.max(0, Math.min(value, 10));
         return {
           ...item,
           quantity: newQuantity,
@@ -68,7 +68,7 @@ const ShoppingCart = () => {
     <Container maxWidth="lg" style={{ padding: '20px' }}>
       {isMobile ? (
         <div>
-          {/* Bắt đầu breadcrumb */}
+          {/* Bắt đầu breadcrumb Mobile*/}
           <Box
             component="section"
             sx={{
@@ -102,7 +102,7 @@ const ShoppingCart = () => {
               </Box>
             </Container>
           </Box>
-          {/* Kết thúc breadcrumb */}
+          {/* Kết thúc breadcrumb Mobile*/}
 
           {cartItems.map((item) => (
             <Card key={item.id} style={{ marginBottom: '10px' }}>
@@ -112,6 +112,19 @@ const ShoppingCart = () => {
                     <img src={item.image} alt={item.name} style={{ width: '86px', height: '86px' }} />
                   </div>
                   <div style={{ marginLeft: '20px' }}>
+                    <Typography variant="h6" component="h6">
+                      <div>{item.name}</div>
+                    </Typography>
+                    <div>
+                      <Typography variant="subtitle1" component="subtitle1">
+                        Price:{' '}
+                      </Typography>
+                      ${item.price}
+                    </div>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: '15px' }}>
+                  <div style={{ flex: '1' }}>
                     <div>
                       <Typography variant="subtitle1" component="subtitle1">
                         Quantity:
@@ -119,7 +132,18 @@ const ShoppingCart = () => {
                       <IconButton onClick={() => handleQuantityChange(item.id, item.quantity - 1)}>
                         <Remove sx={{ fontSize: 10 }} />
                       </IconButton>
-                      {item.quantity}
+                      <TextField
+                        name="quantity"
+                        value={item.quantity}
+                        size="small"
+                        InputProps={{
+                          style: { height: '30px' }, // Thay đổi chiều cao của ô nhập
+                        }}
+                        style={{ width: '47px' }}
+                        onChange={(event) => {
+                          handleQuantityChange(item.id, event.target.value);
+                        }}
+                      ></TextField>
                       <IconButton onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>
                         <Add sx={{ fontSize: 10 }} />
                       </IconButton>
@@ -129,19 +153,6 @@ const ShoppingCart = () => {
                         Total:{' '}
                       </Typography>
                       ${item.price * item.quantity}
-                    </div>
-                  </div>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', marginTop: '15px' }}>
-                  <div style={{ flex: '1' }}>
-                    <Typography variant="h6" component="h6">
-                      <div>{item.name}</div>
-                    </Typography>
-                    <div>
-                      <Typography variant="subtitle1" component="subtitle1">
-                        Price:{' '}
-                      </Typography>
-                      ${item.price}
                     </div>
                   </div>
                   <IconButton onClick={() => handleDelete(item.id)}>
@@ -191,7 +202,7 @@ const ShoppingCart = () => {
         </div>
       ) : (
         <>
-          {/* Bắt đầu breadcrumb */}
+          {/* Bắt đầu breadcrumb Tablet pc*/}
           <Box
             component="section"
             sx={{
@@ -225,7 +236,7 @@ const ShoppingCart = () => {
               </Box>
             </Container>
           </Box>
-          {/* Kết thúc breadcrumb */}
+          {/* Kết thúc breadcrumb Tablet pc*/}
 
           <TableContainer>
             <Table>
@@ -276,9 +287,17 @@ const ShoppingCart = () => {
                       <IconButton onClick={() => handleQuantityChange(item.id, item.quantity - 1)}>
                         <Remove sx={{ fontSize: 15 }} />
                       </IconButton>
-                      <Typography variant="subtitle1" component="subtitle1">
-                        {item.quantity}
-                      </Typography>
+                      <TextField
+                        name="quantity"
+                        value={item.quantity}
+                        InputProps={{
+                          style: { height: '30px' }, // Thay đổi chiều cao của ô nhập
+                        }}
+                        style={{ width: '45px' }}
+                        onChange={(event) => {
+                          handleQuantityChange(item.id, event.target.value);
+                        }}
+                      ></TextField>
                       <IconButton onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>
                         <Add sx={{ fontSize: 15 }} />
                       </IconButton>
