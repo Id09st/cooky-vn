@@ -1,3 +1,4 @@
+import { Box, Breadcrumbs, Container, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -14,23 +15,42 @@ export default function CheckOut() {
   }, []);
   return (
     <>
-      {/* Breadcrumb Section Begin */}
-      <section className="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12 text-center">
-              <div className="breadcrumb__text">
-                <h2>Checkout</h2>
-                <div className="breadcrumb__option">
-                  <Link to="/">Home</Link>
-                  <span>Checkout</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* Breadcrumb Section End */}
+      {/* Bắt đầu breadcrumb */}
+      <Box
+        component="section"
+        sx={{
+          backgroundImage: 'url(img/breadcrumb.jpg)',
+          backgroundSize: 'cover',
+          py: 4,
+        }}
+      >
+        <Container maxWidth="lg">
+          <Box textAlign="center">
+            <Typography variant="h2" style={{ color: 'var(--white-color)' }}>
+              Checkout
+            </Typography>
+            <Breadcrumbs
+              aria-label="breadcrumb"
+              separator="›"
+              style={{ color: 'var(--white-color)' }}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Link underline="hover" to="/">
+                <Typography style={{ color: 'var(--white-color)' }}>Home</Typography>
+              </Link>
+              <Typography style={{ color: 'var(--white-color)' }} variant="body1">
+                Check Out
+              </Typography>
+            </Breadcrumbs>
+          </Box>
+        </Container>
+      </Box>
+      {/* Kết thúc breadcrumb */}
+      
       {/* Checkout Section Begin */}
       <section className="checkout spad">
         <div className="container">
