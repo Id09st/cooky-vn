@@ -31,8 +31,8 @@ const Search = styled('div')(({ theme }) => ({
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
+  marginRight: 0,
+  marginLeft: theme.spacing(2),
   width: '100%',
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(3),
@@ -44,10 +44,12 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: '100%',
   position: 'absolute',
-  pointerEvents: 'none',
+  cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  right: '0',
+  zIndex: 1,
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -109,6 +111,12 @@ export default function PrimarySearchAppBar() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleSearchIconClick = () => {
+    console.log('Nút SearchIcon đã được nhấp vào!');
+    // Thực hiện các hành động bạn muốn khi nút được nhấp vào
+  };
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -173,7 +181,7 @@ export default function PrimarySearchAppBar() {
       <MenuItem onClick={handleMobileMenuClose}>
         <IconButton size="large" aria-label="show 4 new favorite Foood" color="inherit">
           <Badge badgeContent={4} color="error">
-            <FavoriteBorderRounded />
+            <FavoriteBorderRounded style={{ borderRadius: '50%' }} />
           </Badge>
         </IconButton>
       </MenuItem>
@@ -181,7 +189,7 @@ export default function PrimarySearchAppBar() {
         <IconButton size="large" aria-label="show 17 new shoping cart" color="inherit">
           <Link to="/shoping-cart" style={{ textDecoration: 'none', color: 'inherit' }}>
             <Badge badgeContent={17} color="error">
-              <ShoppingCartOutlined sx={{ color: 'black' }} />
+              <ShoppingCartOutlined style={{ borderRadius: '50%', color: 'black' }} />
             </Badge>
           </Link>
         </IconButton>
@@ -189,7 +197,7 @@ export default function PrimarySearchAppBar() {
       <MenuItem onClick={handleMobileMenuClose}>
         <IconButton size="large" aria-label="Contact" color="inherit">
           <Link to="/contact" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <CallOutlinedIcon sx={{ color: 'black' }} />
+            <CallOutlinedIcon style={{ borderRadius: '50%', color: 'black' }} />
           </Link>
         </IconButton>
       </MenuItem>
@@ -201,7 +209,7 @@ export default function PrimarySearchAppBar() {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <AccountCircle style={{ borderRadius: '50%' }} />
         </IconButton>
       </MenuItem>
     </Menu>
@@ -238,10 +246,10 @@ export default function PrimarySearchAppBar() {
             </Typography>
           </Box>
           <Search>
-            <SearchIconWrapper>
+            <SearchIconWrapper onClick={handleSearchIconClick}>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
+            <StyledInputBase/>
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box style={{ marginRight: '167px' }} sx={{ display: { xs: 'none', md: 'flex' } }}>
