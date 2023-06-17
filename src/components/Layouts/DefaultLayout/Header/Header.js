@@ -113,8 +113,7 @@ export default function PrimarySearchAppBar() {
   };
 
   const handleSearchIconClick = () => {
-    console.log('Nút SearchIcon đã được nhấp vào!');
-    // Thực hiện các hành động bạn muốn khi nút được nhấp vào
+    console.log('Search');
   };
 
   const menuId = 'primary-search-account-menu';
@@ -249,7 +248,7 @@ export default function PrimarySearchAppBar() {
             <SearchIconWrapper onClick={handleSearchIconClick}>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase/>
+            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box style={{ marginRight: '167px' }} sx={{ display: { xs: 'none', md: 'flex' } }}>
