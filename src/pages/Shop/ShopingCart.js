@@ -65,9 +65,9 @@ export default function ShoppingCart() {
   const total = subtotal - couponAmount;
 
   return (
-    <Container maxWidth="lg" style={{ padding: '20px' }}>
+    <>
       {isMobile ? (
-        <div>
+        <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '55px' }}>
           {/* Bắt đầu breadcrumb Mobile*/}
           <Box
             component="section"
@@ -199,9 +199,9 @@ export default function ShoppingCart() {
               PROCEED TO CHECKOUT
             </Button>
           </div>
-        </div>
+        </Container>
       ) : (
-        <>
+        <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '70px' }}>
           {/* Bắt đầu breadcrumb Tablet pc*/}
           <Box
             component="section"
@@ -354,8 +354,8 @@ export default function ShoppingCart() {
               </div>
             </div>
           </TableContainer>
-        </>
+        </Container>
       )}
-    </Container>
+    </>
   );
 }
