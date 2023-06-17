@@ -1,31 +1,30 @@
-import React, { useEffect } from 'react';
-import { Categories, Featured, Lasted } from './HomImage';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FullscreenOutlined, FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
+import { Categories, Featured, Lasted } from './HomImage';
+import { Button } from '@mui/material';
 
-export default function Home() {
-  useEffect(() => {
-    const setBgImages = () => {
-      const elements = document.getElementsByClassName('set-bg');
-      Array.from(elements).forEach((element) => {
-        const bg = element.dataset.setbg;
-        element.style.backgroundImage = `url(${bg})`;
-      });
-    };
-    setBgImages();
-  }, []);
+const FilteredFeatured = () => {
+  const [filter, setFilter] = useState('All');
+
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+  };
+
+  const filteredItems = filter === 'All' ? Featured : Featured.filter((item) => item.class.includes(filter));
 
   return (
-    <>
+    <div>
       {/* Categories Section Begin */}
       <section className="categories">
         <div className="container">
           <div className="row">
             {Categories.map((categories) => (
               <div className="col-lg-3" key={categories.id}>
-                <div className="categories__item set-bg" data-setbg={categories.url}>
+                <div class="categories__item">
+                  <img src={categories.url} alt="Category" />
                   <h5>
-                    <Link to="/#">{categories.title}</Link>
+                    <a href="/">{categories.title}</a>
                   </h5>
                 </div>
               </div>
@@ -34,8 +33,9 @@ export default function Home() {
         </div>
       </section>
       {/* Categories Section End */}
+
       {/* Featured Section Begin */}
-      <section className="featured spad">
+      <div className="container">
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
@@ -43,56 +43,82 @@ export default function Home() {
                 <h2>Featured Product</h2>
               </div>
               <div className="featured__controls">
-                <ul>
-                  <li className="active" data-filter="*">
-                    All
-                  </li>
-                  <li data-filter=".oranges">Oranges</li>
-                  <li data-filter=".fresh-meat">Fresh Meat</li>
-                  <li data-filter=".vegetables">Vegetables</li>
-                  <li data-filter=".fastfood">Fastfood</li>
-                </ul>
+                <Button
+                  variant="text"
+                  style={{ color: 'var(--primary-color)' }}
+                  onClick={() => handleFilterChange('All')}
+                >
+                  All
+                </Button>
+                <Button
+                  variant="text"
+                  style={{ color: 'var(--primary-color)' }}
+                  onClick={() => handleFilterChange('oranges')}
+                >
+                  Oranges
+                </Button>
+                <Button
+                  variant="text"
+                  style={{ color: 'var(--primary-color)' }}
+                  onClick={() => handleFilterChange('fresh-meat')}
+                >
+                  Fresh Meat
+                </Button>
+                <Button
+                  variant="text"
+                  style={{ color: 'var(--primary-color)' }}
+                  onClick={() => handleFilterChange('vegetables')}
+                >
+                  Vegetables
+                </Button>
+                <Button
+                  variant="text"
+                  style={{ color: 'var(--primary-color)' }}
+                  onClick={() => handleFilterChange('fastfood')}
+                >
+                  Fastfood
+                </Button>
               </div>
             </div>
           </div>
-          <div className="row featured__filter">
-            {Featured.map((featured) => (
-              <div className="col-lg-3 col-md-4 col-sm-6">
-                <div className={featured.class}>
-                  <div className="featured__item">
-                    <div className="featured__item__pic set-bg" data-setbg={featured.url}>
-                      <ul className="featured__item__pic__hover">
-                        <li>
-                          <a href="#">
-                            <FavoriteBorderRounded />
-                          </a>
-                        </li>
-                        <li>
-                          <Link to="/shop-detail">
-                            <FullscreenOutlined />
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="/shoping-cart">
-                            <ShoppingCartOutlined />
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="featured__item__text">
-                      <h6>
-                        <Link to="/#">{featured.title}</Link>
-                      </h6>
-                      <h5>{featured.price}</h5>
-                    </div>
-                  </div>
+        </div>
+
+        <div className="row featured__filter">
+          {filteredItems.map((featured, index) => (
+            <div className={`col-lg-3 col-md-4 col-sm-6 mix ${featured.class}`} key={index}>
+              <div className="featured__item">
+                <div className="featured__item__pic set-bg" style={{ backgroundImage: `url(${featured.url})` }}>
+                  <ul className="featured__item__pic__hover">
+                    <li>
+                      <a href="#">
+                        <FavoriteBorderRounded />
+                      </a>
+                    </li>
+                    <li>
+                      <Link to="/shop-detail">
+                        <FullscreenOutlined />
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/shoping-cart">
+                        <ShoppingCartOutlined />
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+                <div className="featured__item__text">
+                  <h6>
+                    <Link to="/#">{featured.title}</Link>
+                  </h6>
+                  <h5>{featured.price}</h5>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-      </section>
+      </div>
       {/* Featured Section End */}
+
       {/* Banner Begin */}
       <div className="banner">
         <div className="container">
@@ -179,6 +205,8 @@ export default function Home() {
         </div>
       </section>
       {/* Latest Product Section End */}
-    </>
+    </div>
   );
-}
+};
+
+export default FilteredFeatured;

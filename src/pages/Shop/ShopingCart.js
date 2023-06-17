@@ -20,7 +20,7 @@ import {
 import { Add, Delete, Remove } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
-const ShoppingCart = () => {
+export default function ShoppingCart() {
   const [cartItems, setCartItems] = useState([
     { id: 1, name: 'Product 1', price: 10, quantity: 1, image: '/img/cart/cart-1.jpg' },
     { id: 2, name: 'Product 2', price: 15, quantity: 1, image: '/img/cart/cart-2.jpg' },
@@ -358,6 +358,4 @@ const ShoppingCart = () => {
       )}
     </Container>
   );
-};
-
-export default ShoppingCart;
+}
