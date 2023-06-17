@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -22,6 +22,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import PersonIcon from '@mui/icons-material/Person';
 import { FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -66,6 +67,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useLayoutEffect(() => {
+    function updateIsMobile() {
+      setIsMobile(window.innerWidth < 600);
+    }
+
+    window.addEventListener('resize', updateIsMobile);
+    updateIsMobile();
+
+    return () => window.removeEventListener('resize', updateIsMobile);
+  }, []);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -157,14 +170,14 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={handleMobileMenuClose}>
         <IconButton size="large" aria-label="show 4 new favorite Foood" color="inherit">
           <Badge badgeContent={4} color="error">
             <FavoriteBorderRounded />
           </Badge>
         </IconButton>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={handleMobileMenuClose}>
         <IconButton size="large" aria-label="show 17 new shoping cart" color="inherit">
           <Link to="/shoping-cart" style={{ textDecoration: 'none', color: 'inherit' }}>
             <Badge badgeContent={17} color="error">
@@ -173,7 +186,7 @@ export default function PrimarySearchAppBar() {
           </Link>
         </IconButton>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={handleMobileMenuClose}>
         <IconButton size="large" aria-label="Contact" color="inherit">
           <Link to="/contact" style={{ textDecoration: 'none', color: 'inherit' }}>
             <CallOutlinedIcon sx={{ color: 'black' }} />
@@ -196,19 +209,34 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: '#FFA500' }}>
+      <AppBar position="fixed" sx={{ bgcolor: 'var(--primary-color)' }}>
         <Toolbar>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            style={{ marginLeft: '165px' }}
-            sx={{ display: { xs: 'none', sm: 'block' } }}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexGrow: 1,
+            }}
           >
-            <Link to="/">
-              <img src={logo} alt="/" />
-            </Link>
-          </Typography>
+            {isMobile && ( // Kiểm tra nếu là điện thoại di động
+              <Link to="/">
+                <IconButton edge="start" color="inherit" aria-label="home">
+                  <HomeOutlinedIcon sx={{ color: 'white' }} />
+                </IconButton>
+              </Link>
+            )}
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              style={{ marginLeft: '165px' }}
+              sx={{ display: { xs: 'none', sm: 'block' } }}
+            >
+              <Link to="/">
+                <img src={logo} alt="/" />
+              </Link>
+            </Typography>
+          </Box>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
