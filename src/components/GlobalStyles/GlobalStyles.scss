@@ -513,7 +513,7 @@ ol {
   margin-bottom: 50px;
 }
 
-.featured__controls ul li {
+.featured__controls button {
   list-style: none;
   font-size: 18px;
   color: #1c1c1c;
@@ -523,11 +523,11 @@ ol {
   cursor: pointer;
 }
 
-.featured__controls ul li.active:after {
+.featured__controls button.active:after {
   opacity: 1;
 }
 
-.featured__controls ul li:after {
+.featured__controls button:after {
   position: absolute;
   left: 0;
   bottom: -2px;
@@ -538,7 +538,7 @@ ol {
   opacity: 0;
 }
 
-.featured__controls ul li:last-child {
+.featured__controls button:last-child {
   margin-right: 0;
 }
 

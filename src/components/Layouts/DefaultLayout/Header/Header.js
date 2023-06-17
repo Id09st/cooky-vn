@@ -11,14 +11,16 @@ import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import LoginForm from '~/pages/Login/LoginForm';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { grey } from '@mui/material/colors';
 
 export default function Header() {
   const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
-      right: -3,
-      top: 13,
+      right: -5,
+      top: 3,
       border: `2px solid ${theme.palette.background.paper}`,
       padding: '0 4px',
+      color: 'var(--white-color)',
     },
   }));
 
@@ -87,7 +89,7 @@ export default function Header() {
               </div>
             </div>
             <div className="col-lg-4">
-              <Search style={{ marginTop: '25px' }}>
+              <Search style={{ marginTop: '25px' }} sx={{ color: grey[50] }}>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
@@ -99,18 +101,18 @@ export default function Header() {
                 <ul>
                   <li>
                     <IconButton aria-label="cart">
-                      <StyledBadge badgeContent={4} color="secondary">
-                        <Link to='#'>
-                          <FavoriteBorderRounded />
+                      <StyledBadge badgeContent={4}>
+                        <Link to="/shoping-cart">
+                          <FavoriteBorderRounded sx={{ color: grey[50], fontSize: 26 }} />
                         </Link>
                       </StyledBadge>
                     </IconButton>
                   </li>
                   <li>
                     <IconButton aria-label="cart">
-                      <StyledBadge badgeContent={4} color="secondary">
+                      <StyledBadge badgeContent={4}>
                         <Link to="/shoping-cart">
-                          <ShoppingCartOutlined />
+                          <ShoppingCartOutlined sx={{ color: grey[50], fontSize: 26 }} />
                         </Link>
                       </StyledBadge>
                     </IconButton>
@@ -123,7 +125,7 @@ export default function Header() {
             </div>
             <div className="col-lg-2">
               <Button style={{ marginTop: '15px' }} aria-label="Example" onClick={handleOpen} sx={{ fontSize: 40 }}>
-                <AccountCircleIcon fontSize="lagre" />
+                <AccountCircleIcon fontSize="150%" sx={{ color: grey[50] }} />
               </Button>
               <Dialog open={open} onClose={handleClose}>
                 <IconButton
