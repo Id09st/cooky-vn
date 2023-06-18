@@ -1,28 +1,35 @@
-import * as React from 'react';
-import { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
 import { Link } from 'react-router-dom';
 import logo from '~/assets/images/logo.png';
-import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import { Button, Dialog, DialogContent } from '@mui/material';
+import {
+  AppBar,
+  Badge,
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  IconButton,
+  InputBase,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 import LoginForm from '~/pages/Login/LoginForm';
-import CloseIcon from '@mui/icons-material/Close';
-import LoginIcon from '@mui/icons-material/Login';
-import PersonIcon from '@mui/icons-material/Person';
-import { FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
-import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import {
+  AccountCircle,
+  Call,
+  CallOutlined,
+  Close,
+  FavoriteBorderRounded,
+  HomeOutlined,
+  Login,
+  MoreHorizOutlined,
+  Person,
+  SearchOutlined,
+  ShoppingCartOutlined,
+} from '@mui/icons-material';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -66,7 +73,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -134,12 +141,12 @@ export default function PrimarySearchAppBar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <PersonIcon />
+        <Person />
         User
       </MenuItem>
       <MenuItem onClick={handleMenuClose}>
         <Button onClick={handleOpen} sx={{ color: 'black' }}>
-          <LoginIcon />
+          <Login />
           Login
         </Button>
         <Dialog open={open} onClose={handleClose}>
@@ -150,7 +157,7 @@ export default function PrimarySearchAppBar() {
             aria-label="close"
             sx={{ position: 'absolute', right: 8, top: 8 }}
           >
-            <CloseIcon />
+            <Close />
           </IconButton>
           <DialogContent>
             <LoginForm />
@@ -196,7 +203,7 @@ export default function PrimarySearchAppBar() {
       <MenuItem onClick={handleMobileMenuClose}>
         <IconButton size="large" aria-label="Contact" color="inherit">
           <Link to="/contact" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <CallOutlinedIcon style={{ borderRadius: '50%', color: 'black' }} />
+            <CallOutlined style={{ borderRadius: '50%', color: 'black' }} />
           </Link>
         </IconButton>
       </MenuItem>
@@ -228,7 +235,7 @@ export default function PrimarySearchAppBar() {
             {isMobile && ( // Kiểm tra nếu là điện thoại di động
               <Link to="/">
                 <IconButton edge="start" color="inherit" aria-label="home">
-                  <HomeOutlinedIcon sx={{ color: 'white' }} />
+                  <HomeOutlined sx={{ color: 'white' }} />
                 </IconButton>
               </Link>
             )}
@@ -246,7 +253,7 @@ export default function PrimarySearchAppBar() {
           </Box>
           <Search>
             <SearchIconWrapper onClick={handleSearchIconClick}>
-              <SearchIcon />
+              <SearchOutlined />
             </SearchIconWrapper>
             <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
           </Search>
@@ -266,7 +273,7 @@ export default function PrimarySearchAppBar() {
             </IconButton>
             <IconButton size="large" aria-label="Contact" color="inherit">
               <Link to="/contact">
-                <CallOutlinedIcon sx={{ color: 'white' }} />
+                <Call sx={{ color: 'white' }} />
               </Link>
             </IconButton>
             <IconButton
@@ -290,7 +297,7 @@ export default function PrimarySearchAppBar() {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MoreIcon />
+              <MoreHorizOutlined />
             </IconButton>
           </Box>
         </Toolbar>
