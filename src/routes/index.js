@@ -19,6 +19,7 @@ const publicRoutes = [
   { path: '/contact', component: Contact },
   { path: '/login', component: LoginForm },
   { path: '/admin', component: Admin, layout: null },
+
 ];
 
 const privateRoutes = [];

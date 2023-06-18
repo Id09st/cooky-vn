@@ -1,0 +1,25 @@
+.slider {
+    position: relative;
+    height: 330px;
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .image{
+    width: 5000px;
+    height: 300px;
+    border-radius: 10px;
+  }
+  
+  .slide {
+    opacity: 0;
+    transition-duration: 1s ease;
+  }
+  
+  .slide.active {
+    opacity: 1;
+    transition-duration: 1s;
+    transform: scale(1.08);
+  }

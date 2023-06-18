@@ -192,6 +192,7 @@ export default function ShoppingCart() {
             <div>Subtotal: ${subtotal}</div>
             <div>Coupon: ${couponAmount}</div>
             <div>Total: ${total}</div>
+            
             <Button
               variant="contained"
               style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}

@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FullscreenOutlined, FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
 import { Categories, Featured, Lasted } from './HomImage';
-import { Button, Container } from '@mui/material';
+import { Box, Button, Container} from '@mui/material';
+import ImageSlider from './Slider/ImageSlider';
+import { ControlPoint } from '@mui/icons-material';
+import 'src/sass/_slide.scss';
 
 const FilteredFeatured = () => {
   const [filter, setFilter] = useState('All');
@@ -14,27 +17,13 @@ const FilteredFeatured = () => {
   const filteredItems = filter === 'All' ? Featured : Featured.filter((item) => item.class.includes(filter));
 
   return (
-    <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '70px' }}>
-      {/* Categories Section Begin */}
-      <section className="categories">
-        <div className="row">
-          {Categories.map((categories) => (
-            <div className="col-lg-3" key={categories.id}>
-              <div class="categories__item">
-                <img src={categories.url} alt="Category" />
-                <h5>
-                  <a href="/">{categories.title}</a>
-                </h5>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-      {/* Categories Section End */}
-
+    <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '80px' }}>
+      <Box>
+        <ImageSlider slides={Categories} style={{ padding: '20px', paddingTop: '67px' }} />
+        </Box>
       {/* Featured Section Begin */}
 
-      <div className="row">
+      <div className="row" >
         <div className="col-lg-12">
           <div className="section-title">
             <h2>Featured Product</h2>
