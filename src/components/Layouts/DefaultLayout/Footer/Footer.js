@@ -1,6 +1,4 @@
 import React from 'react';
-import '~/sass/_footer.scss';
-import '~/sass/_responsive.scss';
 import { red } from '@mui/material/colors';
 import { FacebookTwoTone, Google } from '@mui/icons-material';
 

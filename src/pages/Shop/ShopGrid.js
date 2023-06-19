@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import '~/sass/_shop-grid.scss';
-import '~/sass/_responsive.scss';
 import { Product } from '../Home/HomImage';
 import { Link } from 'react-router-dom';
 import { FavoriteBorderRounded, FullscreenOutlined, ShoppingCartOutlined } from '@mui/icons-material';

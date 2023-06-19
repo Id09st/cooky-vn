@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
+import { Detail } from './Detail';
 
 const images = [
   {
@@ -94,7 +95,7 @@ function a11yProps(index) {
   };
 }
 
-export default function ShopDetail() {
+export default function ShopDetail({ Detail }) {
   useEffect(() => {
     const setBgImages = () => {
       const elements = document.getElementsByClassName('set-bg');
@@ -249,7 +250,7 @@ export default function ShopDetail() {
                   <i className="fa fa-star-half-o" />
                   <span>(18 reviews)</span>
                 </div>
-                <Typography variant="h4">$50.00</Typography>
+                <Typography variant="h4">${Detail.price}</Typography>
                 <Typography>
                   Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam sit amet quam vehicula
                   elementum sed sit amet dui. Sed porttitor lectus nibh. Vestibulum ac diam sit amet quam vehicula
