@@ -182,6 +182,8 @@ export default function ShoppingCart() {
               variant="contained"
               color="primary"
               style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
+              component={Link}
+              to="/"
             >
               Continue Shopping
             </Button>
@@ -211,6 +213,8 @@ export default function ShoppingCart() {
             <Button
               variant="contained"
               style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
+              component={Link}
+              to="/checkout"
             >
               PROCEED TO CHECKOUT
             </Button>
@@ -336,6 +340,8 @@ export default function ShoppingCart() {
               <Button
                 variant="contained"
                 style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
+                component={Link}
+                to="/"
               >
                 Continue Shopping
               </Button>
@@ -364,6 +370,8 @@ export default function ShoppingCart() {
                 <Button
                   variant="contained"
                   style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
+                  component={Link}
+                  to="/checkout"
                 >
                   PROCEED TO CHECKOUT
                 </Button>

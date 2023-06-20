@@ -119,6 +119,18 @@ export default function ShopDetail() {
 
   const [selectedImage, setSelectedImage] = React.useState(null);
 
+  React.useEffect(() => {
+    // Kiểm tra xem trang có được tải lại hay không
+    if (!selectedImage) {
+      // Đặt ảnh mặc định khi trang được tải lại
+      const defaultImage = {
+        url: './img/product/details/product-details-1.jpg',
+        title: 'Default Image',
+      };
+      setSelectedImage(defaultImage);
+    }
+  }, []);
+
   const handleImageClick = (image) => {
     setSelectedImage(image);
   };
@@ -206,7 +218,7 @@ export default function ShopDetail() {
                       src={selectedImage.url}
                       alt={selectedImage.title}
                       loading="lazy"
-                      style={{ weight: '555px', height: '575px' }}
+                      style={{ weight: '500px', height: '480px' }}
                     />
                   )}
                 </Box>
@@ -243,6 +255,8 @@ export default function ShopDetail() {
                     variant="contained"
                     color="primary"
                     style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
+                    component={Link}
+                    to="/shoping-cart"
                   >
                     Add to cart
                   </Button>

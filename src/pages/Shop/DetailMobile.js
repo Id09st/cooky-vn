@@ -83,6 +83,8 @@ export default function DetailMobile() {
               variant="contained"
               color="primary"
               style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)', marginTop: '20px' }}
+              component={Link}
+              to="/shoping-cart"
             >
               Add to cart
             </Button>

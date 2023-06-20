@@ -50,7 +50,7 @@ export default function CheckOut() {
         </Container>
       </Box>
       {/* Kết thúc breadcrumb */}
-      
+
       {/* Checkout Section Begin */}
       <section className="checkout spad">
         <div className="container">
@@ -213,7 +213,7 @@ export default function CheckOut() {
                       </label>
                     </div>
                     <button type="submit" className="site-btn">
-                      PLACE ORDER
+                      <Link to="/">PLACE ORDER</Link>
                     </button>
                   </div>
                 </div>
