@@ -1,7 +1,7 @@
 import React from 'react';
 import { red } from '@mui/material/colors';
 import { FacebookTwoTone, Google } from '@mui/icons-material';
-
+import '~/sass/_footer.scss';
 export default function Footer() {
   return (
     <footer className="footer spad">

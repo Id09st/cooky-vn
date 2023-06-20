@@ -16,6 +16,10 @@ import {
   Typography,
   Breadcrumbs,
   TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import { Add, Delete, Remove } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
@@ -29,6 +33,7 @@ export default function ShoppingCart() {
 
   const [couponCode, setCouponCode] = useState('');
   const [couponAmount, setCouponAmount] = useState(0);
+  const [deleteConfirmation, setDeleteConfirmation] = useState(null);
 
   const handleQuantityChange = (itemId, value) => {
     const updatedCartItems = cartItems.map((item) => {
@@ -46,8 +51,18 @@ export default function ShoppingCart() {
   };
 
   const handleDelete = (itemId) => {
-    const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
+    const itemToDelete = cartItems.find((item) => item.id === itemId);
+    setDeleteConfirmation(itemToDelete);
+  };
+
+  const handleConfirmDelete = () => {
+    const updatedCartItems = cartItems.filter((item) => item.id !== deleteConfirmation.id);
     setCartItems(updatedCartItems);
+    setDeleteConfirmation(null);
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteConfirmation(null);
   };
 
   const handleApplyCoupon = () => {
@@ -192,7 +207,7 @@ export default function ShoppingCart() {
             <div>Subtotal: ${subtotal}</div>
             <div>Coupon: ${couponAmount}</div>
             <div>Total: ${total}</div>
-            
+
             <Button
               variant="contained"
               style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
@@ -356,6 +371,22 @@ export default function ShoppingCart() {
             </div>
           </TableContainer>
         </Container>
+      )}
+      {deleteConfirmation && (
+        <Dialog open={true} onClose={handleCancelDelete}>
+          <DialogTitle>Confirm Delete</DialogTitle>
+          <DialogContent>
+            <Typography>
+              Are you sure you want to delete the item "{deleteConfirmation.name}" from your cart?
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCancelDelete}>Cancel</Button>
+            <Button onClick={handleConfirmDelete} color="error">
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
       )}
     </>
   );

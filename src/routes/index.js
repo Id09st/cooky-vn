@@ -7,19 +7,20 @@ import Admin from '~/pages/Admin/Admin';
 import LoginForm from '~/pages/Login/LoginForm';
 import Checkout from '~/pages/Checkout/Checkout';
 import ShopGrid from '~/pages/Shop/ShopGrid';
+import DetailMobile from '~/pages/Shop/DetailMobile';
 
 // Public Routes
 const publicRoutes = [
   { path: '/', component: Home },
   { path: '/shop-grid', component: ShopGrid },
   { path: '/shop-detail', component: ShopDetail },
+  { path: '/detail-mobile', component: DetailMobile, layout: null },
   { path: '/shoping-cart', component: ShopingCart },
   { path: '/checkout', component: CheckOut },
   { path: '/checkout1', component: Checkout },
   { path: '/contact', component: Contact },
   { path: '/login', component: LoginForm },
   { path: '/admin', component: Admin, layout: null },
-
 ];
 
 const privateRoutes = [];
