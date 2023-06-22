@@ -19,7 +19,7 @@ const MyForm = () => {
     };
 
     try {
-      const response = await fetch('/api/Auth/login', {
+      const response = await fetch('https://cookyz.azurewebsites.net/api/Auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
