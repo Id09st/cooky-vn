@@ -5,6 +5,7 @@ import CheckOut from '~/pages/Shop/CheckOut';
 import Contact from '~/pages/Contact/Contact';
 import Admin from '~/pages/Admin/Admin';
 import LoginForm from '~/pages/Login/LoginForm';
+import RegisterForm from '~/pages/Login/RegisterForm';
 import Checkout from '~/pages/Checkout/Checkout';
 import ShopGrid from '~/pages/Shop/ShopGrid';
 import DetailMobile from '~/pages/Shop/DetailMobile';
@@ -20,6 +21,7 @@ const publicRoutes = [
   { path: '/checkout1', component: Checkout },
   { path: '/contact', component: Contact },
   { path: '/login', component: LoginForm },
+  { path: '/register', component: RegisterForm },
   { path: '/admin', component: Admin, layout: null },
 ];
 

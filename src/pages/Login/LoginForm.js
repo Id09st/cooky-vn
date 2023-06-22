@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { Box, Avatar, Typography, TextField, FormControlLabel, Checkbox, Button, Grid } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import RegisterForm from './RegisterForm';
 
 const Notification = ({ message }) => {
   return <div>{message}</div>;
 };
-const MyForm = () => {
+const LoginForm = () => {
+  const [showSignIn, setShowSignIn] = useState(false);
   const [notification, setNotification] = useState(null);
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -19,7 +22,7 @@ const MyForm = () => {
     };
 
     try {
-      const response = await fetch('https://cookyz.azurewebsites.net/api/Auth/login', {
+      const response = await fetch('https://64933779428c3d2035d18178.mockapi.io/accounts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,8 +42,12 @@ const MyForm = () => {
   };
 
   const handleSignInClick = () => {
-    // Xử lý khi nhấp vào "Don't have an account? Sign Up"
+    setShowSignIn(true);
   };
+
+  if (showSignIn) {
+    return <RegisterForm onClose={() => setShowSignIn(false)} />;
+  }
 
   return (
     <Box
@@ -84,9 +91,16 @@ const MyForm = () => {
         <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
           Sign In
         </Button>
+        <Grid container>
+          <Grid item>
+            <RouterLink to="#" variant="body2" onClick={handleSignInClick}>
+              {"Don't have an account? Sign Up"}
+            </RouterLink>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );
 };
 
-export default MyForm;
+export default LoginForm;
