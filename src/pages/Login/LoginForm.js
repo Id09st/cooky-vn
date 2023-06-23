@@ -22,16 +22,18 @@ const LoginForm = () => {
     };
 
     try {
-      const response = await fetch('https://64933779428c3d2035d18178.mockapi.io/accounts', {
+      const response = await fetch('https://cookyz.azurewebsites.net/api/Auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          "Authentication": `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(data),
       });
 
       if (response.ok) {
         const responseData = await response.json();
+        localStorage.setItem('token', response.data.token);
         setNotification('Đăng nhập thành công'); // Thiết lập thông báo
       } else {
         setNotification('Đăng nhập không thành công'); // Thiết lập thông báo

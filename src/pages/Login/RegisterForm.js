@@ -37,7 +37,7 @@ const RegisterForm = ({ onClose }) => {
     };
 
     try {
-      const response = await fetch('https://64933779428c3d2035d18178.mockapi.io/register', {
+      const response = await fetch('https://cookyz.azurewebsites.net/api/Auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
