@@ -26,14 +26,14 @@ const LoginForm = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          "Authentication": `Bearer ${localStorage.getItem("token")}`,
+          // "Authentication": `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(data),
       });
 
       if (response.ok) {
         const responseData = await response.json();
-        localStorage.setItem('token', response.data.token);
+        // localStorage.setItem('token', response.data.token);
         setNotification('Đăng nhập thành công'); // Thiết lập thông báo
       } else {
         setNotification('Đăng nhập không thành công'); // Thiết lập thông báo
