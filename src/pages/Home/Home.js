@@ -4,7 +4,6 @@ import { FullscreenOutlined, FavoriteBorderRounded, ShoppingCartOutlined } from 
 import { Categories, Featured, Lasted } from './HomImage';
 import { Box, Button, Container} from '@mui/material';
 import ImageSlider from './Slider/ImageSlider';
-import { ControlPoint } from '@mui/icons-material';
 import 'src/sass/_slide.scss';
 
 const FilteredFeatured = () => {
@@ -18,9 +17,12 @@ const FilteredFeatured = () => {
 
   return (
     <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '80px' }}>
+      {/* Slide begin */}
       <Box>
         <ImageSlider slides={Categories} style={{ padding: '20px', paddingTop: '67px' }} />
-        </Box>
+      </Box>
+      {/* Slide end */}
+
       {/* Featured Section Begin */}
 
       <div className="row" >
