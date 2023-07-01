@@ -47,3 +47,25 @@
   transition-duration: 1s;
   transform: scale(1.08);
 }
+
+/// Thiện
+.slider {
+  position: relative;
+}
+
+.slider-icon {
+  position: absolute;
+  top: 70%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.left-arrow {
+  left: 1px;
+  color: var(--white-color);
+}
+
+.right-arrow {
+  right: 1px;
+  color: var(--white-color);
+}

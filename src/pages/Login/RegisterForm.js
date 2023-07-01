@@ -25,7 +25,7 @@ const RegisterForm = ({ onClose }) => {
     const email = event.target.email.value;
     const phone = event.target.phone.value;
     const address = event.target.address.value;
-
+    
     const data = {
       username: username,
       password: password,
@@ -33,7 +33,7 @@ const RegisterForm = ({ onClose }) => {
       email: email,
       phone: phone,
       address: address,
-      role: 0,
+      role: 1,
     };
 
     try {
@@ -47,6 +47,7 @@ const RegisterForm = ({ onClose }) => {
 
       if (response.ok) {
         const responseData = await response.json();
+        console.log('Thanh cong');
         setNotification('Đăng ký thành công'); // Thiết lập thông báo
         // Thực hiện các xử lý khác sau khi đăng ký thành công (chẳng hạn như điều hướng trang)
       } else {
