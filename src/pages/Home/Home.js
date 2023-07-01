@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FullscreenOutlined, FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
-import { Categories, Slider, Featured, Lasted } from './HomImage';
-import { Box, Button, Card, CardContent, Container, Grid, Typography } from '@mui/material';
+import { Slider, Featured, Lasted } from './HomImage';
+import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import ImageSlider from './Slider/ImageSlider';
 import 'src/sass/_slide.scss';
 
@@ -77,7 +77,7 @@ const FilteredFeatured = () => {
           </div>
           <div className="featured__controls">
             <Button variant="text" style={{ color: 'var(--primary-color)' }} onClick={() => handleFilterChange('All')}>
-              All
+              Tất cả
             </Button>
             {categories &&
               categories.map((category) => (

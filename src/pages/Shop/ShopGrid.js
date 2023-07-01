@@ -51,7 +51,7 @@ export default function ShopGrid() {
                 <div className="breadcrumb__text">
                   <h2>NiceCook Shop</h2>
                   <div className="breadcrumb__option">
-                    <Link to="/">Home</Link>
+                    <Link to="/">Trang chủ</Link>
                     <span>Shop</span>
                   </div>
                 </div>

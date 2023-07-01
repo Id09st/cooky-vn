@@ -160,7 +160,7 @@ export default function ShopDetail() {
                         }}
                       >
                         <Link underline="hover" to="/">
-                          <Typography style={{ color: 'var(--white-color)' }}>Home</Typography>
+                          <Typography style={{ color: 'var(--white-color)' }}>Trang chủ</Typography>
                         </Link>
                         <Link underline="hover" to="/">
                           <Typography style={{ color: 'var(--white-color)' }}>Vegetables</Typography>
