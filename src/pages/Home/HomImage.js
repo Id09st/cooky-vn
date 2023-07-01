@@ -1,18 +1,41 @@
+export const Slider = [
+  {
+    url: './img/slider/cat-1.jpg',
+  },
+  {
+    url: './img/slider/cat-2.jpg',
+  },
+  {
+    url: './img/slider/cat-3.jpg',
+  },
+  {
+    url: './img/slider/cat-4.jpg',
+  },
+  {
+    url: './img/slider/cat-5.jpg',
+  },
+];
+
 export const Categories = [
   {
     url: './img/categories/cat-1.jpg',
+    title: 'Fresh Fruit',
   },
   {
     url: './img/categories/cat-2.jpg',
+    title: 'Dried Fruit',
   },
   {
     url: './img/categories/cat-3.jpg',
+    title: 'Vegetables',
   },
   {
     url: './img/categories/cat-4.jpg',
+    title: 'drink fruits',
   },
   {
     url: './img/categories/cat-5.jpg',
+    title: 'drink fruits',
   },
 ];
 

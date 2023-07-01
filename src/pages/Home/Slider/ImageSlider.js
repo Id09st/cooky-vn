@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Categories } from '../HomImage';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const ImageSlider = ({ slides }) => {
   const [current, setCurrent] = useState(0);
@@ -28,12 +26,10 @@ const ImageSlider = ({ slides }) => {
 
   return (
     <section className="slider">
-      <ArrowBackIosIcon className="left-arrow" onClick={prevSlide} />
-      <ArrowForwardIosIcon className="right-arrow" onClick={nextSlide} />
       {Categories.map((categories, index) => {
         return (
           <div className={index === current ? 'slide active' : 'slide'} key={index}>
-            {index === current && <img src={categories.url} alt="food" className="image" />}
+            {index === current && <img src={slider.url} alt="food" className="image" />}
           </div>
         );
       })}
