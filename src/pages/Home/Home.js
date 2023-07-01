@@ -1,19 +1,35 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { FullscreenOutlined, FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
 import { Categories, Slider, Featured, Lasted } from './HomImage';
-import { Box, Button, Container } from '@mui/material';
+import { Box, Button, Card, CardContent, Container, Grid, Typography } from '@mui/material';
 import ImageSlider from './Slider/ImageSlider';
 import 'src/sass/_slide.scss';
 
 const FilteredFeatured = () => {
   const [filter, setFilter] = useState('All');
+  const [categories, setCategories] = useState([]);
 
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter);
   };
 
   const filteredItems = filter === 'All' ? Featured : Featured.filter((item) => item.class.includes(filter));
+
+  const baseURL = `https://649febe0ed3c41bdd7a6d4a2.mockapi.io/categories`;
+  useEffect(() => {
+    fetch(baseURL)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setCategories(data);
+      })
+      .catch((error) => console.log(error.message));
+  }, []);
 
   return (
     <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '80px' }}>
@@ -24,67 +40,55 @@ const FilteredFeatured = () => {
       {/* Slide end */}
 
       {/* Categories Section Begin */}
-      <section className="categories">
-        <div className="container">
-          <div className="section-title">
-            <h2>Categories</h2>
-          </div>
-          <div className="row">
-            {Categories.map((category) => (
-              <div className="col-lg-3" key={category.id}>
-                <div className="categories__item set-bg" data-setbg={category.url}>
-                  <div className="categories__item">
-                    <img src={category.url} alt="Category" />
-                    <h5>
-                      <Link to="/#">{category.title}</Link>
-                    </h5>
+      <section>
+        <Grid container spacing={3}>
+          {categories &&
+            categories.map((category) => (
+              <Grid item xs={4} sm={3} md={2} lg={2} key={category.id} component={Link} to="/">
+                <div
+                  style={{
+                    width: '156px',
+                    height: '117px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <img src={category.images} alt="Category" style={{ width: '90px', height: '90px' }} />
+                  <div style={{ width: '156px', height: '27px' }}>
+                    <Typography variant="h6" align="center" style={{ marginTop: '10px' }}>
+                      {category.name}
+                    </Typography>
                   </div>
                 </div>
-              </div>
+              </Grid>
             ))}
-          </div>
-        </div>
+        </Grid>
       </section>
+
       {/* Categories Section End */}
 
       {/* Featured Section Begin */}
       <div className="row">
         <div className="col-lg-12">
           <div className="section-title">
-            <h2>Featured Product</h2>
+            <h2 style={{ marginTop: '20px' }}>Featured Product</h2>
           </div>
           <div className="featured__controls">
             <Button variant="text" style={{ color: 'var(--primary-color)' }} onClick={() => handleFilterChange('All')}>
               All
             </Button>
-            <Button
-              variant="text"
-              style={{ color: 'var(--primary-color)' }}
-              onClick={() => handleFilterChange('oranges')}
-            >
-              Oranges
-            </Button>
-            <Button
-              variant="text"
-              style={{ color: 'var(--primary-color)' }}
-              onClick={() => handleFilterChange('fresh-meat')}
-            >
-              Fresh Meat
-            </Button>
-            <Button
-              variant="text"
-              style={{ color: 'var(--primary-color)' }}
-              onClick={() => handleFilterChange('vegetables')}
-            >
-              Vegetables
-            </Button>
-            <Button
-              variant="text"
-              style={{ color: 'var(--primary-color)' }}
-              onClick={() => handleFilterChange('fastfood')}
-            >
-              Fastfood
-            </Button>
+            {categories &&
+              categories.map((category) => (
+                <Button
+                  variant="text"
+                  style={{ color: 'var(--primary-color)' }}
+                  onClick={() => handleFilterChange(category.name)}
+                >
+                  {category.name}
+                </Button>
+              ))}
           </div>
         </div>
       </div>
