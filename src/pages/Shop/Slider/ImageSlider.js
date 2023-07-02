@@ -18,7 +18,7 @@ const ImageSlider = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://64933779428c3d2035d18178.mockapi.io/recipes/1'); // Thay đổi đường dẫn tới file JSON của bạn
+        const response = await fetch('https://cookyz.azurewebsites.net/api/Recipes/6'); // Thay đổi đường dẫn tới file JSON của bạn
         if (response.ok) {
           const data = await response.json();
           const imageUrls = data.image.split('\n');

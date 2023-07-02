@@ -74,9 +74,9 @@ export default function ShopDetail() {
   };
 
   useEffect(() => {
-    const fetchpackages = async () => {
+    const fetchPackages = async () => {
       try {
-        const response = await fetch(`https://64933779428c3d2035d18178.mockapi.io/packages/1`);
+        const response = await fetch(`https://cookyz.azurewebsites.net/api/Packages/6`);
         if (response.ok) {
           const data = await response.json();
           setPackages(data);
@@ -88,13 +88,13 @@ export default function ShopDetail() {
       }
     };
 
-    fetchpackages();
+    fetchPackages();
   }, [packagesId]);
 
   useEffect(() => {
-    const fetchrecipe = async () => {
+    const fetchRecipe = async () => {
       try {
-        const response = await fetch(`https://64933779428c3d2035d18178.mockapi.io/recipes/1`);
+        const response = await fetch(`https://cookyz.azurewebsites.net/api/Recipes/6`);
         if (response.ok) {
           const data = await response.json();
           setRecipe(data);
@@ -106,7 +106,7 @@ export default function ShopDetail() {
       }
     };
 
-    fetchrecipe();
+    fetchRecipe();
   }, [recipeId]);
 
   const [currentImage, setCurrentImage] = useState('');
@@ -163,7 +163,7 @@ export default function ShopDetail() {
                           <Typography style={{ color: 'var(--white-color)' }}>Trang chủ</Typography>
                         </Link>
                         <Link underline="hover" to="/">
-                          <Typography style={{ color: 'var(--white-color)' }}>Vegetables</Typography>
+                          <Typography style={{ color: 'var(--white-color)' }}>{packages.title}</Typography>
                         </Link>
                         <Typography style={{ color: 'var(--white-color)' }} variant="body1">
                           {recipe.title}
@@ -227,7 +227,15 @@ export default function ShopDetail() {
                       <Rating name="read-only" value="5" readOnly />
                       <Typography variant="h4">₫{packages.price.toLocaleString('vi-VN')}</Typography>
                       <Typography>
-                        {packages.nutrition_facts.split('\n').map((line, index) => (
+                        {packages.nutritionFacts.split('\n').map((line, index) => (
+                          <React.Fragment key={index}>
+                            {line}
+                            <br />
+                          </React.Fragment>
+                        ))}
+                      </Typography>
+                      <Typography>
+                        {packages.detail.split('\n').map((line, index) => (
                           <React.Fragment key={index}>
                             {line}
                             <br />
@@ -335,7 +343,7 @@ export default function ShopDetail() {
                       </TabPanel>
                       <TabPanel value={value} index={2}>
                         <div>
-                          {recipe.preserve_advice.split('\n').map((line, index) => (
+                          {recipe.preserveAdvice.split('\n').map((line, index) => (
                             <React.Fragment key={index}>
                               {line}
                               <br />

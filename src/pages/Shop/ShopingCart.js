@@ -28,7 +28,7 @@ export default function ShoppingCart() {
   const [couponCode, setCouponCode] = useState('');
   const [couponAmount, setCouponAmount] = useState(0);
   const [deleteConfirmation, setDeleteConfirmation] = useState(null);
-  const [recipe, setRecipe] = useState([]);
+  const [recipes, setRecipes] = useState([]);
   const [packages, setPackages] = useState([]);
 
   const handleQuantityChange = (itemId, value) => {
@@ -70,7 +70,7 @@ export default function ShoppingCart() {
     }
   };
 
-  const baseURL = `https://64933779428c3d2035d18178.mockapi.io/packages/`;
+  const baseURL = `https://cookyz.azurewebsites.net/api/Packages/`;
   useEffect(() => {
     fetch(baseURL)
       .then((response) => {
@@ -85,7 +85,7 @@ export default function ShoppingCart() {
       .catch((error) => console.log(error.message));
   }, []);
 
-  const baseURL1 = `https://64933779428c3d2035d18178.mockapi.io/recipes/`;
+  const baseURL1 = `https://cookyz.azurewebsites.net/api/Recipes/`;
   useEffect(() => {
     fetch(baseURL1)
       .then((response) => {
@@ -95,7 +95,7 @@ export default function ShoppingCart() {
         return response.json();
       })
       .then((data) => {
-        setRecipe(data);
+        setRecipes(data);
       })
       .catch((error) => console.log(error.message));
   }, []);
@@ -144,115 +144,115 @@ export default function ShoppingCart() {
             </Container>
           </Box>
           {/* Kết thúc breadcrumb Mobile*/}
-          {recipe &&
-            recipe.map((recipe) => (
-              <>
-                {packages &&
-                  packages.map((packages) => (
-                    <>
-                      <Card key={recipe.id} style={{ marginBottom: '10px' }}>
-                        <CardContent>
-                          <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <div>
-                              <img src={recipe.image} alt={recipe.title} style={{ width: '86px', height: '86px' }} />
-                            </div>
-                            <div style={{ marginLeft: '20px' }}>
-                              <Typography variant="h6" component="h6">
-                                <div>{recipe.title}</div>
-                              </Typography>
-                              <div>
-                                <Typography variant="subtitle1" component="subtitle1">
-                                  Giá:{' '}
-                                </Typography>
-                                ₫{packages.price.toLocaleString('vi-VN')}
-                              </div>
-                            </div>
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', marginTop: '15px' }}>
-                            <div style={{ flex: '1' }}>
-                              <div>
-                                <Typography variant="subtitle1" component="subtitle1">
-                                  Số lượng:
-                                </Typography>
-                                <IconButton onClick={() => handleQuantityChange(packages.id, packages.quantity - 1)}>
-                                  <Remove sx={{ fontSize: 10 }} />
-                                </IconButton>
-                                <TextField
-                                  name="quantity"
-                                  value={packages.quantity}
-                                  size="small"
-                                  InputProps={{
-                                    style: { height: '30px' }, // Thay đổi chiều cao của ô nhập
-                                  }}
-                                  style={{ width: '47px' }}
-                                  onChange={(event) => {
-                                    handleQuantityChange(packages.id, event.target.value);
-                                  }}
-                                ></TextField>
-                                <IconButton onClick={() => handleQuantityChange(packages.id, packages.quantity + 1)}>
-                                  <Add sx={{ fontSize: 10 }} />
-                                </IconButton>
-                              </div>
-                              <div>
-                                <Typography variant="subtitle1" component="subtitle1">
-                                  Tổng cộng:{' '}
-                                </Typography>
-                                ₫{packages.price * packages.quantity}
-                              </div>
-                            </div>
-                            <IconButton onClick={() => handleDelete(recipe.id)}>
-                              <Delete />
-                            </IconButton>
-                          </div>
-                        </CardContent>
-                      </Card>
+          {packages.map((packageItem) => {
+            const recipe = recipes.find((recipe) => recipe.id === packageItem.recipeId);
+            const totalPrice = packageItem.price * packageItem.quantity;
 
-                      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
-                          component={Link}
-                          to="/"
-                        >
-                          Tiếp tục mua sắm
-                        </Button>
+            if (!recipe) {
+              return null; // Bỏ qua gói hàng nếu không tìm thấy thông tin recipe
+            }
+
+            return (
+              <Card key={recipe.id} style={{ marginBottom: '10px' }}>
+                <CardContent>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div>
+                      <img src={recipe.image} alt={recipe.title} style={{ width: '86px', height: '86px' }} />
+                    </div>
+                    <div style={{ marginLeft: '20px' }}>
+                      <Typography variant="h6" component="h6">
+                        <div>{recipe.title}</div>
+                      </Typography>
+                      <div>
+                        <Typography variant="subtitle1" component="subtitle1">
+                          Giá:{' '}
+                        </Typography>
+                        ₫{packageItem.price.toLocaleString('vi-VN')}
                       </div>
-                      <div style={{ marginTop: '20px' }}>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', marginTop: '15px' }}>
+                    <div style={{ flex: '1' }}>
+                      <div>
+                        <Typography variant="subtitle1" component="subtitle1">
+                          Số lượng:
+                        </Typography>
+                        <IconButton onClick={() => handleQuantityChange(packageItem.id, packageItem.quantity - 1)}>
+                          <Remove sx={{ fontSize: 10 }} />
+                        </IconButton>
                         <TextField
-                          label="Nhập mã giảm giá"
-                          variant="outlined"
+                          name="quantity"
+                          value={packageItem.quantity}
                           size="small"
-                          value={couponCode}
-                          onChange={(e) => setCouponCode(e.target.value)}
-                        />
-                        <Button
-                          variant="contained"
-                          onClick={handleApplyCoupon}
-                          style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
-                        >
-                          Áp dụng mã giảm giá
-                        </Button>
+                          InputProps={{
+                            style: { height: '30px' }, // Thay đổi chiều cao của ô nhập
+                          }}
+                          style={{ width: '47px' }}
+                          onChange={(event) => {
+                            handleQuantityChange(packageItem.id, event.target.value);
+                          }}
+                        ></TextField>
+                        <IconButton onClick={() => handleQuantityChange(packageItem.id, packageItem.quantity + 1)}>
+                          <Add sx={{ fontSize: 10 }} />
+                        </IconButton>
                       </div>
-
-                      <div style={{ marginTop: '20px' }}>
-                        <div>Tổng tiền hàng: ₫{subtotal.toLocaleString('vi-VN')}</div>
-                        <div>Voucher: ₫{couponAmount.toLocaleString('vi-VN')}</div>
-                        <div>Tổng thanh toán: ₫{total.toLocaleString('vi-VN')}</div>
-
-                        <Button
-                          variant="contained"
-                          style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
-                          component={Link}
-                          to="/checkout"
-                        >
-                          Đặt hàng
-                        </Button>
+                      <div>
+                        <Typography variant="subtitle1" component="subtitle1">
+                          Tổng cộng:{' '}
+                        </Typography>
+                        ₫{totalPrice.toLocaleString('vi-VN')}
                       </div>
-                    </>
-                  ))}
-              </>
-            ))}
+                    </div>
+                    <IconButton onClick={() => handleDelete(recipe.id)}>
+                      <Delete />
+                    </IconButton>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
+              component={Link}
+              to="/"
+            >
+              Tiếp tục mua sắm
+            </Button>
+          </div>
+          <div style={{ marginTop: '20px' }}>
+            <TextField
+              label="Nhập mã giảm giá"
+              variant="outlined"
+              size="small"
+              value={couponCode}
+              onChange={(e) => setCouponCode(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              onClick={handleApplyCoupon}
+              style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
+            >
+              Áp dụng mã giảm giá
+            </Button>
+          </div>
+
+          <div style={{ marginTop: '20px' }}>
+            <div>Tổng tiền hàng: ₫{subtotal.toLocaleString('vi-VN')}</div>
+            <div>Voucher: ₫{couponAmount.toLocaleString('vi-VN')}</div>
+            <div>Tổng thanh toán: ₫{total.toLocaleString('vi-VN')}</div>
+
+            <Button
+              variant="contained"
+              style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
+              component={Link}
+              to="/checkout"
+            >
+              Đặt hàng
+            </Button>
+          </div>
         </Container>
       ) : (
         <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '70px' }}>
@@ -320,66 +320,67 @@ export default function ShoppingCart() {
                 </TableRow>
               </TableHead>
 
-              {recipe &&
-                recipe.map((recipe) => (
-                  <>
-                    {packages &&
-                      packages.map((packages) => (
-                        <TableBody>
-                          <TableRow key={recipe.id}>
-                            <TableCell>
-                              <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <img
-                                  src={recipe.image.split('\n')[0]}
-                                  alt={recipe.title}
-                                  style={{ width: '100px', height: '100px' }}
-                                />
-                                <span style={{ marginLeft: '20px' }}>
-                                  <Typography variant="h6" component="h6">
-                                    {recipe.title}
-                                  </Typography>
-                                </span>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <Typography variant="subtitle1" component="subtitle1">
-                                ₫{packages.price.toLocaleString('vi-VN')}
-                              </Typography>
-                            </TableCell>
-                            <TableCell>
-                              <IconButton onClick={() => handleQuantityChange(packages.id, packages.quantity - 1)}>
-                                <Remove sx={{ fontSize: 15 }} />
-                              </IconButton>
-                              <TextField
-                                name="quantity"
-                                value={packages.quantity}
-                                InputProps={{
-                                  style: { height: '30px' }, // Thay đổi chiều cao của ô nhập
-                                }}
-                                style={{ width: '45px' }}
-                                onChange={(event) => {
-                                  handleQuantityChange(packages.id, event.target.value);
-                                }}
-                              ></TextField>
-                              <IconButton onClick={() => handleQuantityChange(packages.id, packages.quantity + 1)}>
-                                <Add sx={{ fontSize: 15 }} />
-                              </IconButton>
-                            </TableCell>
-                            <TableCell>
-                              <Typography variant="subtitle1" component="subtitle1">
-                                ₫{packages.price * packages.quantity}
-                              </Typography>
-                            </TableCell>
-                            <TableCell>
-                              <IconButton onClick={() => handleDelete(packages.id)}>
-                                <Delete />
-                              </IconButton>
-                            </TableCell>
-                          </TableRow>
-                        </TableBody>
-                      ))}
-                  </>
-                ))}
+              {packages.map((packageItem) => {
+                const recipe = recipes.find((recipe) => recipe.id === packageItem.recipeId);
+                if (!recipe) {
+                  // Recipe not found, handle this case (skip or display an error)
+                  return null;
+                }
+                const totalPrice = packageItem.price * packageItem.quantity;
+
+                return (
+                  <TableRow key={recipe.id}>
+                    <TableCell>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <img
+                          src={recipe.image.split('\n')[0]}
+                          alt={recipe.title}
+                          style={{ width: '100px', height: '100px' }}
+                        />
+                        <span style={{ marginLeft: '20px' }}>
+                          <Typography variant="h6" component="h6">
+                            {recipe.title}
+                          </Typography>
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle1" component="subtitle1">
+                        ₫{packageItem.price.toLocaleString('vi-VN')}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <IconButton onClick={() => handleQuantityChange(packageItem.id, packageItem.quantity - 1)}>
+                        <Remove sx={{ fontSize: 15 }} />
+                      </IconButton>
+                      <TextField
+                        name="quantity"
+                        value={packageItem.quantity}
+                        InputProps={{
+                          style: { height: '30px' }, // Thay đổi chiều cao của ô nhập
+                        }}
+                        style={{ width: '45px' }}
+                        onChange={(event) => {
+                          handleQuantityChange(packageItem.id, event.target.value);
+                        }}
+                      ></TextField>
+                      <IconButton onClick={() => handleQuantityChange(packageItem.id, packageItem.quantity + 1)}>
+                        <Add sx={{ fontSize: 15 }} />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle1" component="subtitle1">
+                        ₫{totalPrice.toLocaleString('vi-VN')}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <IconButton onClick={() => handleDelete(packageItem.id)}>
+                        <Delete />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </Table>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
               <Button
