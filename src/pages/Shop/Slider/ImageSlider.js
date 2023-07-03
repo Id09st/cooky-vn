@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { useParams } from 'react-router-dom';
 
 const ImageSlider = () => {
+  const { id } = useParams();
   const [current, setCurrent] = useState(0);
   const [slides, setSlides] = useState([]);
   const length = slides.length;
@@ -18,7 +20,7 @@ const ImageSlider = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://cookyz.azurewebsites.net/api/Recipes/6'); // Thay đổi đường dẫn tới file JSON của bạn
+        const response = await fetch(`https://cookyz.azurewebsites.net/api/Recipes/${id}`); // Thay đổi đường dẫn tới file JSON của bạn
         if (response.ok) {
           const data = await response.json();
           const imageUrls = data.image.split('\n');

@@ -141,12 +141,12 @@ export default function Header() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <Person />
-        User
+        <Button sx={{ color: 'black' }} startIcon={<Person />}>
+          User
+        </Button>
       </MenuItem>
       <MenuItem onClick={handleMenuClose}>
-        <Button onClick={handleOpen} sx={{ color: 'black' }}>
-          <Login />
+        <Button onClick={handleOpen} sx={{ color: 'black' }} startIcon={<Login />}>
           Login
         </Button>
         <Dialog open={open} onClose={handleClose}>
@@ -259,21 +259,21 @@ export default function Header() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box style={{ marginRight: '167px' }} sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new favorite Foood" color="inherit">
+            <IconButton size="large">
               <Badge badgeContent={4} color="error">
-                <FavoriteBorderRounded sx={{ color: 'white' }} />
+                <FavoriteBorderRounded sx={{ color: 'var(--white-color)' }} />
               </Badge>
             </IconButton>
-            <IconButton size="large" aria-label="show 17 new shoping cart" color="inherit">
+            <IconButton size="large">
               <Link to="/shoping-cart">
                 <Badge badgeContent={17} color="error">
-                  <ShoppingCartOutlined sx={{ color: 'white' }} />
+                  <ShoppingCartOutlined sx={{ color: 'var(--white-color)' }} />
                 </Badge>
               </Link>
             </IconButton>
-            <IconButton size="large" aria-label="Contact" color="inherit">
+            <IconButton size="large">
               <Link to="/contact">
-                <Call sx={{ color: 'white' }} />
+                <Call sx={{ color: 'var(--white-color)' }} />
               </Link>
             </IconButton>
             <IconButton
@@ -283,9 +283,8 @@ export default function Header() {
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
-              color="inherit"
             >
-              <AccountCircle />
+              <AccountCircle sx={{ color: 'var(--white-color)' }} />
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

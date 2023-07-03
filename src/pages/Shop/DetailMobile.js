@@ -161,7 +161,7 @@ export default function DetailMobile() {
                     setValue(newValue);
                   }}
                 >
-                  <BottomNavigationAction label="Recents" icon={<Restore />} />
+                  <BottomNavigationAction label="Home" icon={<Restore />} component={Link} to="/" />
                   <BottomNavigationAction label="Favorites" icon={<Favorite />} />
                   <BottomNavigationAction label="Archive" icon={<Archive />} />
                 </BottomNavigation>
