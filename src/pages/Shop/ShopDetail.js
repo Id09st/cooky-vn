@@ -5,12 +5,13 @@ import {
   FullscreenOutlined,
   FavoriteBorderRounded,
   ShoppingCartOutlined,
-  Remove,
-  Add,
   Facebook,
   Twitter,
   Instagram,
   Pinterest,
+  Home,
+  Whatshot,
+  Grain,
 } from '@mui/icons-material';
 import {
   Box,
@@ -19,15 +20,17 @@ import {
   Tab,
   Container,
   Breadcrumbs,
-  IconButton,
-  TextField,
-  Grid,
   Button,
   useMediaQuery,
   Rating,
+  Grid,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
+
+function handleClick(event) {
+  event.preventDefault();
+  console.info('You clicked a breadcrumb.');
+}
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -63,54 +66,36 @@ function a11yProps(index) {
 }
 
 export default function ShopDetail() {
-  const { recipeId } = useParams();
-  const { packagesId } = useParams();
+  const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
   const [packages, setPackages] = useState(null);
   const [value, setValue] = React.useState(0);
+  const [currentImage, setCurrentImage] = useState('');
+  const [isClicked, setIsClicked] = useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   useEffect(() => {
-    const fetchPackages = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(`https://cookyz.azurewebsites.net/api/Packages/6`);
-        if (response.ok) {
-          const data = await response.json();
-          setPackages(data);
-        } else {
-          throw new Error('Error fetching package');
-        }
+        const recipeResponse = await fetch('https://cookyz.azurewebsites.net/api/Recipes/');
+        const recipeData = await recipeResponse.json();
+        const recipeItem = recipeData.find((item) => item.id === parseInt(id));
+        setRecipe(recipeItem);
+
+        const packageResponse = await fetch('https://cookyz.azurewebsites.net/api/Packages/');
+        const packageData = await packageResponse.json();
+        const packageItem = packageData.find((item) => item.recipeId === parseInt(id));
+        setPackages(packageItem);
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchPackages();
-  }, [packagesId]);
-
-  useEffect(() => {
-    const fetchRecipe = async () => {
-      try {
-        const response = await fetch(`https://cookyz.azurewebsites.net/api/Recipes/6`);
-        if (response.ok) {
-          const data = await response.json();
-          setRecipe(data);
-        } else {
-          throw new Error('Error fetching recipe');
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchRecipe();
-  }, [recipeId]);
-
-  const [currentImage, setCurrentImage] = useState('');
-  const [isClicked, setIsClicked] = useState(false);
+    fetchData();
+  }, [id]);
 
   useEffect(() => {
     if (recipe && recipe.image && recipe.image.length > 0) {
@@ -125,53 +110,51 @@ export default function ShopDetail() {
 
   const isMobile = useMediaQuery('(max-width: 601px)');
 
+  if (!recipe || !packages) {
+    return (
+      <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '90px' }}>
+        Không có PACK phù hợp
+      </Container>
+    );
+  }
+
   return (
     <>
       {isMobile ? (
-        <Navigate to="/detail-mobile" />
+        <Navigate to={`/detail-mobile/${id}`} />
       ) : (
         <>
           {recipe && (
             <>
-              <Navigate to="/shop-detail" replace={true} />
-              <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '70px' }}>
+              <Navigate to={`/shop-detail/${id}`} replace={true} />
+              <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '90px' }}>
                 {/* Bắt đầu breadcrumb Tablet pc*/}
-                <Box
-                  component="section"
-                  sx={{
-                    backgroundImage: 'url(img/breadcrumb.jpg)',
-                    backgroundSize: 'cover',
-                    py: 4,
-                  }}
-                >
-                  <Container maxWidth="lg">
-                    <Box textAlign="center">
-                      <Typography variant="h2" style={{ color: 'var(--white-color)' }}>
-                        {recipe.title}
-                      </Typography>
-                      <Breadcrumbs
-                        aria-label="breadcrumb"
-                        separator="›"
-                        style={{ color: 'var(--white-color)' }}
-                        sx={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Link underline="hover" to="/">
-                          <Typography style={{ color: 'var(--white-color)' }}>Trang chủ</Typography>
-                        </Link>
-                        <Link underline="hover" to="/">
-                          <Typography style={{ color: 'var(--white-color)' }}>{packages.title}</Typography>
-                        </Link>
-                        <Typography style={{ color: 'var(--white-color)' }} variant="body1">
-                          {recipe.title}
-                        </Typography>
-                      </Breadcrumbs>
-                    </Box>
-                  </Container>
-                </Box>
+                <div role="presentation" onClick={handleClick}>
+                  <Breadcrumbs aria-label="breadcrumb" style={{ color: 'var(--black-color)' }}>
+                    <Link
+                      underline="hover"
+                      sx={{ display: 'flex', alignItems: 'center' }}
+                      style={{ color: 'var(--black-color)' }}
+                      to="/"
+                    >
+                      <Home sx={{ mr: 0.5 }} fontSize="inherit" />
+                      Trang chủ
+                    </Link>
+                    <Link
+                      underline="hover"
+                      sx={{ display: 'flex', alignItems: 'center' }}
+                      style={{ color: 'var(--black-color)' }}
+                      to="/"
+                    >
+                      <Whatshot sx={{ mr: 0.5 }} fontSize="inherit" />
+                      {recipe.title}
+                    </Link>
+                    <Typography sx={{ display: 'flex', alignItems: 'center' }} color="text.primary">
+                      <Grain sx={{ mr: 0.5 }} fontSize="inherit" />
+                      {recipe.title}
+                    </Typography>
+                  </Breadcrumbs>
+                </div>
                 {/* Kết thúc breadcrumb Tablet pc*/}
                 <Grid container spacing={3} style={{ padding: '20px' }}>
                   <Grid item lg={6} md={6}>

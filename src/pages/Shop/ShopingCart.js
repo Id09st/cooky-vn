@@ -3,7 +3,6 @@ import {
   Table,
   TableContainer,
   TableHead,
-  TableBody,
   TableRow,
   TableCell,
   IconButton,
@@ -22,7 +21,7 @@ import {
   DialogActions,
 } from '@mui/material';
 import { Add, Delete, Remove } from '@mui/icons-material';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function ShoppingCart() {
   const [couponCode, setCouponCode] = useState('');
@@ -70,34 +69,22 @@ export default function ShoppingCart() {
     }
   };
 
-  const baseURL = `https://cookyz.azurewebsites.net/api/Packages/`;
   useEffect(() => {
-    fetch(baseURL)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setPackages(data);
-      })
-      .catch((error) => console.log(error.message));
-  }, []);
+    const fetchData = async () => {
+      try {
+        const packageResponse = await fetch('https://cookyz.azurewebsites.net/api/Packages/');
+        const packageData = await packageResponse.json();
+        setPackages(packageData);
 
-  const baseURL1 = `https://cookyz.azurewebsites.net/api/Recipes/`;
-  useEffect(() => {
-    fetch(baseURL1)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setRecipes(data);
-      })
-      .catch((error) => console.log(error.message));
+        const recipeResponse = await fetch('https://cookyz.azurewebsites.net/api/Recipes/');
+        const recipeData = await recipeResponse.json();
+        setRecipes(recipeData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const isMobile = useMediaQuery('(max-width: 601px)');

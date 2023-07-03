@@ -116,7 +116,7 @@ export default function Contact() {
             <Container maxWidth="lg">
               <Box textAlign="center">
                 <Typography variant="h2" style={{ color: 'var(--white-color)' }}>
-                  Contact Us
+                  Contact us
                 </Typography>
                 <Breadcrumbs
                   aria-label="breadcrumb"
@@ -129,10 +129,10 @@ export default function Contact() {
                   }}
                 >
                   <Link underline="hover" to="/">
-                    <Typography style={{ color: 'var(--white-color)' }}>Home</Typography>
+                    <Typography style={{ color: 'var(--white-color)' }}>Trang chủ</Typography>
                   </Link>
                   <Typography style={{ color: 'var(--white-color)' }} variant="body1">
-                    Contact Us
+                    Contact us
                   </Typography>
                 </Breadcrumbs>
               </Box>
@@ -149,8 +149,8 @@ export default function Contact() {
                     <span className="icon_phone">
                       <PhoneAndroid sx={{ fontSize: 40 }} />
                     </span>
-                    <h4>Phone</h4>
-                    <p>+01-3-8888-6868</p>
+                    <h4>Hotline</h4>
+                    <p>+84</p>
                   </div>
                 </div>
                 <div className="col-lg-3 col-md-3 col-sm-6 text-center">
@@ -159,7 +159,7 @@ export default function Contact() {
                       <LocationOnOutlined sx={{ fontSize: 40 }} />
                     </span>
                     <h4>Address</h4>
-                    <p>60-49 Road 11378 New York</p>
+                    <p>FPT University</p>
                   </div>
                 </div>
                 <div className="col-lg-3 col-md-3 col-sm-6 text-center">
@@ -167,8 +167,8 @@ export default function Contact() {
                     <span className="icon_clock_alt">
                       <AccessTimeOutlined sx={{ fontSize: 40 }} />
                     </span>
-                    <h4>Open time</h4>
-                    <p>10:00 am to 23:00 pm</p>
+                    <h4>Open</h4>
+                    <p>10:00 am tới 23:00 pm</p>
                   </div>
                 </div>
                 <div className="col-lg-3 col-md-3 col-sm-6 text-center">
@@ -177,7 +177,7 @@ export default function Contact() {
                       <MailOutlineOutlined sx={{ fontSize: 40 }} />
                     </span>
                     <h4>Email</h4>
-                    <p>hello@colorlib.com</p>
+                    <p>@fpt.edu.vn</p>
                   </div>
                 </div>
               </div>

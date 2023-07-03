@@ -14,8 +14,8 @@ import DetailMobile from '~/pages/Shop/DetailMobile';
 const publicRoutes = [
   { path: '/', component: Home },
   { path: '/shop-grid', component: ShopGrid },
-  { path: '/shop-detail', component: ShopDetail },
-  { path: '/detail-mobile', component: DetailMobile, layout: null },
+  { path: '/shop-detail/:id', component: ShopDetail },
+  { path: '/detail-mobile/:id', component: DetailMobile, layout: null },
   { path: '/shoping-cart', component: ShopingCart },
   { path: '/checkout', component: CheckOut },
   { path: '/checkout1', component: Checkout },

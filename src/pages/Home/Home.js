@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FullscreenOutlined, FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
 import { Slider, Featured, Lasted } from './HomImage';
-import { Box, Button, Container, Grid, Typography } from '@mui/material';
+import { Button, Container, Grid, Typography } from '@mui/material';
 import ImageSlider from './Slider/ImageSlider';
 import 'src/sass/_slide.scss';
 
 const FilteredFeatured = () => {
   const [filter, setFilter] = useState('All');
   const [categories, setCategories] = useState([]);
+  const [recipes, setRecipes] = useState([]);
+  const [packages, setPackages] = useState([]);
 
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter);
@@ -16,28 +18,31 @@ const FilteredFeatured = () => {
 
   const filteredItems = filter === 'All' ? Featured : Featured.filter((item) => item.class.includes(filter));
 
-  const baseURL = `https://649febe0ed3c41bdd7a6d4a2.mockapi.io/categories`;
   useEffect(() => {
-    fetch(baseURL)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setCategories(data);
-      })
-      .catch((error) => console.log(error.message));
+    const fetchData = async () => {
+      try {
+        const categoriesResponse = await fetch('https://649febe0ed3c41bdd7a6d4a2.mockapi.io/categories');
+        const categoriesData = await categoriesResponse.json();
+        setCategories(categoriesData);
+
+        const packageResponse = await fetch('https://cookyz.azurewebsites.net/api/Packages/');
+        const packageData = await packageResponse.json();
+        setPackages(packageData);
+
+        const recipeResponse = await fetch('https://cookyz.azurewebsites.net/api/Recipes/');
+        const recipeData = await recipeResponse.json();
+        setRecipes(recipeData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
     <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '80px' }}>
-      {/* Slide begin */}
-      <Box>
-        <ImageSlider slides={Slider} style={{ padding: '20px', paddingTop: '67px' }} />
-      </Box>
-      {/* Slide end */}
+      <ImageSlider slides={Slider} style={{ padding: '20px', paddingTop: '67px' }} />
 
       {/* Categories Section Begin */}
       <section>
@@ -66,7 +71,6 @@ const FilteredFeatured = () => {
             ))}
         </Grid>
       </section>
-
       {/* Categories Section End */}
 
       {/* Featured Section Begin */}
@@ -94,37 +98,44 @@ const FilteredFeatured = () => {
       </div>
 
       <div className="row featured__filter">
-        {filteredItems.map((featured, index) => (
-          <div className={`col-lg-3 col-md-4 col-sm-6 mix ${featured.class}`} key={index}>
-            <div className="featured__item">
-              <div className="featured__item__pic set-bg" style={{ backgroundImage: `url(${featured.url})` }}>
-                <ul className="featured__item__pic__hover">
-                  <li>
-                    <a href="#">
-                      <FavoriteBorderRounded />
-                    </a>
-                  </li>
-                  <li>
-                    <Link to="/shop-detail">
-                      <FullscreenOutlined />
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/shoping-cart">
-                      <ShoppingCartOutlined />
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-              <div className="featured__item__text">
-                <h6>
-                  <Link to="/#">{featured.title}</Link>
-                </h6>
-                <h5>{featured.price}</h5>
+        {packages.map((packageItem) => {
+          const recipe = recipes.find((recipe) => recipe.id === packageItem.recipeId);
+
+          if (!recipe) {
+            return null; // Bỏ qua gói hàng nếu không tìm thấy thông tin recipe
+          }
+          return (
+            <div className={`col-lg-3 col-md-4 col-sm-6 mix ${recipe.title}`}>
+              <div className="featured__item">
+                <div className="featured__item__pic set-bg" style={{ backgroundImage: `url(${recipe.image})` }}>
+                  <ul className="featured__item__pic__hover">
+                    <li>
+                      <a href="#">
+                        <FavoriteBorderRounded />
+                      </a>
+                    </li>
+                    <li>
+                      <Link to={`shop-detail/${recipe.id}`}>
+                        <FullscreenOutlined />
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/shoping-cart">
+                        <ShoppingCartOutlined />
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+                <div className="featured__item__text">
+                  <h6>
+                    <Link to="/#">{recipe.title}</Link>
+                  </h6>
+                  <h5>{recipe.price}</h5>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       {/* Featured Section End */}
 

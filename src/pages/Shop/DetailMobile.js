@@ -13,8 +13,6 @@ import {
 import {
   BottomNavigation,
   BottomNavigationAction,
-  Box,
-  Breadcrumbs,
   Button,
   Container,
   IconButton,
@@ -29,11 +27,11 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import ImageSlider from './Slider/ImageSlider';
 
 export default function DetailMobile() {
+  const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
-  const { recipeId } = useParams();
-  const { packagesId } = useParams();
   const [recipe, setRecipe] = useState(null);
   const [packages, setPackages] = useState(null);
+  const [value, setValue] = React.useState(0);
 
   const handleQuantityChange = (event, value) => {
     const updatedQuantity = quantity + value;
@@ -43,44 +41,30 @@ export default function DetailMobile() {
   };
 
   useEffect(() => {
-    const fetchPackages = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(`https://cookyz.azurewebsites.net/api/Packages/6`);
-        if (response.ok) {
-          const data = await response.json();
-          setPackages(data);
-        } else {
-          throw new Error('Error fetching package');
-        }
+        const recipeResponse = await fetch('https://cookyz.azurewebsites.net/api/Recipes/');
+        const recipeData = await recipeResponse.json();
+        const recipeItem = recipeData.find((item) => item.id === parseInt(id));
+        setRecipe(recipeItem);
+
+        const packageResponse = await fetch('https://cookyz.azurewebsites.net/api/Packages/');
+        const packageData = await packageResponse.json();
+        const packageItem = packageData.find((item) => item.recipeId === parseInt(id));
+        setPackages(packageItem);
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchPackages();
-  }, [packagesId]);
-
-  useEffect(() => {
-    const fetchrecipe = async () => {
-      try {
-        const response = await fetch(`https://cookyz.azurewebsites.net/api/Recipes/6`);
-        if (response.ok) {
-          const data = await response.json();
-          setRecipe(data);
-        } else {
-          throw new Error('Error fetching recipe');
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchrecipe();
-  }, [recipeId]);
+    fetchData();
+  }, [id]);
 
   const isMobile = useMediaQuery('(max-width: 601px)');
 
-  const [value, setValue] = React.useState(0);
+  if (!recipe || !packages) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -186,7 +170,7 @@ export default function DetailMobile() {
           )}
         </>
       ) : (
-        <Navigate to="/shop-detail" replace={true} />
+        <Navigate to={`/shop-detail/${id}`} replace={true} />
       )}
     </>
   );
