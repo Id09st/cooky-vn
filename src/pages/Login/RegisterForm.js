@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Avatar, Box, Button, Container, CssBaseline, Grid, TextField, Typography } from '@mui/material';
 import { RamenDining } from '@mui/icons-material';
 
@@ -26,7 +25,7 @@ const RegisterForm = ({ onClose }) => {
     };
 
     try {
-      const response = await fetch('http://cookyz.somee.com/api/Auth/register', {
+      const response = await fetch('https://cookyz.somee.com/api/Auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,85 +46,87 @@ const RegisterForm = ({ onClose }) => {
     }
   };
 
-  const defaultTheme = createTheme();
-
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'var(--primary-color)' }}>
+          <RamenDining />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Đăng kí
+        </Typography>
+        {/* Hiển thị thông báo nếu có */}
+        {notification && <div>{notification}</div>}
         <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
+          component="form"
+          noValidate
+          onSubmit={handleSubmit}
+          sx={{ mt: 3, overflow: 'hidden' }}
+          style={{ paddingTop: '5px' }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'var(--primary-color)' }}>
-            <RamenDining />
-          </Avatar>
-          <Typography component="h1" variant="h5">
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField name="username" required fullWidth id="username" label="Tài khoản đăng kí" autoFocus />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="password"
+                label="Mật khẩu"
+                type="password"
+                id="password"
+                autoComplete="new-password"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField name="name" required fullWidth id="name" label="Họ và tên" autoFocus />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField required fullWidth id="email" label="Email" name="email" autoComplete="email" />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="phone"
+                label="Số điện thoại"
+                type="text"
+                id="phone"
+                autoComplete="tel"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField name="address" required fullWidth id="address" label="Địa chỉ" autoFocus />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            sx={{ mt: 3, mb: 2 }}
+            style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
+            variant="contained"
+          >
             Đăng kí
-          </Typography>
-          {/* Hiển thị thông báo nếu có */}
-          {notification && <div>{notification}</div>}
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3, overflow: 'hidden' }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField name="username" required fullWidth id="username" label="Tài khoản đăng kí" autoFocus />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Mật khẩu"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField name="name" required fullWidth id="name" label="Họ và tên" autoFocus />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField required fullWidth id="email" label="Email" name="email" autoComplete="email" />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="phone"
-                  label="Số điện thoại"
-                  type="text"
-                  id="phone"
-                  autoComplete="tel"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField name="address" required fullWidth id="address" label="Địa chỉ" autoFocus />
-              </Grid>
+          </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <RouterLink to="#" variant="body2" style={{ color: 'var(--primary-color)' }} onClick={onClose}>
+                Bạn đã có tài khoản? Đăng nhập
+              </RouterLink>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              style={{ bgcolor: 'var(--primary-color)' }}
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Đăng kí
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <RouterLink to="#" variant="body2" style={{ color: 'var(--primary-color)' }} onClick={onClose}>
-                  Bạn đã có tài khoản? Đăng nhập
-                </RouterLink>
-              </Grid>
-            </Grid>
-          </Box>
+          </Grid>
         </Box>
-      </Container>
-    </ThemeProvider>
+      </Box>
+    </Container>
   );
 };
 export default RegisterForm;

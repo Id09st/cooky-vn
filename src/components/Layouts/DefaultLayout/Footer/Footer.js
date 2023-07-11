@@ -28,10 +28,10 @@ export default function Footer() {
               </form>
               <div className="footer__widget__social">
                 <a href="#">
-                  <FacebookTwoTone color="primary" sx={{ fontSize: 40 }} />
+                  <FacebookTwoTone style={{ color: '#4267B2' }} sx={{ fontSize: 40 }} />
                 </a>
                 <a href="#">
-                  <Google sx={{ color: red[500], fontSize: 40 }} />
+                  <Google style={{ color: '#0F9D58' }} sx={{ fontSize: 40 }} />
                 </a>
               </div>
             </div>

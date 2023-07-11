@@ -142,12 +142,12 @@ export default function Header() {
     >
       <MenuItem onClick={handleMenuClose}>
         <Button sx={{ color: 'black' }} startIcon={<Person />}>
-          User
+          Tài khoản
         </Button>
       </MenuItem>
       <MenuItem onClick={handleMenuClose}>
         <Button onClick={handleOpen} sx={{ color: 'black' }} startIcon={<Login />}>
-          Login
+          Đăng nhập
         </Button>
         <Dialog open={open} onClose={handleClose}>
           <IconButton
@@ -253,9 +253,17 @@ export default function Header() {
           </Box>
           <Search>
             <SearchIconWrapper onClick={handleSearchIconClick}>
-              <SearchOutlined />
+              <SearchOutlined style={{ color: 'var(--para-color)', backgroundColor: 'var(--background-2)' }} />
             </SearchIconWrapper>
-            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
+            <StyledInputBase
+              placeholder="Tìm kiếm công thức hoặc sản phẩm ..."
+              inputProps={{ 'aria-label': 'search' }}
+              style={{
+                color: 'var(--para-color)',
+                backgroundColor: 'var(--background-2)',
+                borderRadius: '5px',
+              }}
+            />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box style={{ marginRight: '167px' }} sx={{ display: { xs: 'none', md: 'flex' } }}>

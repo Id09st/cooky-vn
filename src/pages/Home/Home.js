@@ -25,11 +25,11 @@ export default function Home() {
         const categoriesData = await categoriesResponse.json();
         setCategories(categoriesData);
 
-        const packageResponse = await fetch('http://cookyz.somee.com/api/packages/');
+        const packageResponse = await fetch('https://cookyz.somee.com/api/packages/');
         const packageData = await packageResponse.json();
         setPackages(packageData);
 
-        const recipeResponse = await fetch('http://cookyz.somee.com/api/recipes/');
+        const recipeResponse = await fetch('https://cookyz.somee.com/api/recipes/');
         const recipeData = await recipeResponse.json();
         setRecipes(recipeData);
       } catch (error) {
@@ -88,25 +88,13 @@ export default function Home() {
       {/* Featured Section Begin */}
       <div className="row">
         <div className="col-lg-12">
-          <div className="section-title">
-            <h2 style={{ marginTop: '20px' }}>Featured Product</h2>
-          </div>
-          <div className="featured__controls">
-            <Button variant="text" style={{ color: 'var(--primary-color)' }} onClick={() => handleFilterChange('All')}>
-              Tất cả
-            </Button>
-            {categories &&
-              categories.map((category) => (
-                <Button
-                  key={category.id}
-                  variant="text"
-                  style={{ color: 'var(--primary-color)' }}
-                  onClick={() => handleFilterChange(category.name)}
-                >
-                  {category.name}
-                </Button>
-              ))}
-          </div>
+          <Typography
+            className="my-title"
+            variant="h4"
+            style={{ marginTop: '50px', marginBottom: '50px', fontWeight: 'bold' }}
+          >
+            Mừng bạn đến với Nice Cook
+          </Typography>
         </div>
       </div>
 

@@ -22,7 +22,7 @@ const LoginForm = () => {
     };
 
     try {
-      const response = await fetch('http://cookyz.somee.com/api/Auth/login', {
+      const response = await fetch('https://cookyz.somee.com/api/Auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -93,9 +93,9 @@ const LoginForm = () => {
         <Button
           type="submit"
           fullWidth
-          style={{ color: 'var(--primary-color)' }}
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
+          style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
         >
           Đăng nhập
         </Button>

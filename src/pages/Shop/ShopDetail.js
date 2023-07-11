@@ -86,7 +86,7 @@ export default function ShopDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://cookyz.somee.com/api/packages?recipeId=${id}`);
+        const response = await fetch(`https://cookyz.somee.com/api/packages?recipeId=${id}`);
         if (response.ok) {
           const data = await response.json();
           setOptions(data);
@@ -119,12 +119,12 @@ export default function ShopDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const recipeResponse = await fetch('http://cookyz.somee.com/api/recipes/');
+        const recipeResponse = await fetch('https://cookyz.somee.com/api/recipes/');
         const recipeData = await recipeResponse.json();
         const recipeItem = recipeData.find((item) => item.id === parseInt(id));
         setRecipe(recipeItem);
 
-        const packageResponse = await fetch('http://cookyz.somee.com/api/packages/');
+        const packageResponse = await fetch('https://cookyz.somee.com/api/packages/');
         const packageData = await packageResponse.json();
         setPackages(packageData);
       } catch (error) {
@@ -466,50 +466,48 @@ export default function ShopDetail() {
               </Grid>
             </Grid>
             {/* Related Product Section Begin */}
-            <section className="related-product">
-              <div className="container">
-                <div className="row">
-                  <div className="col-lg-12">
-                    <div className="section-title related__product__title">
-                      <h2>Related Product</h2>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  {Related.map((related, index) => (
-                    <div key={index} className="col-lg-3 col-md-4 col-sm-6">
-                      <div className="product__item">
-                        <div className="product__item__pic set-bg" data-setbg={related.url}>
-                          <ul className="product__item__pic__hover">
-                            <li>
-                              <a href="#">
-                                <FavoriteBorderRounded />
-                              </a>
-                            </li>
-                            <li>
-                              <Link to="/shop-detail">
-                                <FullscreenOutlined />
-                              </Link>
-                            </li>
-                            <li>
-                              <a href="#">
-                                <ShoppingCartOutlined />
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="product__item__text">
-                          <h6>
-                            <Link to="/">{related.title}</Link>
-                          </h6>
-                          <h5>{related.price}</h5>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+            <div style={{ paddingBottom: '30px' }}>
+              <div className="row">
+                <div className="col-lg-12">
+                  <Typography className="my-title" variant="h4" style={{ marginBottom: '70px', fontWeight: 'bold' }}>
+                    Related Product
+                  </Typography>
                 </div>
               </div>
-            </section>
+              <div className="row">
+                {Related.map((related, index) => (
+                  <div key={index} className="col-lg-3 col-md-4 col-sm-6">
+                    <div className="product__item">
+                      <div className="product__item__pic set-bg" data-setbg={related.url}>
+                        <ul className="product__item__pic__hover">
+                          <li>
+                            <a href="#">
+                              <FavoriteBorderRounded />
+                            </a>
+                          </li>
+                          <li>
+                            <Link to="/shop-detail">
+                              <FullscreenOutlined />
+                            </Link>
+                          </li>
+                          <li>
+                            <a href="#">
+                              <ShoppingCartOutlined />
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="product__item__text">
+                        <h6>
+                          <Link to="/">{related.title}</Link>
+                        </h6>
+                        <h5>{related.price}</h5>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
             {/* Related Product Section End */}
           </Container>
         </>

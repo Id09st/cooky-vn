@@ -84,11 +84,11 @@ export default function ShoppingCart() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const packageResponse = await fetch('http://cookyz.somee.com/api/packages/');
+        const packageResponse = await fetch('https://cookyz.somee.com/api/packages/');
         const packageData = await packageResponse.json();
         setPackages(packageData);
 
-        const recipeResponse = await fetch('http://cookyz.somee.com/api/recipes/');
+        const recipeResponse = await fetch('https://cookyz.somee.com/api/recipes/');
         const recipeData = await recipeResponse.json();
         setRecipes(recipeData);
       } catch (error) {

@@ -134,6 +134,24 @@ ol {
   margin: 0 auto;
 }
 
+.my-title {
+  text-align: center;
+  color: #1c1c1c;
+  position: relative;
+}
+
+.my-title::after {
+  position: absolute;
+  left: 0;
+  bottom: -15px;
+  right: 0;
+  height: 4px;
+  width: 80px;
+  background: var(--primary-color);
+  content: '';
+  margin: 0 auto;
+}
+
 .set-bg {
   background-repeat: no-repeat;
   background-size: cover;
@@ -1431,17 +1449,6 @@ ol {
   color: #666666;
 }
 
-/*---------------------
-  Shop Details
------------------------*/
-
-.related-product {
-  padding-bottom: 30px;
-}
-
-.related__product__title {
-  margin-bottom: 70px;
-}
 
 /*---------------------
   Shop Cart
