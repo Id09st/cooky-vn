@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FullscreenOutlined, FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
 import { Slider, Featured, Lasted } from './HomImage';
-import { Button, Container, Grid, Typography } from '@mui/material';
+import { Button, CardContent, Container, Grid, Typography } from '@mui/material';
 import ImageSlider from './Slider/ImageSlider';
 import 'src/sass/_slide.scss';
 
-const FilteredFeatured = () => {
+export default function Home() {
   const [filter, setFilter] = useState('All');
   const [categories, setCategories] = useState([]);
   const [recipes, setRecipes] = useState([]);
@@ -25,11 +25,11 @@ const FilteredFeatured = () => {
         const categoriesData = await categoriesResponse.json();
         setCategories(categoriesData);
 
-        const packageResponse = await fetch('https://cookyz.azurewebsites.net/api/Packages/');
+        const packageResponse = await fetch('http://cookyz.somee.com/api/packages/');
         const packageData = await packageResponse.json();
         setPackages(packageData);
 
-        const recipeResponse = await fetch('https://cookyz.azurewebsites.net/api/Recipes/');
+        const recipeResponse = await fetch('http://cookyz.somee.com/api/recipes/');
         const recipeData = await recipeResponse.json();
         setRecipes(recipeData);
       } catch (error) {
@@ -39,6 +39,18 @@ const FilteredFeatured = () => {
 
     fetchData();
   }, []);
+
+  const calculateTotalPrice = (recipeId) => {
+    const relatedPackages = packages.filter((packages) => packages.recipeId === recipeId);
+    const totalPrice = relatedPackages.reduce((sum, packages) => sum + packages.price, 0);
+    return totalPrice;
+  };
+
+  const calculateTotalSales = (recipeId) => {
+    const relatedPackages = packages.filter((packages) => packages.recipeId === recipeId);
+    const totalSales = relatedPackages.reduce((sum, packages) => sum + packages.sales, 0);
+    return totalSales;
+  };
 
   return (
     <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '80px' }}>
@@ -86,6 +98,7 @@ const FilteredFeatured = () => {
             {categories &&
               categories.map((category) => (
                 <Button
+                  key={category.id}
                   variant="text"
                   style={{ color: 'var(--primary-color)' }}
                   onClick={() => handleFilterChange(category.name)}
@@ -98,16 +111,26 @@ const FilteredFeatured = () => {
       </div>
 
       <div className="row featured__filter">
-        {packages.map((packageItem) => {
-          const recipe = recipes.find((recipe) => recipe.id === packageItem.recipeId);
-
+        {recipes.map((recipe) => {
           if (!recipe) {
             return null; // Bỏ qua gói hàng nếu không tìm thấy thông tin recipe
           }
+
+          let priceSale = 0;
+
+          if (calculateTotalSales(recipe.id) > 0) {
+            priceSale = calculateTotalPrice(recipe.id) - calculateTotalSales(recipe.id);
+          } else {
+            priceSale = calculateTotalPrice(recipe.id);
+          }
+
           return (
-            <div className={`col-lg-3 col-md-4 col-sm-6 mix ${recipe.title}`}>
+            <div key={recipe.id} className={`col-lg-3 col-md-4 col-sm-6 mix ${recipe.title}`}>
               <div className="featured__item">
-                <div className="featured__item__pic set-bg" style={{ backgroundImage: `url(${recipe.image})` }}>
+                <div
+                  className="featured__item__pic set-bg"
+                  style={{ backgroundImage: `url(${recipe.image.split('\n')[0]})` }}
+                >
                   <ul className="featured__item__pic__hover">
                     <li>
                       <a href="#">
@@ -126,12 +149,57 @@ const FilteredFeatured = () => {
                     </li>
                   </ul>
                 </div>
-                <div className="featured__item__text">
-                  <h6>
-                    <Link to="/#">{recipe.title}</Link>
-                  </h6>
-                  <h5>{recipe.price}</h5>
-                </div>
+                <CardContent style={{ paddingTop: '15px' }}>
+                  <Typography
+                    variant="h6"
+                    component={Link}
+                    style={{
+                      color: 'var(--black-color)',
+                      fontSize: '18px',
+                      fontWeight: '700',
+                      height: '48px',
+                      paddingTop: '10px',
+                      marginBottom: '5px',
+                    }}
+                    to="/#"
+                  >
+                    {recipe.title}
+                  </Typography>
+                  <Typography variant="subtitle1" style={{}}>
+                    {priceSale.toLocaleString('vi-VN')}₫
+                    {calculateTotalSales(recipe.id) >= 1000 ? (
+                      <s
+                        style={{
+                          marginLeft: '10px',
+                          fontSize: '14px',
+                          lineHeight: '20px',
+                          textDecorationLine: 'line-through',
+                          color: 'var(--sale-color)',
+                          position: 'relative',
+                          marginBottom: '5px',
+                        }}
+                      >
+                        {calculateTotalSales(recipe.id) / 1000}k
+                      </s>
+                    ) : calculateTotalSales(recipe.id) === 0 ? (
+                      <></>
+                    ) : (
+                      <s
+                        style={{
+                          marginLeft: '10px',
+                          fontSize: '14px',
+                          lineHeight: '20px',
+                          textDecorationLine: 'line-through',
+                          color: 'var(--sale-color)',
+                          position: 'relative',
+                          marginBottom: '5px',
+                        }}
+                      >
+                        {calculateTotalSales(recipe.id)}
+                      </s>
+                    )}
+                  </Typography>
+                </CardContent>
               </div>
             </div>
           );
@@ -161,10 +229,10 @@ const FilteredFeatured = () => {
           <div className="col-lg-4 col-md-6">
             <div className="latest-product__text">
               <h4>Latest Products</h4>
-              <div class="latest-product__slider">
+              <div className="latest-product__slider">
                 <div className="latest-prdouct__slider__item">
                   {Lasted.map((lasted) => (
-                    <a href="#" className="latest-product__item">
+                    <a key={lasted.id} href="#" className="latest-product__item">
                       <div className="latest-product__item__pic">
                         <img src={lasted.url} alt="" />
                       </div>
@@ -184,7 +252,7 @@ const FilteredFeatured = () => {
               <div className="latest-product__slider">
                 <div className="latest-prdouct__slider__item">
                   {Lasted.map((lasted) => (
-                    <a href="#" className="latest-product__item">
+                    <a key={lasted.id} href="#" className="latest-product__item">
                       <div className="latest-product__item__pic">
                         <img src={lasted.url} alt="" />
                       </div>
@@ -204,7 +272,7 @@ const FilteredFeatured = () => {
               <div className="latest-product__slider">
                 <div className="latest-prdouct__slider__item">
                   {Lasted.map((lasted) => (
-                    <a href="#" className="latest-product__item">
+                    <a key={lasted.id} href="#" className="latest-product__item">
                       <div className="latest-product__item__pic">
                         <img src={lasted.url} alt="" />
                       </div>
@@ -223,6 +291,4 @@ const FilteredFeatured = () => {
       {/* Latest Product Section End */}
     </Container>
   );
-};
-
-export default FilteredFeatured;
+}

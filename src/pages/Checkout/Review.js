@@ -9,24 +9,24 @@ const products = [
   {
     name: 'Product 1',
     desc: 'A nice thing',
-    price: '$9.99',
+    price: '9.99₫',
   },
   {
     name: 'Product 2',
     desc: 'Another thing',
-    price: '$3.45',
+    price: '3.45₫',
   },
   {
     name: 'Product 3',
     desc: 'Something else',
-    price: '$6.51',
+    price: '6.51',
   },
   {
     name: 'Product 4',
     desc: 'Best thing of all',
-    price: '$14.11',
+    price: '14.11₫',
   },
-  { name: 'Shipping', desc: '', price: 'Free' },
+  { name: 'Phí vận chuyển', desc: '', price: 'Miễn phí' },
 ];
 
 const addresses = ['1 MUI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
@@ -41,7 +41,7 @@ export default function Review() {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Order summary
+        Tóm tắt đơn hàng
       </Typography>
       <List disablePadding>
         {products.map((product) => (
@@ -52,23 +52,23 @@ export default function Review() {
         ))}
 
         <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Total" />
+          <ListItemText primary="Tổng cộng" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            $34.06
+            34.06₫
           </Typography>
         </ListItem>
       </List>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Shipping
+            Thông tin vận chuyển
           </Typography>
           <Typography gutterBottom>John Smith</Typography>
           <Typography gutterBottom>{addresses.join(', ')}</Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Payment details
+            Thông tin thanh toán
           </Typography>
           <Grid container>
             {payments.map((payment) => (

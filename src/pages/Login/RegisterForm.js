@@ -1,19 +1,8 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {
-  Avatar,
-  Box,
-  Button,
-  Checkbox,
-  Container,
-  CssBaseline,
-  FormControlLabel,
-  Grid,
-  TextField,
-  Typography,
-} from '@mui/material';
-import { LockOutlined } from '@mui/icons-material';
+import { Avatar, Box, Button, Container, CssBaseline, Grid, TextField, Typography } from '@mui/material';
+import { RamenDining } from '@mui/icons-material';
 
 const RegisterForm = ({ onClose }) => {
   const [notification, setNotification] = useState(null);
@@ -25,7 +14,7 @@ const RegisterForm = ({ onClose }) => {
     const email = event.target.email.value;
     const phone = event.target.phone.value;
     const address = event.target.address.value;
-    
+
     const data = {
       username: username,
       password: password,
@@ -37,7 +26,7 @@ const RegisterForm = ({ onClose }) => {
     };
 
     try {
-      const response = await fetch('https://cookyz.azurewebsites.net/api/Auth/register', {
+      const response = await fetch('http://cookyz.somee.com/api/Auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,64 +61,64 @@ const RegisterForm = ({ onClose }) => {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlined />
+          <Avatar sx={{ m: 1, bgcolor: 'var(--primary-color)' }}>
+            <RamenDining />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Đăng kí
           </Typography>
           {/* Hiển thị thông báo nếu có */}
           {notification && <div>{notification}</div>}
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3, overflow: 'hidden' }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <TextField name="username" required fullWidth id="username" label="Username" autoFocus />
+                <TextField name="username" required fullWidth id="username" label="Tài khoản đăng kí" autoFocus />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Mật khẩu"
                   type="password"
                   id="password"
                   autoComplete="new-password"
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField name="name" required fullWidth id="name" label="Name" autoFocus />
+                <TextField name="name" required fullWidth id="name" label="Họ và tên" autoFocus />
               </Grid>
               <Grid item xs={12}>
-                <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" />
+                <TextField required fullWidth id="email" label="Email" name="email" autoComplete="email" />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
                   name="phone"
-                  label="Phone Number"
+                  label="Số điện thoại"
                   type="text"
                   id="phone"
                   autoComplete="tel"
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField name="address" required fullWidth id="address" label="Address" autoFocus />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
+                <TextField name="address" required fullWidth id="address" label="Địa chỉ" autoFocus />
               </Grid>
             </Grid>
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-              Sign Up
+            <Button
+              type="submit"
+              fullWidth
+              style={{ bgcolor: 'var(--primary-color)' }}
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Đăng kí
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <RouterLink to="#" variant="body2" onClick={onClose}>
-                  Already have an account? Sign in
+                <RouterLink to="#" variant="body2" style={{ color: 'var(--primary-color)' }} onClick={onClose}>
+                  Bạn đã có tài khoản? Đăng nhập
                 </RouterLink>
               </Grid>
             </Grid>

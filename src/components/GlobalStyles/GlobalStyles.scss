@@ -11,9 +11,10 @@
   --heading-color-2: #252525;
   --normal-color: #1c1c1c;
   --background: #006590;
-  --background-2: #f2f2f2;
+  --background-2: #f0f0f0;
   --border: #ebebeb;
   --border-1: #e1e1e1;
+  --sale-color: #acacac;
 
   --fm-unna: 'Unna', serif;
   --fm-nunito: 'Nunito Sans', sans-serif;
@@ -566,21 +567,7 @@ ol {
 }
 
 .featured__item__text {
-  text-align: center;
   padding-top: 15px;
-}
-
-.featured__item__text h6 {
-  margin-bottom: 10px;
-}
-
-.featured__item__text h6 a {
-  color: #252525;
-}
-
-.featured__item__text h5 {
-  color: #252525;
-  font-weight: 700;
 }
 
 /*---------------------
@@ -1622,7 +1609,7 @@ ol {
 -----------------------*/
 
 .checkout {
-  padding-top: 80px;
+  padding-top: 20px;
   padding-bottom: 60px;
 }
 

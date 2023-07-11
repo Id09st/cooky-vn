@@ -33,7 +33,7 @@ export default function ShoppingCart() {
   const handleQuantityChange = (itemId, value) => {
     const updatedPackages = packages.map((item) => {
       if (item.id === itemId) {
-        const newQuantity = Math.max(0, Math.min(value, 100));
+        const newQuantity = Math.max(0, Math.min(value, 1000));
         return {
           ...item,
           quantity: newQuantity,
@@ -43,6 +43,18 @@ export default function ShoppingCart() {
     });
 
     setPackages(updatedPackages);
+  };
+
+  const calculateTotalPrice = (recipeId) => {
+    const relatedPackages = packages.filter((packages) => packages.recipeId === recipeId);
+    const totalPrice = relatedPackages.reduce((sum, packages) => sum + packages.price, 0);
+    return totalPrice;
+  };
+
+  const calculateTotalSales = (recipeId) => {
+    const relatedPackages = packages.filter((packages) => packages.recipeId === recipeId);
+    const totalSales = relatedPackages.reduce((sum, packages) => sum + packages.sales, 0);
+    return totalSales;
   };
 
   const handleDelete = (itemId) => {
@@ -72,11 +84,11 @@ export default function ShoppingCart() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const packageResponse = await fetch('https://cookyz.azurewebsites.net/api/Packages/');
+        const packageResponse = await fetch('http://cookyz.somee.com/api/packages/');
         const packageData = await packageResponse.json();
         setPackages(packageData);
 
-        const recipeResponse = await fetch('https://cookyz.azurewebsites.net/api/Recipes/');
+        const recipeResponse = await fetch('http://cookyz.somee.com/api/recipes/');
         const recipeData = await recipeResponse.json();
         setRecipes(recipeData);
       } catch (error) {
@@ -89,7 +101,7 @@ export default function ShoppingCart() {
 
   const isMobile = useMediaQuery('(max-width: 601px)');
 
-  const subtotal = packages.reduce((total, packages) => total + packages.price * packages.quantity, 0);
+  const subtotal = packages.reduce((total, packages) => total + calculateTotalPrice(recipes.id) * packages.quantity, 0);
   const total = subtotal - couponAmount;
 
   return (
@@ -131,14 +143,20 @@ export default function ShoppingCart() {
             </Container>
           </Box>
           {/* Kết thúc breadcrumb Mobile*/}
-          {packages.map((packageItem) => {
-            const recipe = recipes.find((recipe) => recipe.id === packageItem.recipeId);
-            const totalPrice = packageItem.price * packageItem.quantity;
-
+          {recipes.map((recipe) => {
             if (!recipe) {
               return null; // Bỏ qua gói hàng nếu không tìm thấy thông tin recipe
             }
 
+            let priceSale = 0;
+
+            if (calculateTotalSales(recipe.id) > 0) {
+              priceSale = calculateTotalPrice(recipe.id) - calculateTotalSales(recipe.id);
+            } else {
+              priceSale = calculateTotalPrice(recipe.id);
+            }
+
+            const totalPrice = priceSale * packages.quantity;
             return (
               <Card key={recipe.id} style={{ marginBottom: '10px' }}>
                 <CardContent>
@@ -152,9 +170,17 @@ export default function ShoppingCart() {
                       </Typography>
                       <div>
                         <Typography variant="subtitle1" component="subtitle1">
-                          Giá:{' '}
+                          {priceSale == calculateTotalPrice(recipe.id) ? (
+                            <span>{calculateTotalPrice(recipe.id).toLocaleString('vi-VN')}₫</span>
+                          ) : (
+                            <Box component="span">
+                              <span style={{ textDecoration: 'line-through', color: 'var(--sale-color)' }}>
+                                {calculateTotalPrice(recipe.id).toLocaleString('vi-VN')}₫
+                              </span>{' '}
+                              {priceSale.toLocaleString('vi-VN')}₫
+                            </Box>
+                          )}
                         </Typography>
-                        ₫{packageItem.price.toLocaleString('vi-VN')}
                       </div>
                     </div>
                   </div>
@@ -164,22 +190,24 @@ export default function ShoppingCart() {
                         <Typography variant="subtitle1" component="subtitle1">
                           Số lượng:
                         </Typography>
-                        <IconButton onClick={() => handleQuantityChange(packageItem.id, packageItem.quantity - 1)}>
+                        <IconButton onClick={() => handleQuantityChange(packages.id, packages.quantity - 1)}>
                           <Remove sx={{ fontSize: 10 }} />
                         </IconButton>
                         <TextField
                           name="quantity"
-                          value={packageItem.quantity}
-                          size="small"
+                          value={packages.quantity}
                           InputProps={{
+                            inputMode: 'numeric',
                             style: { height: '30px' }, // Thay đổi chiều cao của ô nhập
                           }}
-                          style={{ width: '47px' }}
+                          style={{
+                            width: packages.quantity < 10 ? '36px' : packages.quantity < 100 ? '46px' : '56px',
+                          }} // Thay đổi kích thước dựa trên độ dài số
                           onChange={(event) => {
-                            handleQuantityChange(packageItem.id, event.target.value);
+                            handleQuantityChange(packages.id, event.target.value);
                           }}
-                        ></TextField>
-                        <IconButton onClick={() => handleQuantityChange(packageItem.id, packageItem.quantity + 1)}>
+                        />
+                        <IconButton onClick={() => handleQuantityChange(packages.id, packages.quantity + 1)}>
                           <Add sx={{ fontSize: 10 }} />
                         </IconButton>
                       </div>
@@ -187,7 +215,7 @@ export default function ShoppingCart() {
                         <Typography variant="subtitle1" component="subtitle1">
                           Tổng cộng:{' '}
                         </Typography>
-                        ₫{totalPrice.toLocaleString('vi-VN')}
+                        {totalPrice.toLocaleString('vi-VN')}₫
                       </div>
                     </div>
                     <IconButton onClick={() => handleDelete(recipe.id)}>
@@ -227,9 +255,9 @@ export default function ShoppingCart() {
           </div>
 
           <div style={{ marginTop: '20px' }}>
-            <div>Tổng tiền hàng: ₫{subtotal.toLocaleString('vi-VN')}</div>
-            <div>Voucher: ₫{couponAmount.toLocaleString('vi-VN')}</div>
-            <div>Tổng thanh toán: ₫{total.toLocaleString('vi-VN')}</div>
+            <div>Tổng tiền hàng: {subtotal.toLocaleString('vi-VN')}₫</div>
+            <div>Voucher: {couponAmount.toLocaleString('vi-VN')}₫</div>
+            <div>Tổng thanh toán: {total.toLocaleString('vi-VN')}₫</div>
 
             <Button
               variant="contained"
@@ -283,37 +311,44 @@ export default function ShoppingCart() {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>
+                  <TableCell style={{ alignContent: 'center' }}>
                     <Typography variant="h5" component="h5">
-                      Sản phẩm
+                      Sản Phẩm
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="h5" component="h5">
-                      Giá
+                      Đơn Giá
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="h5" component="h5">
-                      Số lượng
+                      Số Lượng
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="h5" component="h5">
-                      Tổng tiền
+                      Số Tiền
                     </Typography>
                   </TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
 
-              {packages.map((packageItem) => {
-                const recipe = recipes.find((recipe) => recipe.id === packageItem.recipeId);
+              {recipes.map((recipe) => {
                 if (!recipe) {
-                  // Recipe not found, handle this case (skip or display an error)
-                  return null;
+                  return null; // Bỏ qua gói hàng nếu không tìm thấy thông tin recipe
                 }
-                const totalPrice = packageItem.price * packageItem.quantity;
+
+                let priceSale = 0;
+
+                if (calculateTotalSales(recipe.id) > 0) {
+                  priceSale = calculateTotalPrice(recipe.id) - calculateTotalSales(recipe.id);
+                } else {
+                  priceSale = calculateTotalPrice(recipe.id);
+                }
+
+                const totalPrice = priceSale * packages.quantity;
 
                 return (
                   <TableRow key={recipe.id}>
@@ -333,35 +368,47 @@ export default function ShoppingCart() {
                     </TableCell>
                     <TableCell>
                       <Typography variant="subtitle1" component="subtitle1">
-                        ₫{packageItem.price.toLocaleString('vi-VN')}
+                        {priceSale == calculateTotalPrice(recipe.id) ? (
+                          <span>{calculateTotalPrice(recipe.id).toLocaleString('vi-VN')}₫</span>
+                        ) : (
+                          <Box component="span">
+                            <span style={{ textDecoration: 'line-through', color: 'var(--sale-color)' }}>
+                              {calculateTotalPrice(recipe.id).toLocaleString('vi-VN')}₫
+                            </span>{' '}
+                            {priceSale.toLocaleString('vi-VN')}₫
+                          </Box>
+                        )}
                       </Typography>
                     </TableCell>
                     <TableCell>
-                      <IconButton onClick={() => handleQuantityChange(packageItem.id, packageItem.quantity - 1)}>
+                      <IconButton onClick={() => handleQuantityChange(packages.id, packages.quantity - 1)}>
                         <Remove sx={{ fontSize: 15 }} />
                       </IconButton>
                       <TextField
                         name="quantity"
-                        value={packageItem.quantity}
+                        value={packages.quantity}
                         InputProps={{
+                          inputMode: 'numeric',
                           style: { height: '30px' }, // Thay đổi chiều cao của ô nhập
                         }}
-                        style={{ width: '45px' }}
+                        style={{
+                          width: packages.quantity < 10 ? '36px' : packages.quantity < 100 ? '46px' : '56px',
+                        }} // Thay đổi kích thước dựa trên độ dài số
                         onChange={(event) => {
-                          handleQuantityChange(packageItem.id, event.target.value);
+                          handleQuantityChange(packages.id, event.target.value);
                         }}
-                      ></TextField>
-                      <IconButton onClick={() => handleQuantityChange(packageItem.id, packageItem.quantity + 1)}>
+                      />
+                      <IconButton onClick={() => handleQuantityChange(packages.id, packages.quantity + 1)}>
                         <Add sx={{ fontSize: 15 }} />
                       </IconButton>
                     </TableCell>
                     <TableCell>
                       <Typography variant="subtitle1" component="subtitle1">
-                        ₫{totalPrice.toLocaleString('vi-VN')}
+                        {totalPrice.toLocaleString('vi-VN')}₫
                       </Typography>
                     </TableCell>
                     <TableCell>
-                      <IconButton onClick={() => handleDelete(packageItem.id)}>
+                      <IconButton onClick={() => handleDelete(packages.id)}>
                         <Delete />
                       </IconButton>
                     </TableCell>
@@ -397,9 +444,9 @@ export default function ShoppingCart() {
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
               <div>
-                <div>Tổng tiền hàng: ₫{subtotal.toLocaleString('vi-VN')}</div>
-                <div>Voucher: ₫{couponAmount.toLocaleString('vi-VN')}</div>
-                <div>Tổng thanh toán: ₫{total.toLocaleString('vi-VN')}</div>
+                <div>Tổng tiền hàng: {subtotal.toLocaleString('vi-VN')}₫</div>
+                <div>Voucher: {couponAmount.toLocaleString('vi-VN')}₫</div>
+                <div>Tổng thanh toán: {total.toLocaleString('vi-VN')}₫</div>
                 <Button
                   variant="contained"
                   style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
