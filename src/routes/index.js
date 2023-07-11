@@ -7,7 +7,7 @@ import LoginForm from '~/pages/Login/LoginForm';
 import RegisterForm from '~/pages/Login/RegisterForm';
 import ShopGrid from '~/pages/Shop/ShopGrid';
 import DetailMobile from '~/pages/Shop/DetailMobile';
-import Checkout from '~/pages/Checkout/CheckOut';
+import Checkout from '~/pages/Shop/CheckOut';
 
 // Public Routes
 const publicRoutes = [

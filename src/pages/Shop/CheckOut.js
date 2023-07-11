@@ -9,9 +9,9 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import AddressForm from './AddressForm';
-import PaymentForm from './PaymentForm';
-import Review from './Review';
+import AddressForm from '../Checkout/AddressForm';
+import PaymentForm from '../Checkout/PaymentForm';
+import Review from '../Checkout/Review';
 
 const steps = ['Thông tin giao hàng', 'Thông tin thanh toán', 'Hoàn tất đặt hàng'];
 
