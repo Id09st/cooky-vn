@@ -24,13 +24,8 @@ import {
   useMediaQuery,
   Rating,
   Grid,
-  Checkbox,
-  FormControlLabel,
-  TableContainer,
-  Table,
-  TableRow,
-  TableCell,
-  TableBody,
+  MenuItem,
+  Select,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
@@ -78,43 +73,7 @@ export default function ShopDetail() {
   const [packages, setPackages] = useState([]);
   const [value, setValue] = React.useState(0);
   const [currentImage, setCurrentImage] = useState('');
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [options, setOptions] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [totalSales, setTotalSales] = useState(0);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`https://cookyz.somee.com/api/packages?recipeId=${id}`);
-        if (response.ok) {
-          const data = await response.json();
-          setOptions(data);
-          const filteredOptions = data.map((item) => item.nutritionFacts);
-          setSelectedOptions(filteredOptions);
-        } else {
-          console.error('Error fetching data:', response.status, response.statusText);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const handleChange = useCallback((event) => {
-    const { value, checked } = event.target;
-    if (checked) {
-      setSelectedOptions((prevSelectedOptions) => [...prevSelectedOptions, value]);
-    } else {
-      setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((option) => option !== value));
-    }
-  }, []);
-
-  const handleChanges = (event, newValue) => {
-    setValue(newValue);
-  };
+  const [selectedTitle, setSelectedTitle] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -127,6 +86,14 @@ export default function ShopDetail() {
         const packageResponse = await fetch('https://cookyz.somee.com/api/packages/');
         const packageData = await packageResponse.json();
         setPackages(packageData);
+        const relatedPackages = packageData.filter((packageItem) => packageItem.recipeId === parseInt(id));
+        if (relatedPackages.length > 0) {
+          setSelectedTitle(relatedPackages[0].title);
+        }
+        // const relatedPackages = packageData.filter((packageItem) => packageItem.recipeId === parseInt(id));
+        // if (relatedPackages.length > 0) {
+        //   setSelectedDetail(relatedPackages[0].detail.split('\n')[0]);
+        // }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -135,21 +102,9 @@ export default function ShopDetail() {
     fetchData();
   }, [id]);
 
-  useEffect(() => {
-    // Tính tổng prices
-    const selectedPrices = packages
-      .filter((packageItem) => selectedOptions.includes(packageItem.nutritionFacts))
-      .map((packageItem) => packageItem.price);
-    const total1 = selectedPrices.reduce((sum, price) => sum + price, 0);
-    setTotalPrice(total1);
-
-    // Tính tổng sales
-    const selectedSales = packages
-      .filter((packageItem) => selectedOptions.includes(packageItem.nutritionFacts))
-      .map((packageItem) => packageItem.sales);
-    const total2 = selectedSales.reduce((sum, sales) => sum + sales, 0);
-    setTotalSales(total2);
-  }, [options, selectedOptions]);
+  const handleChanges = (event, newValue) => {
+    setValue(newValue);
+  };
 
   useEffect(() => {
     if (recipe && recipe.image && recipe.image.length > 0) {
@@ -161,18 +116,6 @@ export default function ShopDetail() {
     setCurrentImage(line);
   };
 
-  // const calculateTotalPrice = (recipeId) => {
-  //   const relatedPackages = packages.filter((packageItem) => packageItem.recipeId === recipeId);
-  //   const totalPrice = relatedPackages.reduce((sum, packageItem) => sum + packageItem.price, 0);
-  //   return totalPrice;
-  // };
-
-  // const calculateTotalSales = (recipeId) => {
-  //   const relatedPackages = packages.filter((packageItem) => packageItem.recipeId === recipeId);
-  //   const totalSales = relatedPackages.reduce((sum, packageItem) => sum + packageItem.sales, 0);
-  //   return totalSales;
-  // };
-
   const isMobile = useMediaQuery('(max-width: 601px)');
 
   if (!recipe || !packages) {
@@ -183,11 +126,17 @@ export default function ShopDetail() {
     );
   }
 
+  const selectedPackage = packages.find((packageItem) => packageItem.title === selectedTitle);
+  const selectedPrice = selectedPackage ? selectedPackage.price : 0;
+  const selectedSales = selectedPackage ? selectedPackage.sales : 0;
+  const selectedDetail = selectedPackage ? selectedPackage.detail : '';
+  const selectedNutritionFacts = selectedPackage ? selectedPackage.nutritionFacts : '';
+
   let priceSale = 0;
-  if (totalSales > 0) {
-    priceSale = totalPrice - totalSales;
+  if (selectedSales > 0) {
+    priceSale = selectedPrice - selectedSales;
   } else {
-    priceSale = totalPrice;
+    priceSale = selectedPrice;
   }
 
   return (
@@ -290,21 +239,21 @@ export default function ShopDetail() {
                 <Rating name="read-only" value={Number('5')} readOnly />
                 <Typography variant="h5">
                   {' '}
-                  {priceSale === totalPrice ? (
-                    <span style={{ fontWeight: 'bold' }}>{totalPrice.toLocaleString('vi-VN')}₫</span>
+                  {priceSale === selectedPrice ? (
+                    <span style={{ fontWeight: 'bold' }}>{selectedPrice.toLocaleString('vi-VN')}₫</span>
                   ) : (
                     <Box component="span">
                       <Typography
                         variant="h6"
                         style={{ textDecoration: 'line-through', color: 'var(--sale-color)', fontWeight: 'bold' }}
                       >
-                        {totalPrice.toLocaleString('vi-VN')}₫
+                        {selectedPrice.toLocaleString('vi-VN')}₫
                       </Typography>
                       <Typography variant="h6">
-                        {totalSales >= 1000 ? (
-                          <span style={{ color: 'red' }}>-{totalSales / 1000}K </span>
+                        {selectedSales >= 1000 ? (
+                          <span style={{ color: 'red' }}>-{selectedSales / 1000}K </span>
                         ) : (
-                          <span style={{ color: 'red' }}>-{totalSales} </span>
+                          <span style={{ color: 'red' }}>-{selectedSales} </span>
                         )}
                         {priceSale < 0 ? <b>{0}₫</b> : <b>{priceSale.toLocaleString('vi-VN')}₫</b>}
                       </Typography>
@@ -375,52 +324,37 @@ export default function ShopDetail() {
                     </div>
                   </li>
                 </ul> */}
-                <Typography variant="h5" style={{ fontWeight: 'bold', paddingTop: '20px' }}>
-                  Thành phần
-                </Typography>
-                <div
-                  style={{ background: 'var(--background-2)', padding: '10px', fontSize: '14px', margin: '5px 0 15px' }}
-                >
-                  <TableContainer>
-                    <Table>
-                      <TableBody>
-                        {packages.map((packageItem, index) => {
-                          let s = index + 1;
-                          return (
-                            <React.Fragment key={index}>
-                              {packageItem.recipeId === recipe.id ? (
-                                <TableRow key={packageItem.id}>
-                                  <TableCell>
-                                    <Typography variant="subtitle1">
-                                      {s}. {packageItem.nutritionFacts}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell>
-                                    <Typography variant="body2" color="textSecondary">
-                                      {packageItem.price.toLocaleString('vi-VN')}₫
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell>
-                                    <FormControlLabel
-                                      control={
-                                        <Checkbox
-                                          defaultChecked={selectedOptions.includes(packageItem.nutritionFacts)}
-                                          onChange={handleChange}
-                                          value={packageItem.nutritionFacts}
-                                          color="success"
-                                        />
-                                      }
-                                      label=""
-                                    />
-                                  </TableCell>
-                                </TableRow>
-                              ) : null}
-                            </React.Fragment>
-                          );
-                        })}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
+
+                <div style={{ paddingTop: '20px' }}>
+                  <Select value={selectedTitle} onChange={(event) => setSelectedTitle(event.target.value)}>
+                    {packages
+                      .filter((packageItem) => packageItem.recipeId === recipe.id)
+                      .map((packageItem) => (
+                        <MenuItem value={packageItem.title}>{packageItem.title}</MenuItem>
+                      ))}
+                  </Select>
+                  <Typography variant="h5" style={{ fontWeight: 'bold', paddingTop: '20px' }}>
+                    Thành phần
+                  </Typography>
+                  <p>
+                    {selectedDetail.split('\n').map((line, index) => (
+                      <React.Fragment key={index}>
+                        {line}
+                        <br />
+                      </React.Fragment>
+                    ))}
+                  </p>
+                  <Typography variant="h5" style={{ fontWeight: 'bold', paddingTop: '20px' }}>
+                    Dinh dưỡng
+                  </Typography>
+                  <p>
+                    {selectedNutritionFacts.split('\n').map((line, index) => (
+                      <React.Fragment key={index}>
+                        {line}
+                        <br />
+                      </React.Fragment>
+                    ))}
+                  </p>
                 </div>
               </Grid>
               <Grid item lg={12}>
