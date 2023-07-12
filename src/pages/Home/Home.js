@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const categoriesResponse = await fetch('https://649febe0ed3c41bdd7a6d4a2.mockapi.io/categories');
+        const categoriesResponse = await fetch('https://cookyzz.azurewebsites.net/api/Categories');
         const categoriesData = await categoriesResponse.json();
         setCategories(categoriesData);
       } catch (error) {
@@ -27,11 +27,11 @@ export default function Home() {
   
   useEffect(() => {
     // Fetch data from JSON files
-    fetch('https://cookyz.somee.com/api/Recipes')
+    fetch('https://cookyzz.azurewebsites.net/api/Recipes')
       .then((response) => response.json())
       .then((data) => setRecipes(data));
 
-    fetch('https://cookyz.somee.com/api/Packages')
+    fetch('https://cookyzz.azurewebsites.net/api/Packages')
       .then((response) => response.json())
       .then((data) => setPackages(data));
   }, []);

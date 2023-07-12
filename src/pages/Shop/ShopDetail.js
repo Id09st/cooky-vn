@@ -78,12 +78,12 @@ export default function ShopDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const recipeResponse = await fetch('https://cookyz.somee.com/api/recipes/');
+        const recipeResponse = await fetch('https://cookyzz.azurewebsites.net/api/Recipes/');
         const recipeData = await recipeResponse.json();
         const recipeItem = recipeData.find((item) => item.id === parseInt(id));
         setRecipe(recipeItem);
 
-        const packageResponse = await fetch('https://cookyz.somee.com/api/packages/');
+        const packageResponse = await fetch('https://cookyzz.azurewebsites.net/api/Packages/');
         const packageData = await packageResponse.json();
         setPackages(packageData);
         const relatedPackages = packageData.filter((packageItem) => packageItem.recipeId === parseInt(id));
