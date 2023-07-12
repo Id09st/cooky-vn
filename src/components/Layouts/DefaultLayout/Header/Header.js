@@ -1,4 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import logo from '~/assets/images/logo.png';
@@ -77,6 +78,8 @@ export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   useLayoutEffect(() => {
     function updateIsMobile() {
@@ -120,7 +123,11 @@ export default function Header() {
   };
 
   const handleSearchIconClick = () => {
-    console.log('Search');
+    navigate(`/results/${searchTerm}`);
+  };
+
+  const handleInputChange = (event) => {
+    setSearchTerm(event.target.value);
   };
 
   const menuId = 'primary-search-account-menu';
@@ -256,6 +263,8 @@ export default function Header() {
               <SearchOutlined style={{ color: 'var(--para-color)', backgroundColor: 'var(--background-2)' }} />
             </SearchIconWrapper>
             <StyledInputBase
+              value={searchTerm}
+              onChange={handleInputChange}
               placeholder="Tìm kiếm công thức hoặc sản phẩm ..."
               inputProps={{ 'aria-label': 'search' }}
               style={{

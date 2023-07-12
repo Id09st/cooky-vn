@@ -8,6 +8,7 @@ import RegisterForm from '~/pages/Login/RegisterForm';
 import ShopGrid from '~/pages/Shop/ShopGrid';
 import DetailMobile from '~/pages/Shop/DetailMobile';
 import Checkout from '~/pages/Shop/CheckOut';
+import Search from '~/components/Search/Search';
 
 // Public Routes
 const publicRoutes = [
@@ -20,6 +21,7 @@ const publicRoutes = [
   { path: '/contact', component: Contact },
   { path: '/login', component: LoginForm },
   { path: '/register', component: RegisterForm },
+  { path: "/results/:searchTerm", component: Search },
   { path: '/admin', component: Admin, layout: null },
 ];
 
