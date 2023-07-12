@@ -25,7 +25,7 @@ const RegisterForm = ({ onClose }) => {
     };
 
     try {
-      const response = await fetch('https://cookyz.somee.com/api/Auth/register', {
+      const response = await fetch('https://cookyzz.azurewebsites.net/api/Auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

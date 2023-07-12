@@ -78,12 +78,12 @@ export default function ShopDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const recipeResponse = await fetch('https://cookyz.somee.com/api/recipes/');
+        const recipeResponse = await fetch('https://cookyzz.azurewebsites.net/api/Recipes');
         const recipeData = await recipeResponse.json();
         const recipeItem = recipeData.find((item) => item.id === parseInt(id));
         setRecipe(recipeItem);
 
-        const packageResponse = await fetch('https://cookyz.somee.com/api/packages/');
+        const packageResponse = await fetch('https://cookyzz.azurewebsites.net/api/Packages/');
         const packageData = await packageResponse.json();
         setPackages(packageData);
         const relatedPackages = packageData.filter((packageItem) => packageItem.recipeId === parseInt(id));
@@ -253,7 +253,7 @@ export default function ShopDetail() {
                         {selectedSales >= 1000 ? (
                           <span style={{ color: 'red' }}>-{selectedSales / 1000}K </span>
                         ) : (
-                          <span style={{ color: 'red' }}>-{selectedSales} </span>
+                          <span style={{ color: 'red' }}>-{selectedSales}₫ </span>
                         )}
                         {priceSale < 0 ? <b>{0}₫</b> : <b>{priceSale.toLocaleString('vi-VN')}₫</b>}
                       </Typography>

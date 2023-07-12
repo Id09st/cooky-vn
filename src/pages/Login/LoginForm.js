@@ -22,7 +22,7 @@ const LoginForm = () => {
     };
 
     try {
-      const response = await fetch('https://cookyz.somee.com/api/Auth/login', {
+      const response = await fetch('https://cookyzz.azurewebsites.net/api/Auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

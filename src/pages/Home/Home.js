@@ -24,14 +24,14 @@ export default function Home() {
 
     fetchData();
   }, []);
-  
+
   useEffect(() => {
     // Fetch data from JSON files
-    fetch('https://cookyz.somee.com/api/Recipes')
+    fetch('https://cookyzz.azurewebsites.net/api/Recipes')
       .then((response) => response.json())
       .then((data) => setRecipes(data));
 
-    fetch('https://cookyz.somee.com/api/Packages')
+    fetch('https://cookyzz.azurewebsites.net/api/Packages')
       .then((response) => response.json())
       .then((data) => setPackages(data));
   }, []);
