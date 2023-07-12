@@ -8,6 +8,7 @@ import RegisterForm from '~/pages/Login/RegisterForm';
 import ShopGrid from '~/pages/Shop/ShopGrid';
 import DetailMobile from '~/pages/Shop/DetailMobile';
 import Checkout from '~/pages/Shop/CheckOut';
+import Search from '~/components/Search/Search';
 
 // Public Routes
 const publicRoutes = [
@@ -17,7 +18,7 @@ const publicRoutes = [
   { path: '/detail-mobile/:id', component: DetailMobile, layout: null },
   { path: '/shoping-cart', component: ShopingCart },
   { path: '/checkout', component: Checkout },
-  { path: '/search', component: SearchRecipes },
+  { path: '/search', component: Search },
   { path: '/contact', component: Contact },
   { path: '/login', component: LoginForm },
   { path: '/register', component: RegisterForm },
