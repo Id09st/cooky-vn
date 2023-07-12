@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const categoriesResponse = await fetch('https://cookyzz.azurewebsites.net/api/Categories');
+        const categoriesResponse = await fetch('https://649febe0ed3c41bdd7a6d4a2.mockapi.io/categories');
         const categoriesData = await categoriesResponse.json();
         setCategories(categoriesData);
       } catch (error) {
