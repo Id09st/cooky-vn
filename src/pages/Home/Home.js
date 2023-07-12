@@ -7,16 +7,9 @@ import ImageSlider from './Slider/ImageSlider';
 import 'src/sass/_slide.scss';
 
 export default function Home() {
-  const [filter, setFilter] = useState('All');
   const [categories, setCategories] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [packages, setPackages] = useState([]);
-
-  const handleFilterChange = (newFilter) => {
-    setFilter(newFilter);
-  };
-
-  const filteredItems = filter === 'All' ? Featured : Featured.filter((item) => item.class.includes(filter));
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,14 +17,6 @@ export default function Home() {
         const categoriesResponse = await fetch('https://649febe0ed3c41bdd7a6d4a2.mockapi.io/categories');
         const categoriesData = await categoriesResponse.json();
         setCategories(categoriesData);
-
-        const packageResponse = await fetch('https://cookyz.somee.com/api/packages/');
-        const packageData = await packageResponse.json();
-        setPackages(packageData);
-
-        const recipeResponse = await fetch('https://cookyz.somee.com/api/recipes/');
-        const recipeData = await recipeResponse.json();
-        setRecipes(recipeData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -39,17 +24,26 @@ export default function Home() {
 
     fetchData();
   }, []);
+  
+  useEffect(() => {
+    // Fetch data from JSON files
+    fetch('https://cookyz.somee.com/api/Recipes')
+      .then((response) => response.json())
+      .then((data) => setRecipes(data));
 
-  const calculateTotalPrice = (recipeId) => {
-    const relatedPackages = packages.filter((packages) => packages.recipeId === recipeId);
-    const totalPrice = relatedPackages.reduce((sum, packages) => sum + packages.price, 0);
-    return totalPrice;
-  };
+    fetch('https://cookyz.somee.com/api/Packages')
+      .then((response) => response.json())
+      .then((data) => setPackages(data));
+  }, []);
 
-  const calculateTotalSales = (recipeId) => {
-    const relatedPackages = packages.filter((packages) => packages.recipeId === recipeId);
-    const totalSales = relatedPackages.reduce((sum, packages) => sum + packages.sales, 0);
-    return totalSales;
+  const calculatePriceSale = (price, sales) => {
+    let priceSale = 0;
+    if (sales > 0) {
+      priceSale = price - sales;
+    } else {
+      priceSale = price;
+    }
+    return priceSale;
   };
 
   return (
@@ -100,97 +94,89 @@ export default function Home() {
 
       <div className="row featured__filter">
         {recipes.map((recipe) => {
-          if (!recipe) {
-            return null; // Bỏ qua gói hàng nếu không tìm thấy thông tin recipe
-          }
-
-          let priceSale = 0;
-
-          if (calculateTotalSales(recipe.id) > 0) {
-            priceSale = calculateTotalPrice(recipe.id) - calculateTotalSales(recipe.id);
-          } else {
-            priceSale = calculateTotalPrice(recipe.id);
-          }
-
-          return (
-            <div key={recipe.id} className={`col-lg-3 col-md-4 col-sm-6 mix ${recipe.title}`}>
-              <div className="featured__item">
-                <div
-                  className="featured__item__pic set-bg"
-                  style={{ backgroundImage: `url(${recipe.image.split('\n')[0]})` }}
-                >
-                  <ul className="featured__item__pic__hover">
-                    <li>
-                      <a href="#">
-                        <FavoriteBorderRounded />
-                      </a>
-                    </li>
-                    <li>
-                      <Link to={`shop-detail/${recipe.id}`}>
-                        <FullscreenOutlined />
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/shoping-cart">
-                        <ShoppingCartOutlined />
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-                <CardContent style={{ paddingTop: '15px' }}>
-                  <Typography
-                    variant="h6"
-                    component={Link}
-                    style={{
-                      color: 'var(--black-color)',
-                      fontSize: '18px',
-                      fontWeight: '700',
-                      height: '48px',
-                      paddingTop: '10px',
-                      marginBottom: '5px',
-                    }}
-                    to="/#"
+          const pkg = packages.find((pkg) => pkg.recipeId === recipe.id);
+          if (pkg) {
+            return (
+              <div key={recipe.id} className={`col-lg-3 col-md-4 col-sm-6 mix ${recipe.title}`}>
+                <div className="featured__item">
+                  <div
+                    className="featured__item__pic set-bg"
+                    style={{ backgroundImage: `url(${recipe.image.split('\n')[0]})` }}
                   >
-                    {recipe.title}
-                  </Typography>
-                  <Typography variant="subtitle1" style={{}}>
-                    {priceSale.toLocaleString('vi-VN')}₫
-                    {calculateTotalSales(recipe.id) >= 1000 ? (
-                      <s
-                        style={{
-                          marginLeft: '10px',
-                          fontSize: '14px',
-                          lineHeight: '20px',
-                          textDecorationLine: 'line-through',
-                          color: 'var(--sale-color)',
-                          position: 'relative',
-                          marginBottom: '5px',
-                        }}
-                      >
-                        {calculateTotalSales(recipe.id) / 1000}k
-                      </s>
-                    ) : calculateTotalSales(recipe.id) === 0 ? (
-                      <></>
-                    ) : (
-                      <s
-                        style={{
-                          marginLeft: '10px',
-                          fontSize: '14px',
-                          lineHeight: '20px',
-                          textDecorationLine: 'line-through',
-                          color: 'var(--sale-color)',
-                          position: 'relative',
-                          marginBottom: '5px',
-                        }}
-                      >
-                        {calculateTotalSales(recipe.id)}
-                      </s>
-                    )}
-                  </Typography>
-                </CardContent>
+                    <ul className="featured__item__pic__hover">
+                      <li>
+                        <a href="#">
+                          <FavoriteBorderRounded />
+                        </a>
+                      </li>
+                      <li>
+                        <Link to={`shop-detail/${recipe.id}`}>
+                          <FullscreenOutlined />
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/shoping-cart">
+                          <ShoppingCartOutlined />
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                  <CardContent style={{ paddingTop: '15px' }}>
+                    <Typography
+                      variant="h6"
+                      component={Link}
+                      style={{
+                        color: 'var(--black-color)',
+                        fontSize: '18px',
+                        fontWeight: '700',
+                        height: '48px',
+                        paddingTop: '10px',
+                        marginBottom: '5px',
+                      }}
+                      to="/#"
+                    >
+                      {recipe.title}
+                    </Typography>
+                    <Typography variant="subtitle1" style={{}}>
+                      {calculatePriceSale(pkg.price, pkg.sales).toLocaleString('vi-VN')}₫
+                      {pkg.sales >= 1000 ? (
+                        <s
+                          style={{
+                            marginLeft: '10px',
+                            fontSize: '14px',
+                            lineHeight: '20px',
+                            textDecorationLine: 'line-through',
+                            color: 'var(--sale-color)',
+                            position: 'relative',
+                            marginBottom: '5px',
+                          }}
+                        >
+                          {pkg.sales / 1000}k
+                        </s>
+                      ) : pkg.sales === 0 ? (
+                        <></>
+                      ) : (
+                        <s
+                          style={{
+                            marginLeft: '10px',
+                            fontSize: '14px',
+                            lineHeight: '20px',
+                            textDecorationLine: 'line-through',
+                            color: 'var(--sale-color)',
+                            position: 'relative',
+                            marginBottom: '5px',
+                          }}
+                        >
+                          {pkg.sales}₫
+                        </s>
+                      )}
+                    </Typography>
+                  </CardContent>
+                </div>
               </div>
-            </div>
-          );
+            );
+          }
+          return null;
         })}
       </div>
       {/* Featured Section End */}
