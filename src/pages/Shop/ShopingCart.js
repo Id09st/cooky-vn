@@ -63,11 +63,12 @@ export default function ShoppingCart() {
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const packageResponse = await fetch('https://cookyz.somee.com/api/packages/');
-        const packageData = await packageResponse.json();
-        setPackages(packageData);
+        // Fetch data from orders.json or API endpoint
+        const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/1');
+        const data = await response.json();
+        setCartItems(data.items);
 
-        const recipeResponse = await fetch('https://cookyz.somee.com/api/recipes/');
+        const recipeResponse = await fetch('https://cookyzz.azurewebsites.net/api/Recipes');
         const recipeData = await recipeResponse.json();
         setRecipes(recipeData);
       } catch (error) {
