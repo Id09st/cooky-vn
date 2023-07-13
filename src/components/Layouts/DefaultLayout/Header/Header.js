@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
@@ -43,7 +43,7 @@ const Search = styled('div')(({ theme }) => ({
   marginLeft: theme.spacing(2),
   width: '100%',
   [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
+    marginLeft: theme.spacing(1),
     width: 'auto',
   },
 }));
@@ -65,7 +65,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    paddingLeft: `15px`,
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
@@ -79,7 +79,23 @@ export default function Header() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        // Fetch data from orders.json or API endpoint
+        const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/11');
+        const data = await response.json();
+        console.log(data);
+        setCartItems(data.items);
+      } catch (error) {
+        console.error('Error fetching cart items:', error);
+      }
+    };
+    fetchCartItems();
+  }, []);
 
   useLayoutEffect(() => {
     function updateIsMobile() {
@@ -192,16 +208,9 @@ export default function Header() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem onClick={handleMobileMenuClose}>
-        <IconButton size="large" aria-label="show 4 new favorite Foood" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <FavoriteBorderRounded style={{ borderRadius: '50%' }} />
-          </Badge>
-        </IconButton>
-      </MenuItem>
-      <MenuItem onClick={handleMobileMenuClose}>
         <IconButton size="large" aria-label="show 17 new shoping cart" color="inherit">
           <Link to="/shoping-cart" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Badge badgeContent={17} color="error">
+            <Badge badgeContent={cartItems.length} color="error">
               <ShoppingCartOutlined style={{ borderRadius: '50%', color: 'black' }} />
             </Badge>
           </Link>
@@ -277,13 +286,8 @@ export default function Header() {
           <Box sx={{ flexGrow: 1 }} />
           <Box style={{ marginRight: '167px' }} sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large">
-              <Badge badgeContent={4} color="error">
-                <FavoriteBorderRounded sx={{ color: 'var(--white-color)' }} />
-              </Badge>
-            </IconButton>
-            <IconButton size="large">
               <Link to="/shoping-cart">
-                <Badge badgeContent={17} color="error">
+                <Badge badgeContent={cartItems.length} color="error">
                   <ShoppingCartOutlined sx={{ color: 'var(--white-color)' }} />
                 </Badge>
               </Link>
