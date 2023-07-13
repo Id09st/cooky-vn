@@ -9,6 +9,7 @@ import ShopGrid from '~/pages/Shop/ShopGrid';
 import DetailMobile from '~/pages/Shop/DetailMobile';
 import Checkout from '~/pages/Shop/CheckOut';
 import Search from '~/components/Search/Search';
+import OrderStatus from '~/pages/Order/OrderStatus';
 
 // Public Routes
 const publicRoutes = [
@@ -18,11 +19,12 @@ const publicRoutes = [
   { path: '/detail-mobile/:id', component: DetailMobile, layout: null },
   { path: '/shoping-cart', component: ShopingCart },
   { path: '/checkout', component: Checkout },
+  { path: '/order', component: OrderStatus },
   { path: '/search', component: Search },
   { path: '/contact', component: Contact },
   { path: '/login', component: LoginForm },
   { path: '/register', component: RegisterForm },
-  { path: "/results/:searchTerm", component: Search },
+  { path: '/results/:searchTerm', component: Search },
   { path: '/admin', component: Admin, layout: null },
 ];
 

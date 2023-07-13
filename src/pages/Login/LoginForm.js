@@ -34,6 +34,7 @@ const LoginForm = () => {
       if (response.ok) {
         const responseData = await response.json();
         // localStorage.setItem('token', response.data.token);
+        console.log(responseData);
         setNotification('Đăng nhập thành công'); // Thiết lập thông báo
       } else {
         setNotification('Đăng nhập không thành công'); // Thiết lập thông báo

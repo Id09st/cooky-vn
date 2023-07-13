@@ -8,20 +8,20 @@ import Grid from '@mui/material/Grid';
 export default function Review() {
   const [recipes, setRecipes] = useState([]);
   const [cartItems, setCartItems] = useState([]);
-  const [oder, setOder] = useState(null);
+  const [order, setorder] = useState(null);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const userResponse = await fetch('https://cookyzz.azurewebsites.net/api/Users/14');
+        const userResponse = await fetch('https://cookyzz.azurewebsites.net/api/Users/23');
         const dataUser = await userResponse.json();
         setUser(dataUser);
 
         const orderResponse = await fetch('https://cookyzz.azurewebsites.net/api/Orders/1');
-        const dataOder = await orderResponse.json();
-        setOder(dataOder);
-        setCartItems(dataOder.items);
+        const dataorder = await orderResponse.json();
+        setorder(dataorder);
+        setCartItems(dataorder.items);
 
         const recipeResponse = await fetch('https://cookyzz.azurewebsites.net/api/Recipes');
         const recipeData = await recipeResponse.json();
@@ -35,7 +35,7 @@ export default function Review() {
   }, []);
 
   // Chuyển đổi orderDate từ string sang đối tượng Date
-  const orderDate = oder ? new Date(oder.orderDate) : null;
+  const orderDate = order ? new Date(order.orderDate) : null;
 
   // Định dạng thời gian
   const formattedOrderDate = orderDate
@@ -56,7 +56,7 @@ export default function Review() {
 
   return (
     <>
-      {oder && (
+      {order && (
         <>
           <Typography variant="h6" gutterBottom>
             Tóm tắt đơn hàng
@@ -114,13 +114,13 @@ export default function Review() {
             <Grid item container direction="column" xs={12} sm={6}>
               <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
                 Hình thức thanh toán
-                <b style={{ color: 'red', fontSize: 17 }}>({oder.paymentMethod})</b>
+                <b style={{ color: 'red', fontSize: 17 }}>({order.paymentMethod})</b>
               </Typography>
               <Grid container>
-                <div key={oder.name}>
+                <div key={order.name}>
                   <Grid item xs={6}>
                     <Typography gutterBottom color="success">
-                      {oder.status}
+                      {order.status}
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>

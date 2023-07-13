@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Card, CardContent, Typography, CardMedia, Grid } from '@mui/material';
+import { Card, CardContent, Typography, CardMedia, Grid, Container } from '@mui/material';
 import { FavoriteBorderRounded, FullscreenOutlined, ShoppingCartOutlined } from '@mui/icons-material';
 
 export default function Search() {
@@ -9,7 +9,7 @@ export default function Search() {
   const [packages, setPackages] = useState([]);
 
   useEffect(() => {
-    fetch('https://cookyzz.azurewebsites.net/api/Recipes')
+    fetch('https://64933779428c3d2035d18178.mockapi.io/recipes')
       .then((response) => response.json())
       .then((data) => {
         const filteredResults = data.filter((result) => result.title.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -32,7 +32,7 @@ export default function Search() {
   };
 
   return (
-    <div style={{ marginTop: "80px" }}>
+    <Container style={{ marginTop: '80px' }}>
       <div className="row">
         <div className="col-lg-12">
           <Typography
@@ -43,9 +43,7 @@ export default function Search() {
             Kết Quả Tìm Kiếm của "{searchTerm}"
           </Typography>
         </div>
-      </div>
 
-      <div className="row featured__filter">
         {results.map((result) => {
           const pkg = packages.find((pkg) => pkg.recipeId === result.id);
           if (pkg) {
@@ -132,6 +130,6 @@ export default function Search() {
           return null;
         })}
       </div>
-    </div>
+    </Container>
   );
 }

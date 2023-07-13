@@ -17,23 +17,20 @@ export default function Home() {
         const categoriesResponse = await fetch('https://649febe0ed3c41bdd7a6d4a2.mockapi.io/categories');
         const categoriesData = await categoriesResponse.json();
         setCategories(categoriesData);
+
+        const recipesResponse = await fetch('https://cookyzz.azurewebsites.net/api/Recipes');
+        const recipesData = await recipesResponse.json();
+        setRecipes(recipesData);
+
+        const packagesResponse = await fetch('https://cookyzz.azurewebsites.net/api/Packages');
+        const packagesData = await packagesResponse.json();
+        setPackages(packagesData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    // Fetch data from JSON files
-    fetch('https://cookyzz.azurewebsites.net/api/Recipes')
-      .then((response) => response.json())
-      .then((data) => setRecipes(data));
-
-    fetch('https://cookyzz.azurewebsites.net/api/Packages')
-      .then((response) => response.json())
-      .then((data) => setPackages(data));
   }, []);
 
   const calculatePriceSale = (price, sales) => {
@@ -44,6 +41,28 @@ export default function Home() {
       priceSale = price;
     }
     return priceSale;
+  };
+
+  const handleAddToCart = async (pkg) => {
+    const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/addCart/1', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+
+      body: JSON.stringify({
+        orderId: 1,
+        packageId: pkg.id,
+        quantity: 1,
+        price: pkg.price,
+      }),
+    });
+    console.log(pkg.id);
+    console.log(pkg.price);
+    if (!response.ok) {
+      console.error('Response status:', response.status, 'status text:', response.statusText);
+      throw new Error('Error adding to cart');
+    }
   };
 
   return (
@@ -115,7 +134,7 @@ export default function Home() {
                         </Link>
                       </li>
                       <li>
-                        <Link to="/shoping-cart">
+                        <Link to="/shoping-cart" onClick={() => handleAddToCart(pkg)}>
                           <ShoppingCartOutlined />
                         </Link>
                       </li>

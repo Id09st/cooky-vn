@@ -103,7 +103,11 @@ export default function AddressForm() {
         <Grid item xs={12}>
           <Checkbox checked={useShippingAddress} onChange={(e) => setUseShippingAddress(e.target.checked)} />
           <label>Sử dụng địa chỉ này cho thông tin thanh toán của bạn</label>
-          <Button type="submit"> Lưu</Button>
+          <Button type="submit" sx={{
+                    backgroundColor: 'var(--primary-color)',
+                    color: 'var(--white-color)',
+                    borderRadius: '7px',
+                  }}> Lưu</Button>
         </Grid>
       </Grid>
     </form>

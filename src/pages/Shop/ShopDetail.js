@@ -116,6 +116,25 @@ export default function ShopDetail() {
     setCurrentImage(line);
   };
 
+  const handleAddToCart = async (selectedPackage, priceSale) => {
+    const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/addCart/1', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        orderId: 1,
+        packageId: selectedPackage.id,
+        quantity: 1,
+        price: priceSale,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Error adding to cart');
+    }
+  };
+
   const isMobile = useMediaQuery('(max-width: 601px)');
 
   if (!recipe || !packages) {
@@ -274,6 +293,7 @@ export default function ShopDetail() {
                   component={Link}
                   to="/shoping-cart"
                   startIcon={<ShoppingCartOutlined style={{ color: 'var(--primary-color)' }} sx={{ fontSize: 30 }} />}
+                  onClick={() => handleAddToCart(selectedPackage, priceSale)}
                 >
                   Thêm vào giỏ
                 </Button>

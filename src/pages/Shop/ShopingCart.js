@@ -24,7 +24,7 @@ import { Add, Delete, Remove } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
 export default function ShoppingCart() {
-  const [deleteConfirmation, setDeleteConfirmation] = useState(null);
+  const [deleteItemId, setDeleteItemId] = useState(null);
   const [recipes, setRecipes] = useState([]);
   const [packages, setPackages] = useState([]);
   const [cartItems, setCartItems] = useState([]);
@@ -43,22 +43,6 @@ export default function ShoppingCart() {
 
     setPackages(updatedPackages);
   };
-
-  const handleDelete = (itemId) => {
-    const itemToDelete = packages.find((item) => item.id === itemId);
-    setDeleteConfirmation(itemToDelete);
-  };
-
-  const handleConfirmDelete = () => {
-    const updatedPackages = packages.filter((item) => item.id !== deleteConfirmation.id);
-    setPackages(updatedPackages);
-    setDeleteConfirmation(null);
-  };
-
-  const handleCancelDelete = () => {
-    setDeleteConfirmation(null);
-  };
-
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -79,6 +63,80 @@ export default function ShoppingCart() {
     fetchCartItems();
   }, []);
 
+  const handleConfirmDelete = async () => {
+    const response = await fetch(`https://cookyzz.azurewebsites.net/api/OrderItems/${deleteItemId}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error('Error deleting item');
+    }
+
+    setCartItems(cartItems.filter((item) => item.id !== deleteItemId));
+    setDeleteItemId(null);
+  };
+
+  const handleAdd = async (item) => {
+    const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/addCart/1', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: item.id,
+        orderId: 1,
+        packageId: item.package.id,
+        quantity: item.quantity + 1,
+        price: (item.quantity + 1) * (item.package.price - item.package.sales),
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Error adding item');
+    }
+
+    // Cập nhật state sau khi thêm thành công
+    setCartItems(
+      cartItems.map((cartItem) =>
+        cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem,
+      ),
+    );
+  };
+
+  const handleRemove = async (item) => {
+    const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/addCart/1', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        orderId: 1,
+        packageId: item.package.id,
+        quantity: item.quantity - 1,
+        price: (item.quantity - 1) * (item.package.price - item.package.sales),
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Error removing item');
+    }
+
+    // Cập nhật state sau khi trừ thành công
+    setCartItems(
+      cartItems.map((cartItem) =>
+        cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity - 1 } : cartItem,
+      ),
+    );
+  };
+
+  const handleDelete = (itemId) => {
+    setDeleteItemId(itemId);
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteItemId(null);
+  };
+
   const calculateTotalPrice = (quantity, price, sales) => {
     return (quantity * price - sales).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
   };
@@ -86,7 +144,7 @@ export default function ShoppingCart() {
   const isMobile = useMediaQuery('(max-width: 601px)');
 
   // Tính tổng tiền hàng
-  const total = cartItems.reduce((total, item) => total + item.price, 0);
+  const total = cartItems.reduce((total, item) => total + item.package.price, 0);
 
   // Tính tổng khuyến mãi
   const totalSales = cartItems.reduce((total, item) => total + item.package.sales, 0);
@@ -175,9 +233,9 @@ export default function ShoppingCart() {
                 let priceSale = 0;
 
                 if (item.package.sales > 0) {
-                  priceSale = item.price - item.package.sales;
+                  priceSale = item.package.price - item.package.sales;
                 } else {
-                  priceSale = item.price;
+                  priceSale = item.package.price;
                 }
 
                 return (
@@ -198,12 +256,12 @@ export default function ShoppingCart() {
                     </TableCell>
                     <TableCell>
                       <Typography variant="subtitle1" component="subtitle1">
-                        {priceSale == item.price ? (
-                          <span>{item.price.toLocaleString('vi-VN')}₫</span>
+                        {priceSale == item.package.price ? (
+                          <span>{item.package.price.toLocaleString('vi-VN')}₫</span>
                         ) : (
                           <Box component="span">
                             <span style={{ textDecoration: 'line-through', color: 'var(--sale-color)' }}>
-                              {item.price.toLocaleString('vi-VN')}₫
+                              {item.package.price.toLocaleString('vi-VN')}₫
                             </span>{' '}
                             {priceSale.toLocaleString('vi-VN')}₫
                           </Box>
@@ -211,7 +269,7 @@ export default function ShoppingCart() {
                       </Typography>
                     </TableCell>
                     <TableCell>
-                      <IconButton onClick={() => handleQuantityChange(item.id, item.quantity - 1)}>
+                      <IconButton onClick={() => handleRemove(item)}>
                         <Remove sx={{ fontSize: 15 }} />
                       </IconButton>
                       <TextField
@@ -228,17 +286,17 @@ export default function ShoppingCart() {
                           handleQuantityChange(item.id, event.target.value);
                         }}
                       />
-                      <IconButton onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>
+                      <IconButton onClick={() => handleAdd(item)}>
                         <Add sx={{ fontSize: 15 }} />
                       </IconButton>
                     </TableCell>
                     <TableCell>
                       <Typography variant="subtitle1" component="subtitle1">
-                        {calculateTotalPrice(item.quantity, item.price, item.package.sales)}
+                        {calculateTotalPrice(item.quantity, item.package.price, item.package.sales)}
                       </Typography>
                     </TableCell>
                     <TableCell>
-                      <IconButton onClick={() => handleDelete(packages.id)}>
+                      <IconButton onClick={() => handleDelete(item.id)}>
                         <Delete />
                       </IconButton>
                     </TableCell>
@@ -249,7 +307,11 @@ export default function ShoppingCart() {
             <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '10px' }}>
               <Button
                 variant="contained"
-                style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
+                sx={{
+                  backgroundColor: 'var(--primary-color)',
+                  color: 'var(--white-color)',
+                  borderRadius: '7px',
+                }}
                 component={Link}
                 to="/"
               >
@@ -264,7 +326,11 @@ export default function ShoppingCart() {
 
                 <Button
                   variant="contained"
-                  style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
+                  sx={{
+                    backgroundColor: 'var(--primary-color)',
+                    color: 'var(--white-color)',
+                    borderRadius: '7px',
+                  }}
                   component={Link}
                   to="/checkout"
                 >
@@ -275,14 +341,15 @@ export default function ShoppingCart() {
           </TableContainer>
         </Container>
       )}
-      {deleteConfirmation && (
+
+      {deleteItemId && (
         <Dialog open={true} onClose={handleCancelDelete}>
           <DialogTitle>Xóa sản phẩm</DialogTitle>
           <DialogContent>
-            <Typography>Bạn muốn xóa sản phẩm "{deleteConfirmation.name}" khỏi giỏ hàng?</Typography>
+            <Typography>Bạn có chắc chắn muốn xóa sản phẩm này không?</Typography>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCancelDelete}>Thoát</Button>
+            <Button onClick={handleCancelDelete}>Hủy</Button>
             <Button onClick={handleConfirmDelete} color="error">
               Xóa
             </Button>
