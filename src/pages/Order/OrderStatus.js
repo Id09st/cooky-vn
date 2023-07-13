@@ -15,15 +15,15 @@ import {
 } from '@mui/material';
 
 export default function OrderStatus() {
-  const [orders, setOrders] = useState([]);
+  const [order, setOrder] = useState(null);
   const [orderItems, setOrderItems] = useState([]);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders');
+        const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/1');
         const data = await response.json();
-        setOrders(data);
+        setOrder(data);
       } catch (error) {
         console.log('Error fetching orders:', error);
       }
@@ -46,7 +46,7 @@ export default function OrderStatus() {
   return (
     <Container style={{ paddingTop: '90px' }}>
       <Box sx={{ width: '100%' }}>
-        {orders.map((order) => (
+        {order && (
           <Card key={order.id} sx={{ my: 2, p: 2 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -110,7 +110,7 @@ export default function OrderStatus() {
               </Grid>
             </Grid>
           </Card>
-        ))}
+        )}
       </Box>
     </Container>
   );

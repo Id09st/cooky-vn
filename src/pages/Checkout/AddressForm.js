@@ -13,6 +13,7 @@ export default function AddressForm() {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [useShippingAddress, setUseShippingAddress] = useState(true);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -32,10 +33,46 @@ export default function AddressForm() {
     fetchUser();
   }, []);
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // Thực hiện xử lý lưu thông tin giao hàng tại đây
-    // Ví dụ: gửi thông tin lên API hoặc lưu vào trạng thái của ứng dụng
+    try {
+      const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/14', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: 14,
+          username: 'thiit',
+          password: '123',
+          name: name,
+          email: email,
+          phone: phone,
+          address: address,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status);
+      }
+
+      if (response.headers.get('content-type') && response.headers.get('content-type').includes('application/json')) {
+        const data = await response.json();
+        console.log(data); // Log the response data to the console
+      }
+
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+      }, 3000);
+
+      const data = await response.json();
+      console.log(data); // Log the response data to the console
+
+      alert('Cập nhật thông tin thành công!');
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -103,13 +140,22 @@ export default function AddressForm() {
         <Grid item xs={12}>
           <Checkbox checked={useShippingAddress} onChange={(e) => setUseShippingAddress(e.target.checked)} />
           <label>Sử dụng địa chỉ này cho thông tin thanh toán của bạn</label>
-          <Button type="submit" sx={{
-                    backgroundColor: 'var(--primary-color)',
-                    color: 'var(--white-color)',
-                    borderRadius: '7px',
-                  }}> Lưu</Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            type="submit"
+            sx={{
+              backgroundColor: 'var(--primary-color)',
+              color: 'var(--white-color)',
+              borderRadius: '7px',
+            }}
+          >
+            {' '}
+            Lưu
+          </Button>
         </Grid>
       </Grid>
+      {showSuccess && <div>Lưu thành công</div>}
     </form>
   );
 }
