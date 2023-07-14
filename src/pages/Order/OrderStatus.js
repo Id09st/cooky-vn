@@ -17,6 +17,7 @@ import {
 export default function OrderStatus() {
   const [order, setOrder] = useState(null);
   const [orderItems, setOrderItems] = useState([]);
+  //   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -33,14 +34,41 @@ export default function OrderStatus() {
       try {
         const response = await fetch('https://cookyzz.azurewebsites.net/api/OrderItems');
         const data = await response.json();
-        setOrderItems(data);
+
+        const packagesResponse = await fetch('https://cookyzz.azurewebsites.net/api/Packages');
+        const packagesData = await packagesResponse.json();
+
+        const enrichedData = await Promise.all(
+          data.map(async (item) => {
+            const pkg = packagesData.find((p) => p.id === item.packageId);
+            if (pkg) {
+              const recipeResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Recipes/${pkg.recipeId}`);
+              const recipeData = await recipeResponse.json();
+              return { ...item, recipe: recipeData };
+            }
+            return item;
+          }),
+        );
+
+        setOrderItems(enrichedData);
       } catch (error) {
         console.log('Error fetching order items:', error);
       }
     };
 
+    // const fetchRecipes = async () => {
+    //   try {
+    //     const response = await fetch('https://cookyzz.azurewebsites.net/api/Recipes');
+    //     const data = await response.json();
+    //     setRecipes(data);
+    //   } catch (error) {
+    //     console.log('Error fetching order items:', error);
+    //   }
+    // };
+
     fetchOrders();
     fetchOrderItems();
+    // fetchRecipes();
   }, []);
 
   return (
@@ -87,9 +115,19 @@ export default function OrderStatus() {
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                       <TableRow>
-                        <TableCell>Package ID</TableCell>
-                        <TableCell align="right">Quantity</TableCell>
-                        <TableCell align="right">Price</TableCell>
+                        <TableCell>
+                          <Typography variant="h6">Sản phẩm</Typography>
+                        </TableCell>
+                        {/* <TableCell align="right">Package ID</TableCell> */}
+                        <TableCell align="center">
+                          <Typography variant="h6">Đơn giá</Typography>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Typography variant="h6">Số lượng</Typography>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Typography variant="h6">Số tiền</Typography>
+                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -97,11 +135,26 @@ export default function OrderStatus() {
                         .filter((item) => item.orderId === order.id)
                         .map((item) => (
                           <TableRow key={item.id}>
-                            <TableCell component="th" scope="row">
-                              {item.packageId}
+                            <TableCell>
+                              <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <img
+                                  src={item.recipe.image.split('\n')[0]}
+                                  alt={item.recipe.title}
+                                  style={{ width: '100px', height: '100px' }}
+                                />
+                                <span style={{ marginLeft: '20px' }}>
+                                  <Typography variant="h6" component="h6">
+                                    {item.recipe.title}
+                                  </Typography>
+                                </span>
+                              </div>
                             </TableCell>
-                            <TableCell align="right">{item.quantity}</TableCell>
-                            <TableCell align="right">{item.price}</TableCell>
+                            {/* <TableCell align="right">{item.packageId}</TableCell> */}
+                            <TableCell align="center">{item.price.toLocaleString('vi-VN')}₫</TableCell>
+                            <TableCell align="center">{item.quantity}</TableCell>
+                            <TableCell align="center">
+                              {(item.price * item.quantity).toLocaleString('vi-VN')}₫
+                            </TableCell>
                           </TableRow>
                         ))}
                     </TableBody>

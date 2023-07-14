@@ -47,19 +47,17 @@ export default function Checkout() {
   }, []);
 
   // Tính tổng tiền hàng
-  const total = cartItems.reduce((total, item) => total + item.price, 0);
-
-  // Tính tổng khuyến mãi
-  const totalSales = cartItems.reduce((total, item) => total + item.package.sales, 0);
+  const totalPrice = cartItems.reduce((total, item) => total + item.package.price * item.quantity, 0);
+  const totalSales = cartItems.reduce((total, item) => total + item.package.sales * item.quantity, 0);
 
   // Tính tổng tiền thanh toán
-  const totalPayment = total - totalSales;
+  const totalPayment = totalPrice - totalSales;
 
   const handleNext = async () => {
     if (activeStep === steps.length - 1) {
       const orderDate = new Date();
-      const shipDate = new Date();
-      shipDate.setDate(orderDate.getDate() + 3);
+      // const shipDate = new Date();
+      // shipDate.setDate(orderDate.getDate() + 3);
 
       const data = {
         id: 1,
@@ -67,7 +65,7 @@ export default function Checkout() {
         orderDate: orderDate.toISOString(),
         totalPrice: totalPayment,
         status: 'Pending',
-        shipDate: shipDate.toISOString(), ////////////
+        // shipDate: shipDate.toISOString(), ////////////
         paymentMethod: 'COD',
       };
 
@@ -115,8 +113,8 @@ export default function Checkout() {
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
               <Button
-              component={Link}
-              to="/order"
+                component={Link}
+                to="/order"
                 sx={{
                   backgroundColor: 'var(--primary-color)',
                   color: 'var(--white-color)',

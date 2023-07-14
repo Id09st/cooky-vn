@@ -34,25 +34,24 @@ export default function Review() {
     fetchCartItems();
   }, []);
 
-  // Chuyển đổi orderDate từ string sang đối tượng Date
-  const orderDate = order ? new Date(order.orderDate) : null;
+  // // Chuyển đổi orderDate từ string sang đối tượng Date
+  // const orderDate = order ? new Date(order.orderDate) : null;
 
-  // Định dạng thời gian
-  const formattedOrderDate = orderDate
-    ? `${orderDate.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })} ${orderDate
-        .toLocaleString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' })
-        .split(',')
-        .join('/')}`
-    : '';
+  // // Định dạng thời gian
+  // const formattedOrderDate = orderDate
+  //   ? `${orderDate.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })} ${orderDate
+  //       .toLocaleString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  //       .split(',')
+  //       .join('/')}`
+  //   : '';
 
-  // Tính tổng tiền hàng
-  const total = cartItems.reduce((total, item) => total + item.price, 0);
+  const currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() + 3);
+  const expectedDeliveryDate = currentDate.toLocaleDateString();
 
-  // Tính tổng khuyến mãi
-  const totalSales = cartItems.reduce((total, item) => total + item.package.sales, 0);
-
-  // Tính tổng tiền thanh toán
-  const totalPayment = total - totalSales;
+  const totalPrice = cartItems.reduce((total, item) => total + item.package.price * item.quantity, 0);
+  const totalSales = cartItems.reduce((total, item) => total + item.package.sales * item.quantity, 0);
+  const totalPayment = totalPrice - totalSales;
 
   return (
     <>
@@ -72,15 +71,15 @@ export default function Review() {
               let priceSale = 0;
 
               if (item.package.sales > 0) {
-                priceSale = item.price - item.package.sales;
+                priceSale = item.package.price - item.package.sales;
               } else {
-                priceSale = item.price;
+                priceSale = item.package.price;
               }
 
               return (
                 <ListItem key={item.package.title} sx={{ py: 1, px: 0 }}>
                   <ListItemText primary={item.package.title} />
-                  <Typography variant="body2">{item.price.toLocaleString('vi-VN')}₫</Typography>
+                  <Typography variant="body2">{item.package.price.toLocaleString('vi-VN')}₫</Typography>
                 </ListItem>
               );
             })}
@@ -124,7 +123,7 @@ export default function Review() {
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
-                    <Typography gutterBottom>Thời gian đặt hàng: {formattedOrderDate}</Typography>
+                    <Typography gutterBottom>Dự kiến nhận hàng: {expectedDeliveryDate}</Typography>
                   </Grid>
                 </div>
               </Grid>
