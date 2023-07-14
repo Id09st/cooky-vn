@@ -74,6 +74,7 @@ export default function ShopDetail() {
   const [value, setValue] = React.useState(0);
   const [currentImage, setCurrentImage] = useState('');
   const [selectedTitle, setSelectedTitle] = useState('');
+  const [quantity, setQuantity] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -117,6 +118,13 @@ export default function ShopDetail() {
   };
 
   const handleAddToCart = async (selectedPackage, priceSale) => {
+    const responseOders = await fetch('https://cookyzz.azurewebsites.net/api/Orders/1');
+    const data = await responseOders.json();
+    setQuantity(data.items);
+
+    const currentItem = data.items.find((item) => item.packageId === selectedPackage.id);
+    const currentQuantity = currentItem ? currentItem.quantity : 0;
+
     const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/addCart/1', {
       method: 'PUT',
       headers: {
@@ -125,7 +133,7 @@ export default function ShopDetail() {
       body: JSON.stringify({
         orderId: 1,
         packageId: selectedPackage.id,
-        quantity: 1,
+        quantity: currentQuantity + 1,
         price: priceSale,
       }),
     });

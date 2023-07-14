@@ -79,23 +79,23 @@ export default function Header() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  // const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchCartItems = async () => {
-  //     try {
-  //       // Fetch data from orders.json or API endpoint
-  //       const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/1');
-  //       const data = await response.json();
-  //       console.log(data);
-  //       setCartItems(data.items);
-  //     } catch (error) {
-  //       console.error('Error fetching cart items:', error);
-  //     }
-  //   };
-  //   fetchCartItems();
-  // }, []);
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        // Fetch data from orders.json or API endpoint
+        const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/1');
+        const data = await response.json();
+        console.log(data);
+        setCartItems(data.items);
+      } catch (error) {
+        console.error('Error fetching cart items:', error);
+      }
+    };
+    fetchCartItems();
+  }, []);
 
   useLayoutEffect(() => {
     function updateIsMobile() {
@@ -210,7 +210,9 @@ export default function Header() {
       <MenuItem onClick={handleMobileMenuClose}>
         <IconButton size="large" aria-label="show 17 new shoping cart" color="inherit">
           <Link to="/shoping-cart" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <ShoppingCartOutlined style={{ borderRadius: '50%', color: 'black' }} />
+            <Badge badgeContent={cartItems.length} color="error">
+              <ShoppingCartOutlined style={{ borderRadius: '50%', color: 'black' }} />
+            </Badge>
           </Link>
         </IconButton>
       </MenuItem>
@@ -285,7 +287,9 @@ export default function Header() {
           <Box style={{ marginRight: '167px' }} sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large">
               <Link to="/shoping-cart">
-                <ShoppingCartOutlined sx={{ color: 'var(--white-color)' }} />
+                <Badge badgeContent={cartItems.length} color="error">
+                  <ShoppingCartOutlined sx={{ color: 'var(--white-color)' }} />
+                </Badge>
               </Link>
             </IconButton>
             <IconButton size="large">

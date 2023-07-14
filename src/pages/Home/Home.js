@@ -10,6 +10,7 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [packages, setPackages] = useState([]);
+  const [quantity, setQuantity] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +45,13 @@ export default function Home() {
   };
 
   const handleAddToCart = async (pkg) => {
+    const responseOders = await fetch('https://cookyzz.azurewebsites.net/api/Orders/1');
+    const data = await responseOders.json();
+    setQuantity(data.items);
+
+    const currentItem = data.items.find((item) => item.packageId === pkg.id);
+    const currentQuantity = currentItem ? currentItem.quantity : 0;
+
     const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/addCart/1', {
       method: 'PUT',
       headers: {
@@ -53,7 +61,7 @@ export default function Home() {
       body: JSON.stringify({
         orderId: 1,
         packageId: pkg.id,
-        quantity: 1,
+        quantity: currentQuantity + 1,
         price: pkg.price,
       }),
     });

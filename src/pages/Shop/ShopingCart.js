@@ -144,13 +144,10 @@ export default function ShoppingCart() {
   const isMobile = useMediaQuery('(max-width: 601px)');
 
   // Tính tổng tiền hàng
-  const total = cartItems.reduce((total, item) => total + item.package.price, 0);
 
-  // Tính tổng khuyến mãi
-  const totalSales = cartItems.reduce((total, item) => total + item.package.sales, 0);
-
-  // Tính tổng tiền thanh toán
-  const totalPayment = total - totalSales;
+  const totalPrice = cartItems.reduce((total, item) => total + item.package.price * item.quantity, 0);
+  const totalSales = cartItems.reduce((total, item) => total + item.package.sales * item.quantity, 0);
+  const totalPayment = totalPrice - totalSales;
 
   return (
     <>
@@ -320,10 +317,9 @@ export default function ShoppingCart() {
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
               <div>
-                <p>Tổng tiền hàng: {total.toLocaleString('vi-VN')}₫</p>
-                <p>Khuyến mãi: {totalSales.toLocaleString('vi-VN')}₫</p>
-                <p>Tổng tiền thanh toán: {totalPayment.toLocaleString('vi-VN')}₫</p>
-
+                <Typography variant="h6">Tổng tiền hàng: {totalPrice.toLocaleString('vi-VN')}₫</Typography>
+                <Typography variant="h6">Khuyến mãi: {totalSales.toLocaleString('vi-VN')}₫</Typography>
+                <Typography variant="h6">Tổng tiền thanh toán: {totalPayment.toLocaleString('vi-VN')}₫</Typography>
                 <Button
                   variant="contained"
                   sx={{
