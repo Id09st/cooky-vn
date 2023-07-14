@@ -9,7 +9,7 @@ export default function Search() {
   const [packages, setPackages] = useState([]);
 
   useEffect(() => {
-    fetch('https://64933779428c3d2035d18178.mockapi.io/recipes')
+    fetch('https://cookyzz.azurewebsites.net/api/Recipes')
       .then((response) => response.json())
       .then((data) => {
         const filteredResults = data.filter((result) => result.title.toLowerCase().includes(searchTerm.toLowerCase()));
