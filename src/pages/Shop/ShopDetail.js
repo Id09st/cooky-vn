@@ -26,6 +26,7 @@ import {
   Grid,
   MenuItem,
   Select,
+  CircularProgress,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
@@ -148,7 +149,7 @@ export default function ShopDetail() {
   if (!recipe || !packages) {
     return (
       <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '90px' }}>
-        Không có PACK phù hợp
+        <CircularProgress style={{ color: 'var(--primary-color' }} />
       </Container>
     );
   }
@@ -321,37 +322,6 @@ export default function ShopDetail() {
                 >
                   Lưu
                 </Button>
-                {/* <ul>
-                  <li>
-                    <b>Sản phẩm có sẵn</b> <span>In Stock</span>
-                  </li>
-                  <li>
-                    <b>Thời gian giao hàng</b>{' '}
-                    <span>
-                      01 day shipping. <samp>Free pickup today</samp>
-                    </span>
-                  </li>
-                  <li>
-                    <b>Trọng lượng</b> <span>0.5 kg</span>
-                  </li>
-                  <li>
-                    <b>Chia sẻ</b>
-                    <div className="share">
-                      <Link to="#">
-                        <Facebook />
-                      </Link>
-                      <Link to="#">
-                        <Twitter />
-                      </Link>
-                      <Link to="#">
-                        <Instagram />
-                      </Link>
-                      <Link to="#">
-                        <Pinterest />
-                      </Link>
-                    </div>
-                  </li>
-                </ul> */}
 
                 <div style={{ paddingTop: '20px' }}>
                   <Select value={selectedTitle} onChange={(event) => setSelectedTitle(event.target.value)}>
@@ -427,50 +397,6 @@ export default function ShopDetail() {
                 </Box>
               </Grid>
             </Grid>
-            {/* Related Product Section Begin */}
-            <div style={{ paddingBottom: '30px' }}>
-              <div className="row">
-                <div className="col-lg-12">
-                  <Typography className="my-title" variant="h4" style={{ marginBottom: '70px', fontWeight: 'bold' }}>
-                    Related Product
-                  </Typography>
-                </div>
-              </div>
-              <div className="row">
-                {Related.map((related, index) => (
-                  <div key={index} className="col-lg-3 col-md-4 col-sm-6">
-                    <div className="product__item">
-                      <div className="product__item__pic set-bg" data-setbg={related.url}>
-                        <ul className="product__item__pic__hover">
-                          <li>
-                            <a href="#">
-                              <FavoriteBorderRounded />
-                            </a>
-                          </li>
-                          <li>
-                            <Link to="/shop-detail">
-                              <FullscreenOutlined />
-                            </Link>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <ShoppingCartOutlined />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="product__item__text">
-                        <h6>
-                          <Link to="/">{related.title}</Link>
-                        </h6>
-                        <h5>{related.price}</h5>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {/* Related Product Section End */}
           </Container>
         </>
       )}

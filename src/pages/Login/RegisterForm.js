@@ -35,6 +35,7 @@ const RegisterForm = ({ onClose }) => {
 
       if (response.ok) {
         const responseData = await response.json();
+        onClose();
         console.log('Thanh cong');
         setNotification('Đăng ký thành công'); // Thiết lập thông báo
         // Thực hiện các xử lý khác sau khi đăng ký thành công (chẳng hạn như điều hướng trang)

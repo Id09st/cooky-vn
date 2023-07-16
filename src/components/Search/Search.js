@@ -7,6 +7,7 @@ export default function Search() {
   const { searchTerm } = useParams();
   const [results, setResults] = useState([]);
   const [packages, setPackages] = useState([]);
+  const [quantity, setQuantity] = useState([]);
 
   useEffect(() => {
     fetch('https://cookyzz.azurewebsites.net/api/Recipes')
@@ -29,6 +30,35 @@ export default function Search() {
       priceSale = price;
     }
     return priceSale;
+  };
+
+  const handleAddToCart = async (pkg) => {
+    const responseOders = await fetch('https://cookyzz.azurewebsites.net/api/Orders/1');
+    const data = await responseOders.json();
+    setQuantity(data.items);
+
+    const currentItem = data.items.find((item) => item.packageId === pkg.id);
+    const currentQuantity = currentItem ? currentItem.quantity : 0;
+
+    const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/addCart/1', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+
+      body: JSON.stringify({
+        orderId: 1,
+        packageId: pkg.id,
+        quantity: currentQuantity + 1,
+        price: pkg.price,
+      }),
+    });
+    console.log(pkg.id);
+    console.log(pkg.price);
+    if (!response.ok) {
+      console.error('Response status:', response.status, 'status text:', response.statusText);
+      throw new Error('Error adding to cart');
+    }
   };
 
   return (
@@ -66,7 +96,7 @@ export default function Search() {
                         </Link>
                       </li>
                       <li>
-                        <Link to="/shoping-cart">
+                        <Link to="/shoping-cart" onClick={() => handleAddToCart(pkg)}>
                           <ShoppingCartOutlined />
                         </Link>
                       </li>

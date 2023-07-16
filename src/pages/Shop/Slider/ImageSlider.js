@@ -52,7 +52,7 @@ const ImageSlider = () => {
       <ArrowBackIosIcon className="slider-icon left-arrow" onClick={prevSlide} />
       {slides.map((url, index) => (
         <div className={index === current ? 'slide active' : 'slide'} key={index}>
-          {index === current && <img src={url} alt="food" style={{ width: '415px', height: '415px' }} />}
+          {index === current && <img src={url} alt="food" style={{ width: '375.85px', height: '375.85px' }} />}
         </div>
       ))}
       <ArrowForwardIosIcon className="slider-icon right-arrow" onClick={nextSlide} />
