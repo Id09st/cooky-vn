@@ -1,4 +1,4 @@
-import { FavoriteBorderOutlined, Restore, ShoppingCart } from '@mui/icons-material';
+import { FavoriteBorderOutlined, Home, Phone, ShoppingCart } from '@mui/icons-material';
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -222,17 +222,17 @@ export default function DetailMobile() {
             >
               <BottomNavigationAction
                 style={{ color: 'var(--primary-color)' }}
-                label="Home"
-                icon={<Restore />}
+                label="Trang chủ"
+                icon={<Home />}
                 component={Link}
                 to="/"
               />
               <BottomNavigationAction
                 style={{ color: 'var(--primary-color)' }}
-                label="Favorites"
-                icon={<FavoriteBorderOutlined />}
+                label="Liên hệ"
+                icon={<Phone />}
                 component={Link}
-                to="/"
+                to="/contact"
               />
               {/* <BottomNavigationAction label="Archive" icon={<Archive />} /> */}
               <BottomNavigationAction

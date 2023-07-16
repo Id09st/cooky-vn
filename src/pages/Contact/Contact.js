@@ -20,7 +20,7 @@ export default function Contact() {
   return (
     <>
       {isMobile ? (
-        <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '55px' }}>
+        <Container maxWidth="lg" style={{ paddingTop: '60px' }}>
           {/* Bắt đầu breadcrumb Mobile*/}
           <Box
             component="section"
@@ -33,7 +33,7 @@ export default function Contact() {
             <Container maxWidth="lg">
               <Box textAlign="center">
                 <Typography variant="h4" style={{ color: 'var(--white-color)' }}>
-                  Contact Us
+                  Thông tin liên hệ
                 </Typography>
                 <Breadcrumbs
                   aria-label="breadcrumb"
@@ -46,10 +46,10 @@ export default function Contact() {
                   }}
                 >
                   <Link underline="hover" to="/">
-                    <Typography style={{ color: 'var(--white-color)' }}>Home</Typography>
+                    <Typography style={{ color: 'var(--white-color)' }}>Trang chủ</Typography>
                   </Link>
                   <Typography style={{ color: 'var(--white-color)' }} variant="body1">
-                    Contact Us
+                    Thông tin liên hệ
                   </Typography>
                 </Breadcrumbs>
               </Box>
@@ -58,7 +58,7 @@ export default function Contact() {
           {/* Kết thúc breadcrumb Mobile*/}
 
           {/* Contact Section Begin */}
-          <section className="contact spad">
+          <section style={{ paddingTop: '20px' }}>
             <div className="container">
               <div className="row">
                 <div className="col-lg-3 col-md-3 col-sm-6 text-center">
@@ -67,7 +67,7 @@ export default function Contact() {
                       <PhoneAndroid sx={{ fontSize: 40 }} />
                     </span>
                     <h4>Phone</h4>
-                    <p>+01-3-8888-6868</p>
+                    <p>+84</p>
                   </div>
                 </div>
                 <div className="col-lg-3 col-md-3 col-sm-6 text-center">
@@ -76,7 +76,7 @@ export default function Contact() {
                       <LocationOnOutlined sx={{ fontSize: 40 }} />
                     </span>
                     <h4>Address</h4>
-                    <p>60-49 Road 11378 New York</p>
+                    <p>FPT University HCM</p>
                   </div>
                 </div>
                 <div className="col-lg-3 col-md-3 col-sm-6 text-center">
@@ -94,7 +94,7 @@ export default function Contact() {
                       <MailOutlineOutlined sx={{ fontSize: 40 }} />
                     </span>
                     <h4>Email</h4>
-                    <p>hello@colorlib.com</p>
+                    <p>@fpt.edu.vn</p>
                   </div>
                 </div>
               </div>
@@ -116,7 +116,7 @@ export default function Contact() {
             <Container maxWidth="lg">
               <Box textAlign="center">
                 <Typography variant="h2" style={{ color: 'var(--white-color)' }}>
-                  Contact us
+                  Thông tin liên hệ
                 </Typography>
                 <Breadcrumbs
                   aria-label="breadcrumb"
@@ -132,7 +132,7 @@ export default function Contact() {
                     <Typography style={{ color: 'var(--white-color)' }}>Trang chủ</Typography>
                   </Link>
                   <Typography style={{ color: 'var(--white-color)' }} variant="body1">
-                    Contact us
+                    Thông tin liên hệ
                   </Typography>
                 </Breadcrumbs>
               </Box>

@@ -8,6 +8,7 @@ import {
   Badge,
   Box,
   Button,
+  Container,
   Dialog,
   DialogContent,
   IconButton,
@@ -23,7 +24,6 @@ import {
   Call,
   CallOutlined,
   Close,
-  FavoriteBorderRounded,
   HomeOutlined,
   Login,
   MoreHorizOutlined,
@@ -238,92 +238,168 @@ export default function Header() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{ bgcolor: 'var(--primary-color)' }}>
-        <Toolbar>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              flexGrow: 1,
-            }}
-          >
-            {isMobile && ( // Kiểm tra nếu là điện thoại di động
-              <Link to="/">
-                <IconButton edge="start" color="inherit" aria-label="home">
-                  <HomeOutlined sx={{ color: 'white' }} />
-                </IconButton>
-              </Link>
-            )}
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              style={{ marginLeft: '165px' }}
-              sx={{ display: { xs: 'none', sm: 'block' } }}
-            >
-              <Link to="/">
-                <img src={logo} alt="/" />
-              </Link>
-            </Typography>
+    <>
+      {isMobile ? ( // Kiểm tra nếu là điện thoại di động
+        <>
+          <Box sx={{ flexGrow: 1 }}>
+            <AppBar position="fixed" sx={{ bgcolor: 'var(--primary-color)' }}>
+              <Container>
+                <Toolbar>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexGrow: 1,
+                    }}
+                  >
+                    <Link to="/">
+                      <IconButton edge="start" color="inherit" aria-label="home">
+                        <HomeOutlined sx={{ color: 'white' }} />
+                      </IconButton>
+                    </Link>
+                  </Box>
+                  <Search style={{ color: 'var(--para-color)', backgroundColor: 'var(--background-2)' }}>
+                    <SearchIconWrapper onClick={handleSearchIconClick}>
+                      <SearchOutlined />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                      value={searchTerm}
+                      onChange={handleInputChange}
+                      placeholder="Tìm kiếm công thức hoặc sản phẩm ..."
+                      inputProps={{ 'aria-label': 'search' }}
+                      style={{
+                        borderRadius: '5px',
+                        width: 'auto',
+                        height: '30px',
+                      }}
+                    />
+                  </Search>
+                  <Box sx={{ flexGrow: 1 }} />
+                  <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                    <IconButton size="large">
+                      <Link to="/shoping-cart">
+                        <Badge badgeContent={cartItems.length} color="error">
+                          <ShoppingCartOutlined sx={{ color: 'var(--white-color)' }} />
+                        </Badge>
+                      </Link>
+                    </IconButton>
+                    <IconButton size="large">
+                      <Link to="/contact">
+                        <Call sx={{ color: 'var(--white-color)' }} />
+                      </Link>
+                    </IconButton>
+                    <IconButton
+                      size="large"
+                      edge="end"
+                      aria-label="account of current user"
+                      aria-controls={menuId}
+                      aria-haspopup="true"
+                      onClick={handleProfileMenuOpen}
+                    >
+                      <AccountCircle sx={{ color: 'var(--white-color)' }} />
+                    </IconButton>
+                  </Box>
+                  <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                    <IconButton
+                      size="large"
+                      aria-label="show more"
+                      aria-controls={mobileMenuId}
+                      aria-haspopup="true"
+                      onClick={handleMobileMenuOpen}
+                      color="inherit"
+                    >
+                      <MoreHorizOutlined />
+                    </IconButton>
+                  </Box>
+                </Toolbar>
+              </Container>
+            </AppBar>
+            {renderMobileMenu}
+            {renderMenu}
           </Box>
-          <Search>
-            <SearchIconWrapper onClick={handleSearchIconClick}>
-              <SearchOutlined style={{ color: 'var(--para-color)', backgroundColor: 'var(--background-2)' }} />
-            </SearchIconWrapper>
-            <StyledInputBase
-              value={searchTerm}
-              onChange={handleInputChange}
-              placeholder="Tìm kiếm công thức hoặc sản phẩm ..."
-              inputProps={{ 'aria-label': 'search' }}
-              style={{
-                color: 'var(--para-color)',
-                backgroundColor: 'var(--background-2)',
-                borderRadius: '5px',
-              }}
-            />
-          </Search>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box style={{ marginRight: '167px' }} sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large">
-              <Link to="/shoping-cart">
-                <Badge badgeContent={cartItems.length} color="error">
-                  <ShoppingCartOutlined sx={{ color: 'var(--white-color)' }} />
-                </Badge>
-              </Link>
-            </IconButton>
-            <IconButton size="large">
-              <Link to="/contact">
-                <Call sx={{ color: 'var(--white-color)' }} />
-              </Link>
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-            >
-              <AccountCircle sx={{ color: 'var(--white-color)' }} />
-            </IconButton>
+        </>
+      ) : (
+        <>
+          <Box sx={{ flexGrow: 1 }}>
+            <AppBar position="fixed" sx={{ bgcolor: 'var(--primary-color)' }}>
+              <Container>
+                <Toolbar>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexGrow: 1,
+                    }}
+                  >
+                    <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
+                      <Link to="/">
+                        <img src={logo} alt="/" />
+                      </Link>
+                    </Typography>
+                  </Box>
+                  <Search>
+                    <SearchIconWrapper onClick={handleSearchIconClick}>
+                      <SearchOutlined style={{ color: 'var(--para-color)', backgroundColor: 'var(--background-2)' }} />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                      value={searchTerm}
+                      onChange={handleInputChange}
+                      placeholder="Tìm kiếm công thức hoặc sản phẩm ..."
+                      inputProps={{ 'aria-label': 'search' }}
+                      style={{
+                        color: 'var(--para-color)',
+                        backgroundColor: 'var(--background-2)',
+                        borderRadius: '5px',
+                        width: '500px',
+                        height: '35px',
+                      }}
+                    />
+                  </Search>
+                  <Box sx={{ flexGrow: 1 }} />
+                  <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                    <IconButton size="large">
+                      <Link to="/shoping-cart">
+                        <Badge badgeContent={cartItems.length} color="error">
+                          <ShoppingCartOutlined sx={{ color: 'var(--white-color)' }} />
+                        </Badge>
+                      </Link>
+                    </IconButton>
+                    <IconButton size="large">
+                      <Link to="/contact">
+                        <Call sx={{ color: 'var(--white-color)' }} />
+                      </Link>
+                    </IconButton>
+                    <IconButton
+                      size="large"
+                      edge="end"
+                      aria-label="account of current user"
+                      aria-controls={menuId}
+                      aria-haspopup="true"
+                      onClick={handleProfileMenuOpen}
+                    >
+                      <AccountCircle sx={{ color: 'var(--white-color)' }} />
+                    </IconButton>
+                  </Box>
+                  <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                    <IconButton
+                      size="large"
+                      aria-label="show more"
+                      aria-controls={mobileMenuId}
+                      aria-haspopup="true"
+                      onClick={handleMobileMenuOpen}
+                      color="inherit"
+                    >
+                      <MoreHorizOutlined />
+                    </IconButton>
+                  </Box>
+                </Toolbar>
+              </Container>
+            </AppBar>
+            {renderMobileMenu}
+            {renderMenu}
           </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreHorizOutlined />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-    </Box>
+        </>
+      )}
+    </>
   );
 }

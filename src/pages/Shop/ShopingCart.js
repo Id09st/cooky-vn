@@ -138,7 +138,7 @@ export default function ShoppingCart() {
   };
 
   const calculateTotalPrice = (quantity, price, sales) => {
-    return (quantity * price - sales).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    return (quantity * (price - sales)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
   };
 
   const isMobile = useMediaQuery('(max-width: 601px)');
@@ -178,7 +178,7 @@ export default function ShoppingCart() {
                   }}
                 >
                   <Link underline="hover" to="/">
-                    <Typography style={{ color: 'var(--white-color)' }}>Home</Typography>
+                    <Typography style={{ color: 'var(--white-color)' }}>Trang chủ</Typography>
                   </Link>
                   <Typography style={{ color: 'var(--white-color)' }} variant="body1">
                     Giỏ hàng
@@ -262,7 +262,7 @@ export default function ShoppingCart() {
                       </div>
                       <div>
                         <Typography variant="subtitle1" component="subtitle1">
-                          Tổng cộng:{' '}
+                          Tổng cộng:
                         </Typography>
                         {calculateTotalPrice(item.quantity, item.package.price, item.package.sales)}
                       </div>
