@@ -79,7 +79,12 @@ export default function Review() {
               return (
                 <ListItem key={item.package.title} sx={{ py: 1, px: 0 }}>
                   <ListItemText primary={item.package.title} />
-                  <Typography variant="body2">{item.package.price.toLocaleString('vi-VN')}₫</Typography>
+
+                  <Typography variant="body2">
+                    {(item.package.price - item.package.sales).toLocaleString('vi-VN')} ₫ x
+                  </Typography>
+
+                  <Typography variant="body2">{item.quantity}</Typography>
                 </ListItem>
               );
             })}

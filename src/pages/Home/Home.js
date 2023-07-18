@@ -62,11 +62,10 @@ export default function Home() {
         orderId: 1,
         packageId: pkg.id,
         quantity: currentQuantity + 1,
-        price: pkg.price,
+        price: (pkg.price - pkg.sales) * (currentQuantity + 1),
       }),
     });
-    console.log(pkg.id);
-    console.log(pkg.price);
+
     if (!response.ok) {
       console.error('Response status:', response.status, 'status text:', response.statusText);
       throw new Error('Error adding to cart');

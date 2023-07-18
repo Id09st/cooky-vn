@@ -17,7 +17,6 @@ import {
 export default function OrderStatus() {
   const [order, setOrder] = useState(null);
   const [orderItems, setOrderItems] = useState([]);
-  //   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -55,20 +54,8 @@ export default function OrderStatus() {
         console.log('Error fetching order items:', error);
       }
     };
-
-    // const fetchRecipes = async () => {
-    //   try {
-    //     const response = await fetch('https://cookyzz.azurewebsites.net/api/Recipes');
-    //     const data = await response.json();
-    //     setRecipes(data);
-    //   } catch (error) {
-    //     console.log('Error fetching order items:', error);
-    //   }
-    // };
-
     fetchOrders();
     fetchOrderItems();
-    // fetchRecipes();
   }, []);
 
   return (
@@ -149,12 +136,11 @@ export default function OrderStatus() {
                                 </span>
                               </div>
                             </TableCell>
-                            {/* <TableCell align="right">{item.packageId}</TableCell> */}
-                            <TableCell align="center">{item.price.toLocaleString('vi-VN')}₫</TableCell>
-                            <TableCell align="center">{item.quantity}</TableCell>
                             <TableCell align="center">
-                              {(item.price * item.quantity).toLocaleString('vi-VN')}₫
+                              {(item.price / item.quantity).toLocaleString('vi-VN')}₫
                             </TableCell>
+                            <TableCell align="center">{item.quantity}</TableCell>
+                            <TableCell align="center">{item.price.toLocaleString('vi-VN')}₫</TableCell>
                           </TableRow>
                         ))}
                     </TableBody>

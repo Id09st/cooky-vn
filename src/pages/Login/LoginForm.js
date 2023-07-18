@@ -1,16 +1,51 @@
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Avatar, Typography, TextField, Button, Grid } from '@mui/material';
+import { Box, Avatar, Typography, TextField, Button, Grid, IconButton } from '@mui/material';
 import RegisterForm from './RegisterForm';
-import { RamenDining } from '@mui/icons-material';
+import { Close, RamenDining } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 const Notification = ({ message }) => {
   return <div>{message}</div>;
 };
-const LoginForm = () => {
+const LoginForm = ({ onClose, onLoginSuccess }) => {
   const [showSignIn, setShowSignIn] = useState(false);
   const [notification, setNotification] = useState(null);
+  const [open, setOpen] = useState(false);
+  let name, role;
+
+  const decodeAndStoreToken = (token) => {
+    const parts = token.split('.');
+    if (parts.length === 3) {
+      const base64Url = parts[1];
+      const base64 = base64Url.replace('-', '+').replace('_', '/');
+      const payload = JSON.parse(window.atob(base64));
+
+      // Lấy role và name
+      name = payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+      role = payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+
+      console.log(name); // "thinh"
+      console.log(role); // "User"
+
+      // Lưu token vào localStorage
+      localStorage.setItem('token', token);
+
+      // Chuyển hướng nếu role là 'User'
+      if (role === 'User') {
+        navigate('/shoping-cart');
+        localStorage.setItem('isLoggedIn', 'true');
+        if (onClose) {
+          onClose();
+        }
+        if (onLoginSuccess) {
+          onLoginSuccess();
+        }
+      }
+    } else {
+      console.log('Token không hợp lệ');
+    }
+  };
 
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
@@ -36,30 +71,14 @@ const LoginForm = () => {
 
       if (response.ok) {
         const responseData = await response.json();
-        const token = localStorage.getItem('token', responseData.token);
+        // const token = localStorage.getItem('token', responseData);
         // Đây là token của bạn // Đây là token của bạn
-        console.log(responseData);
-        const payload = token.split('.')[1]; // Tách phần payload
-        const base64 = payload.replace('-', '+').replace('_', '/');
-        const decoded = JSON.parse(window.atob(base64));
-        console.log(decoded);
-        const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-        if (role === 'User' || role === 'Admin') {
-          navigate('/shoping-cart');
+        if (responseData.token) {
+          decodeAndStoreToken(responseData.token);
+        } else {
+          console.log('Token không tồn tại');
+        }
 
-          // Người dùng có quyền truy cập vào các trang dành cho người dùng
-          // Tiếp tục chuyển hướng người dùng đến trang đó
-        } else {
-          // Người dùng không có quyền truy cập vào trang này
-          // Hiển thị thông báo lỗi hoặc chuyển hướng người dùng đến trang khác
-        }
-        const now = Math.floor(Date.now() / 1000);
-        if (decoded.exp < now) {
-          console.log('Token đã hết hạn');
-        } else {
-          console.log('Token vẫn còn hợp lệ');
-        }
-       
         setNotification('Đăng nhập thành công'); // Thiết lập thông báo
       } else {
         setNotification('Đăng nhập không thành công'); // Thiết lập thông báo
@@ -80,10 +99,10 @@ const LoginForm = () => {
   return (
     <Box
       sx={{
-        marginTop: 8,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        padding: '80px 30px 40px 30px',
       }}
     >
       <Avatar sx={{ m: 1, bgcolor: 'var(--primary-color)' }}>
@@ -126,6 +145,9 @@ const LoginForm = () => {
         >
           Đăng nhập
         </Button>
+        <IconButton style={{ position: 'absolute', right: 1, top: 1 }} onClick={onClose}>
+          <Close />
+        </IconButton>
         <Grid container>
           <Grid item>
             <RouterLink to="#" variant="body2" style={{ color: 'var(--primary-color)' }} onClick={handleSignInClick}>

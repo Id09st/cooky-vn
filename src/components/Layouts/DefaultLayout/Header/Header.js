@@ -4,17 +4,18 @@ import { styled, alpha } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import logo from '~/assets/images/logo.png';
 import {
+  Alert,
   AppBar,
   Badge,
   Box,
   Button,
   Container,
   Dialog,
-  DialogContent,
   IconButton,
   InputBase,
   Menu,
   MenuItem,
+  Snackbar,
   Toolbar,
   Typography,
 } from '@mui/material';
@@ -26,6 +27,7 @@ import {
   Close,
   HomeOutlined,
   Login,
+  Logout,
   MoreHorizOutlined,
   Person,
   SearchOutlined,
@@ -75,12 +77,26 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
+  const [openLoginDialog, setOpenLoginDialog] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    setIsLoggedIn(false);
+    setOpenSnackbar(true);
+  };
+
+  useEffect(() => {
+    const loggedIn = localStorage.getItem('isLoggedIn');
+    setIsLoggedIn(loggedIn === 'true');
+  }, []);
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -131,7 +147,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
-    setOpen(true);
+    setOpenLoginDialog(true);
   };
 
   const handleClose = () => {
@@ -144,6 +160,15 @@ export default function Header() {
 
   const handleInputChange = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleRegisterClick = () => {
+    setOpenLoginDialog(false);
+  };
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+    setOpenSnackbar(true);
   };
 
   const menuId = 'primary-search-account-menu';
@@ -169,22 +194,17 @@ export default function Header() {
         </Button>
       </MenuItem>
       <MenuItem onClick={handleMenuClose}>
-        <Button onClick={handleOpen} sx={{ color: 'black' }} startIcon={<Login />}>
-          Đăng nhập
-        </Button>
-        <Dialog open={open} onClose={handleClose}>
-          <IconButton
-            edge="end"
-            color="inherit"
-            onClick={handleClose}
-            aria-label="close"
-            sx={{ position: 'absolute', right: 8, top: 8 }}
-          >
-            <Close />
-          </IconButton>
-          <DialogContent>
-            <LoginForm />
-          </DialogContent>
+        {isLoggedIn ? (
+          <Button onClick={handleLogout} sx={{ color: 'black' }} startIcon={<Logout />}>
+            Đăng xuất
+          </Button>
+        ) : (
+          <Button onClick={handleOpen}  sx={{ color: 'black' }} startIcon={<Login />}>
+            Đăng nhập
+          </Button>
+        )}
+        <Dialog open={openLoginDialog} onClose={handleRegisterClick}>
+          <LoginForm onClose={handleRegisterClick} onLoginSuccess={handleLoginSuccess} />
         </Dialog>
       </MenuItem>
     </Menu>
@@ -239,6 +259,16 @@ export default function Header() {
 
   return (
     <>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert onClose={() => setOpenSnackbar(false)} severity="success" sx={{ width: '100%' }}>
+          {isLoggedIn ? 'Đăng nhập thành công!' : 'Đăng xuất thành công!'}
+        </Alert>
+      </Snackbar>
       {isMobile ? ( // Kiểm tra nếu là điện thoại di động
         <>
           <Box sx={{ flexGrow: 1 }}>

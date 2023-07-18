@@ -1,26 +1,21 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Avatar, Box, Button, Container, CssBaseline, Grid, TextField, Typography } from '@mui/material';
-import { RamenDining } from '@mui/icons-material';
+import { Avatar, Box, Button, Container, CssBaseline, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { Close, RamenDining } from '@mui/icons-material';
 
 const RegisterForm = ({ onClose }) => {
   const [notification, setNotification] = useState(null);
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const username = event.target.username.value;
-    const password = event.target.password.value;
-    const name = event.target.name.value;
-    const email = event.target.email.value;
-    const phone = event.target.phone.value;
-    const address = event.target.address.value;
+    const { username, password, name, email, phone, address } = event.target;
 
     const data = {
-      username: username,
-      password: password,
-      name: name,
-      email: email,
-      phone: phone,
-      address: address,
+      username: username.value,
+      password: password.value,
+      name: name.value,
+      email: email.value,
+      phone: phone.value,
+      address: address.value,
       role: 1,
     };
 
@@ -36,7 +31,6 @@ const RegisterForm = ({ onClose }) => {
       if (response.ok) {
         const responseData = await response.json();
         onClose();
-        console.log('Thanh cong');
         setNotification('Đăng ký thành công'); // Thiết lập thông báo
         // Thực hiện các xử lý khác sau khi đăng ký thành công (chẳng hạn như điều hướng trang)
       } else {
@@ -52,10 +46,10 @@ const RegisterForm = ({ onClose }) => {
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          padding: '80px 30px 40px 30px',
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'var(--primary-color)' }}>
@@ -118,6 +112,9 @@ const RegisterForm = ({ onClose }) => {
           >
             Đăng kí
           </Button>
+          <IconButton style={{ position: 'absolute', right: 0, top: 0 }} onClick={onClose}>
+            <Close />
+          </IconButton>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <RouterLink to="#" variant="body2" style={{ color: 'var(--primary-color)' }} onClick={onClose}>
