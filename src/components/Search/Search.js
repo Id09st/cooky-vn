@@ -33,21 +33,21 @@ export default function Search() {
   };
 
   const handleAddToCart = async (pkg) => {
-    const responseOders = await fetch('https://cookyzz.azurewebsites.net/api/Orders/1');
+    const responseOders = await fetch('https://cookyzz.azurewebsites.net/api/Orders/15');
     const data = await responseOders.json();
     setQuantity(data.items);
 
     const currentItem = data.items.find((item) => item.packageId === pkg.id);
     const currentQuantity = currentItem ? currentItem.quantity : 0;
 
-    const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/addCart/1', {
+    const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/addCart/15', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
 
       body: JSON.stringify({
-        orderId: 1,
+        orderId: 15,
         packageId: pkg.id,
         quantity: currentQuantity + 1,
         price: pkg.price,

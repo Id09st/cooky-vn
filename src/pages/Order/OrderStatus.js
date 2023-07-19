@@ -15,20 +15,35 @@ import {
 } from '@mui/material';
 
 export default function OrderStatus() {
+  const [id, setId] = useState(null);
   const [order, setOrder] = useState(null);
   const [orderItems, setOrderItems] = useState([]);
 
   useEffect(() => {
-    const fetchOrders = async () => {
+    const fetchUser = async () => {
       try {
-        const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/1');
-        const data = await response.json();
-        setOrder(data);
+        const nameFromStorage = localStorage.getItem('name');
+        const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/');
+        const users = await response.json();
+        const user = users.find((user) => user.username === nameFromStorage);
+        const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
+        const data = await userResponse.json();
+        const orderResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${data.orders[0].id}`);
+        const dataOrder = await orderResponse.json();
+        setOrder(dataOrder);
+
+        if (user) {
+          setId(user.id);
+        }
       } catch (error) {
-        console.log('Error fetching orders:', error);
+        console.log('Error fetching user:', error);
       }
     };
 
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
     const fetchOrderItems = async () => {
       try {
         const response = await fetch('https://cookyzz.azurewebsites.net/api/OrderItems');
@@ -54,7 +69,7 @@ export default function OrderStatus() {
         console.log('Error fetching order items:', error);
       }
     };
-    fetchOrders();
+
     fetchOrderItems();
   }, []);
 

@@ -11,6 +11,7 @@ export default function Home() {
   const [recipes, setRecipes] = useState([]);
   const [packages, setPackages] = useState([]);
   const [quantity, setQuantity] = useState([]);
+  const [orderId, setOrderId] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +35,25 @@ export default function Home() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const nameFromStorage = localStorage.getItem('name');
+        const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/');
+        const users = await response.json();
+        const user = users.find((user) => user.username === nameFromStorage);
+        const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
+        const data = await userResponse.json();
+
+        setOrderId(data.orders[0].id);
+      } catch (error) {
+        console.log('Error fetching user:', error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
   const calculatePriceSale = (price, sales) => {
     let priceSale = 0;
     if (sales > 0) {
@@ -45,21 +65,20 @@ export default function Home() {
   };
 
   const handleAddToCart = async (pkg) => {
-    const responseOders = await fetch('https://cookyzz.azurewebsites.net/api/Orders/1');
+    const responseOders = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${orderId}`);
     const data = await responseOders.json();
-    setQuantity(data.items);
 
     const currentItem = data.items.find((item) => item.packageId === pkg.id);
     const currentQuantity = currentItem ? currentItem.quantity : 0;
 
-    const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/addCart/1', {
+    const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/addCart/${orderId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
 
       body: JSON.stringify({
-        orderId: 1,
+        orderId: orderId,
         packageId: pkg.id,
         quantity: currentQuantity + 1,
         price: (pkg.price - pkg.sales) * (currentQuantity + 1),

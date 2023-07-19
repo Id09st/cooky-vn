@@ -17,17 +17,18 @@ const publicRoutes = [
   { path: '/shop-grid', component: ShopGrid },
   { path: '/shop-detail/:id', component: ShopDetail },
   { path: '/detail-mobile/:id', component: DetailMobile, layout: null },
-  { path: '/shoping-cart', component: ShopingCart },
-  { path: '/checkout', component: Checkout },
-  { path: '/order', component: OrderStatus },
   { path: '/search', component: Search },
   { path: '/contact', component: Contact },
   { path: '/login', component: LoginForm },
   { path: '/register', component: RegisterForm },
   { path: '/results/:searchTerm', component: Search },
-  { path: '/admin', component: Admin, layout: null },
 ];
 
-const privateRoutes = [];
+const privateRoutes = [
+  { path: '/shoping-cart', component: ShopingCart },
+  { path: '/checkout', component: Checkout },
+  { path: '/order', component: OrderStatus },
+  { path: '/admin', component: Admin, layout: null },
+];
 
 export { publicRoutes, privateRoutes };

@@ -29,21 +29,32 @@ function getStepContent(step) {
 export default function Checkout() {
   const [activeStep, setActiveStep] = useState(0);
   const [cartItems, setCartItems] = useState([]);
-  const [oder, setOder] = useState(null);
+  const [orderId, setOrderId] = useState(null);
+  const [id, setId] = useState(null);
 
   useEffect(() => {
-    const fetchCartItems = async () => {
+    const fetchUser = async () => {
       try {
-        const orderResponse = await fetch('https://cookyzz.azurewebsites.net/api/Orders/1');
-        const dataOder = await orderResponse.json();
-        setOder(dataOder);
-        setCartItems(dataOder.items);
+        const nameFromStorage = localStorage.getItem('name');
+        const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/');
+        const users = await response.json();
+        const user = users.find((user) => user.username === nameFromStorage);
+        const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
+        const data = await userResponse.json();
+        const orderResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${data.orders[0].id}`);
+        const dataOrder = await orderResponse.json();
+        setOrderId(data.orders[0].id);
+        setCartItems(dataOrder.items);
+
+        if (user) {
+          setId(user.id);
+        }
       } catch (error) {
-        console.error('Error fetching cart items:', error);
+        console.log('Error fetching user:', error);
       }
     };
 
-    fetchCartItems();
+    fetchUser();
   }, []);
 
   // Tính tổng tiền hàng
@@ -60,8 +71,8 @@ export default function Checkout() {
       // shipDate.setDate(orderDate.getDate() + 3);
 
       const data = {
-        id: 1,
-        userId: 23,
+        id: orderId,
+        userId: id,
         orderDate: orderDate.toISOString(),
         totalPrice: totalPayment,
         status: 'Pending',
@@ -69,7 +80,7 @@ export default function Checkout() {
         paymentMethod: 'COD',
       };
 
-      const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/1', {
+      const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -108,8 +119,8 @@ export default function Checkout() {
               Cảm ơn bạn đã đặt hàng.
             </Typography>
             <Typography variant="subtitle1">
-              Mã đơn hàng của bạn là #1. Chúng tôi đã gửi email xác nhận đơn hàng của bạn và sẽ thông báo cho bạn khi
-              đơn hàng của bạn được gửi đi.
+              Mã đơn hàng của bạn là #{orderId}. Chúng tôi đã gửi email xác nhận đơn hàng của bạn và sẽ thông báo cho
+              bạn khi đơn hàng của bạn được gửi đi.
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
               <Button

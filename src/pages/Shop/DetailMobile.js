@@ -23,6 +23,7 @@ export default function DetailMobile() {
   const [value, setValue] = useState(0);
   const [selectedTitle, setSelectedTitle] = useState('');
   const [quantity, setQuantity] = useState([]);
+  const [orderId, setOrderId] = useState('');
 
   const handleQuantityChange = (event, value) => {
     const updatedQuantity = quantity + value;
@@ -30,6 +31,25 @@ export default function DetailMobile() {
     const limitedQuantity = Math.max(0, Math.min(updatedQuantity, 10));
     setQuantity(limitedQuantity);
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const nameFromStorage = localStorage.getItem('name');
+        const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/');
+        const users = await response.json();
+        const user = users.find((user) => user.username === nameFromStorage);
+        const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
+        const data = await userResponse.json();
+
+        setOrderId(data.orders[0].id);
+      } catch (error) {
+        console.log('Error fetching user:', error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,20 +75,20 @@ export default function DetailMobile() {
   }, [id]);
 
   const handleAddToCart = async (selectedPackage, priceSale) => {
-    const responseOders = await fetch('https://cookyzz.azurewebsites.net/api/Orders/1');
+    const responseOders = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${orderId}`);
     const data = await responseOders.json();
     setQuantity(data.items);
 
     const currentItem = data.items.find((item) => item.packageId === selectedPackage.id);
     const currentQuantity = currentItem ? currentItem.quantity : 0;
 
-    const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/addCart/1', {
+    const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/addCart/${orderId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        orderId: 1,
+        orderId: orderId,
         packageId: selectedPackage.id,
         quantity: currentQuantity + 1,
         price: priceSale,

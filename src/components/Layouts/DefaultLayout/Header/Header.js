@@ -45,7 +45,7 @@ const Search = styled('div')(({ theme }) => ({
   marginLeft: theme.spacing(2),
   width: '100%',
   [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(1), 
     width: 'auto',
   },
 }));
@@ -91,6 +91,8 @@ export default function Header() {
     localStorage.removeItem('isLoggedIn');
     setIsLoggedIn(false);
     setOpenSnackbar(true);
+    localStorage.clear();
+    navigate('/');
   };
 
   useEffect(() => {
@@ -99,18 +101,23 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    const fetchCartItems = async () => {
+    const fetchUser = async () => {
       try {
-        // Fetch data from orders.json or API endpoint
-        const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/1');
-        const data = await response.json();
-        console.log(data);
-        setCartItems(data.items);
+        const nameFromStorage = localStorage.getItem('name');
+        const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/');
+        const users = await response.json();
+        const user = users.find((user) => user.username === nameFromStorage);
+        const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
+        const data = await userResponse.json();
+        const orderResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${data.orders[0].id}`);
+        const dataOrder = await orderResponse.json();
+        setCartItems(dataOrder.items);
       } catch (error) {
-        console.error('Error fetching cart items:', error);
+        console.log('Error fetching user:', error);
       }
     };
-    fetchCartItems();
+
+    fetchUser();
   }, []);
 
   useLayoutEffect(() => {
@@ -144,14 +151,8 @@ export default function Header() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const [open, setOpen] = useState(false);
-
   const handleOpen = () => {
     setOpenLoginDialog(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
   };
 
   const handleSearchIconClick = () => {
@@ -195,11 +196,13 @@ export default function Header() {
       </MenuItem>
       <MenuItem onClick={handleMenuClose}>
         {isLoggedIn ? (
-          <Button onClick={handleLogout} sx={{ color: 'black' }} startIcon={<Logout />}>
-            Đăng xuất
-          </Button>
+          <>
+            <Button onClick={handleLogout} sx={{ color: 'black' }} startIcon={<Logout />}>
+              Đăng xuất
+            </Button>
+          </>
         ) : (
-          <Button onClick={handleOpen}  sx={{ color: 'black' }} startIcon={<Login />}>
+          <Button onClick={handleOpen} sx={{ color: 'black' }} startIcon={<Login />}>
             Đăng nhập
           </Button>
         )}

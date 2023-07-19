@@ -29,7 +29,9 @@ const LoginForm = ({ onClose, onLoginSuccess }) => {
       console.log(role); // "User"
 
       // Lưu token vào localStorage
-      localStorage.setItem('token', token);
+      localStorage.setItem('role', role);
+      localStorage.setItem('name', name);
+      // localStorage.setItem('token', token);
 
       // Chuyển hướng nếu role là 'User'
       if (role === 'User') {

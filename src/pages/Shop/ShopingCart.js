@@ -28,6 +28,7 @@ export default function ShoppingCart() {
   const [recipes, setRecipes] = useState([]);
   const [packages, setPackages] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [orderId, setOrderId] = useState('');
 
   const handleQuantityChange = (itemId, value) => {
     const updatedPackages = packages.map((item) => {
@@ -45,12 +46,31 @@ export default function ShoppingCart() {
   };
 
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const nameFromStorage = localStorage.getItem('name');
+        const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/');
+        const users = await response.json();
+        const user = users.find((user) => user.username === nameFromStorage);
+        const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
+        const data = await userResponse.json();
+        const orderResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${data.orders[0].id}`);
+        const dataOrder = await orderResponse.json();
+        setOrderId(data.orders[0].id);
+
+        setCartItems(dataOrder.items);
+      } catch (error) {
+        console.log('Error fetching user:', error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+  
+  useEffect(() => {
     const fetchCartItems = async () => {
       try {
         // Fetch data from orders.json or API endpoint
-        const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/1');
-        const data = await response.json();
-        setCartItems(data.items);
 
         const recipeResponse = await fetch('https://cookyzz.azurewebsites.net/api/Recipes');
         const recipeData = await recipeResponse.json();
@@ -77,14 +97,14 @@ export default function ShoppingCart() {
   };
 
   const handleAdd = async (item) => {
-    const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/addCart/1', {
+    const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/addCart/${orderId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         id: item.id,
-        orderId: 1,
+        orderId: orderId,
         packageId: item.package.id,
         quantity: item.quantity + 1,
         price: (item.quantity + 1) * (item.package.price - item.package.sales),
@@ -104,13 +124,13 @@ export default function ShoppingCart() {
   };
 
   const handleRemove = async (item) => {
-    const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/addCart/1', {
+    const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/addCart/${orderId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        orderId: 1,
+        orderId: orderId,
         packageId: item.package.id,
         quantity: item.quantity - 1,
         price: (item.quantity - 1) * (item.package.price - item.package.sales),
@@ -149,9 +169,13 @@ export default function ShoppingCart() {
   const totalSales = cartItems.reduce((total, item) => total + item.package.sales * item.quantity, 0);
   const totalPayment = totalPrice - totalSales;
 
+  const role = localStorage.getItem('role');
+  const name = localStorage.getItem('name');
+  console.log(role);
+  console.log(name);
   return (
     <>
-      {isMobile ? (
+      {isMobile && (role === 'Admin' || role === 'User') ? (
         <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '55px' }}>
           {/* Bắt đầu breadcrumb Mobile*/}
           <Box
@@ -301,7 +325,7 @@ export default function ShoppingCart() {
             </Button>
           </div>
         </Container>
-      ) : (
+      ) : role === 'Admin' || role === 'User' ? (
         <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '70px' }}>
           {/* Bắt đầu breadcrumb Tablet pc*/}
           <Box
@@ -482,8 +506,10 @@ export default function ShoppingCart() {
             </div>
           </TableContainer>
         </Container>
+      ) : (
+        <Container style={{ paddingTop: '100px' }}>Bạn không có quyền truy cập</Container>
       )}
-
+      ;
       {deleteItemId && (
         <Dialog open={true} onClose={handleCancelDelete}>
           <DialogTitle>Xóa sản phẩm</DialogTitle>

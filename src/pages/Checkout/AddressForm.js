@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { Button } from '@mui/material';
 
 export default function AddressForm() {
   const [user, setUser] = useState(null);
+  const [id, setId] = useState('');
   const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -18,13 +20,20 @@ export default function AddressForm() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/14');
-        const data = await response.json();
-        setUser(data);
-        setName(data.name);
-        setAddress(data.address);
-        setPhone(data.phone);
-        setEmail(data.email);
+        const nameFromStorage = localStorage.getItem('name');
+        const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/');
+        const users = await response.json();
+        const user = users.find((user) => user.username === nameFromStorage);
+        if (user) {
+          setUser(user);
+          setId(user.id);
+          setUsername(user.username);
+          setPassword(user.password);
+          setName(user.name);
+          setAddress(user.address);
+          setPhone(user.phone);
+          setEmail(user.email);
+        }
       } catch (error) {
         console.log('Error fetching user:', error);
       }
@@ -36,15 +45,15 @@ export default function AddressForm() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/14', {
+      const response = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id: 14,
-          username: 'thiit',
-          password: '123',
+          id: id,
+          username: username,
+          password: password,
           name: name,
           email: email,
           phone: phone,
