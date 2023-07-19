@@ -53,13 +53,13 @@ export default function Search() {
         price: pkg.price,
       }),
     });
-    console.log(pkg.id);
-    console.log(pkg.price);
     if (!response.ok) {
       console.error('Response status:', response.status, 'status text:', response.statusText);
       throw new Error('Error adding to cart');
     }
   };
+
+  const role = localStorage.getItem('role');
 
   return (
     <Container style={{ marginTop: '80px' }}>
@@ -84,23 +84,33 @@ export default function Search() {
                     className="featured__item__pic set-bg"
                     style={{ backgroundImage: `url(${result.image.split('\n')[0]})` }}
                   >
-                    <ul className="featured__item__pic__hover">
-                      <li>
-                        <a href="#">
-                          <FavoriteBorderRounded />
-                        </a>
-                      </li>
-                      <li>
-                        <Link to={`/shop-detail/${result.id}`}>
-                          <FullscreenOutlined />
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="/shoping-cart" onClick={() => handleAddToCart(pkg)}>
-                          <ShoppingCartOutlined />
-                        </Link>
-                      </li>
-                    </ul>
+                    {role === 'User' || role === 'Admin' ? (
+                      <ul className="featured__item__pic__hover">
+                        <li>
+                          <Link to="/">
+                            <FavoriteBorderRounded />
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to={`/shop-detail/${result.id}`}>
+                            <FullscreenOutlined />
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/shoping-cart" onClick={() => handleAddToCart(pkg)}>
+                            <ShoppingCartOutlined />
+                          </Link>
+                        </li>
+                      </ul>
+                    ) : (
+                      <ul className="featured__item__pic__hover">
+                        <li>
+                          <Link to={`/shop-detail/${result.id}`}>
+                            <FullscreenOutlined />
+                          </Link>
+                        </li>
+                      </ul>
+                    )}
                   </div>
                   <CardContent style={{ paddingTop: '15px' }}>
                     <Typography

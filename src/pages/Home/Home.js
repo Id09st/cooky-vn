@@ -10,7 +10,6 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [packages, setPackages] = useState([]);
-  const [quantity, setQuantity] = useState([]);
   const [orderId, setOrderId] = useState('');
 
   useEffect(() => {
@@ -92,6 +91,7 @@ export default function Home() {
   };
 
   const isMobile = useMediaQuery('(max-width: 601px)');
+  const role = localStorage.getItem('role');
 
   return (
     <>
@@ -151,23 +151,33 @@ export default function Home() {
                           className="featured__item__pic set-bg"
                           style={{ backgroundImage: `url(${recipe.image.split('\n')[0]})` }}
                         >
-                          <ul className="featured__item__pic__hover">
-                            <li>
-                              <a href="#">
-                                <FavoriteBorderRounded />
-                              </a>
-                            </li>
-                            <li>
-                              <Link to={`shop-detail/${recipe.id}`}>
-                                <FullscreenOutlined />
-                              </Link>
-                            </li>
-                            <li>
-                              <Link to="/shoping-cart" onClick={() => handleAddToCart(pkg)}>
-                                <ShoppingCartOutlined />
-                              </Link>
-                            </li>
-                          </ul>
+                          {role === 'User' || role === 'Admin' ? (
+                            <ul className="featured__item__pic__hover">
+                              <li>
+                                <Link to="/">
+                                  <FavoriteBorderRounded />
+                                </Link>
+                              </li>
+                              <li>
+                                <Link to={`shop-detail/${recipe.id}`}>
+                                  <FullscreenOutlined />
+                                </Link>
+                              </li>
+                              <li>
+                                <Link to="/shoping-cart" onClick={() => handleAddToCart(pkg)}>
+                                  <ShoppingCartOutlined />
+                                </Link>
+                              </li>
+                            </ul>
+                          ) : (
+                            <ul className="featured__item__pic__hover">
+                              <li>
+                                <Link to={`shop-detail/${recipe.id}`}>
+                                  <FullscreenOutlined />
+                                </Link>
+                              </li>
+                            </ul>
+                          )}
                         </div>
                         <CardContent style={{ paddingTop: '15px' }}>
                           <Typography
@@ -371,23 +381,33 @@ export default function Home() {
                           className="featured__item__pic set-bg"
                           style={{ backgroundImage: `url(${recipe.image.split('\n')[0]})` }}
                         >
-                          <ul className="featured__item__pic__hover">
-                            <li>
-                              <a href="#">
-                                <FavoriteBorderRounded />
-                              </a>
-                            </li>
-                            <li>
-                              <Link to={`shop-detail/${recipe.id}`}>
-                                <FullscreenOutlined />
-                              </Link>
-                            </li>
-                            <li>
-                              <Link to="/shoping-cart" onClick={() => handleAddToCart(pkg)}>
-                                <ShoppingCartOutlined />
-                              </Link>
-                            </li>
-                          </ul>
+                          {role === 'User' || role === 'Admin' ? (
+                            <ul className="featured__item__pic__hover">
+                              <li>
+                                <Link to="/">
+                                  <FavoriteBorderRounded />
+                                </Link>
+                              </li>
+                              <li>
+                                <Link to={`shop-detail/${recipe.id}`}>
+                                  <FullscreenOutlined />
+                                </Link>
+                              </li>
+                              <li>
+                                <Link to="/shoping-cart" onClick={() => handleAddToCart(pkg)}>
+                                  <ShoppingCartOutlined />
+                                </Link>
+                              </li>
+                            </ul>
+                          ) : (
+                            <ul className="featured__item__pic__hover">
+                              <li>
+                                <Link to={`shop-detail/${recipe.id}`}>
+                                  <FullscreenOutlined />
+                                </Link>
+                              </li>
+                            </ul>
+                          )}
                         </div>
                         <CardContent style={{ paddingTop: '15px' }}>
                           <Typography

@@ -162,6 +162,7 @@ export default function ShopDetail() {
   };
 
   const isMobile = useMediaQuery('(max-width: 601px)');
+  const role = localStorage.getItem('role');
 
   if (!recipe || !packages) {
     return (
@@ -305,41 +306,93 @@ export default function ShopDetail() {
                     </Box>
                   )}
                 </Typography>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{
-                    backgroundColor: 'var(--background)',
-                    color: 'var(--white-color)',
-                    width: '328px',
-                    height: '50px',
-                    marginRight: '20px',
-                    marginTop: '10px',
-                  }}
-                  component={Link}
-                  to="/shoping-cart"
-                  startIcon={<ShoppingCartOutlined style={{ color: 'var(--primary-color)' }} sx={{ fontSize: 30 }} />}
-                  onClick={() => handleAddToCart(selectedPackage, priceSale)}
-                >
-                  Thêm vào giỏ
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{
-                    backgroundColor: 'var(--white-color)',
-                    color: 'var(--black-color)',
-                    width: '200px',
-                    height: '50px',
-                    marginTop: '10px',
-                  }}
-                  component={Link}
-                  to="/shoping-cart"
-                  startIcon={<FavoriteBorderRounded style={{ color: 'var(--primary-color)' }} sx={{ fontSize: 30 }} />}
-                >
-                  Lưu
-                </Button>
-
+                {role === 'User' || role === 'Admin' ? (
+                  <>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{
+                        backgroundColor: 'var(--background)',
+                        color: 'var(--white-color)',
+                        width: '328px',
+                        height: '50px',
+                        marginRight: '20px',
+                        marginTop: '10px',
+                      }}
+                      component={Link}
+                      to="/shoping-cart"
+                      startIcon={
+                        <ShoppingCartOutlined style={{ color: 'var(--primary-color)' }} sx={{ fontSize: 30 }} />
+                      }
+                      onClick={() => handleAddToCart(selectedPackage, priceSale)}
+                    >
+                      Thêm vào giỏ
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{
+                        backgroundColor: 'var(--white-color)',
+                        color: 'var(--black-color)',
+                        width: '200px',
+                        height: '50px',
+                        marginTop: '10px',
+                      }}
+                      component={Link}
+                      to="/shoping-cart"
+                      startIcon={
+                        <FavoriteBorderRounded style={{ color: 'var(--primary-color)' }} sx={{ fontSize: 30 }} />
+                      }
+                    >
+                      Lưu
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{
+                        backgroundColor: 'var(--background)',
+                        color: 'var(--white-color)',
+                        width: '328px',
+                        height: '50px',
+                        marginRight: '20px',
+                        marginTop: '10px',
+                      }}
+                    >
+                      <div>
+                        <div>
+                          <ShoppingCartOutlined style={{ color: 'var(--primary-color)' }} sx={{ fontSize: 13 }} /> Thêm
+                          vào giỏ
+                        </div>
+                        <Typography sx={{ fontSize: 10 }} style={{ color: 'var(--white-color)' }}>
+                          (Vui lòng đăng nhập để xử dụng chức năng)
+                        </Typography>
+                      </div>
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{
+                        backgroundColor: 'var(--white-color)',
+                        color: 'var(--black-color)',
+                        width: '200px',
+                        height: '50px',
+                        marginTop: '10px',
+                      }}
+                    >
+                      <div>
+                        <div>
+                          <FavoriteBorderRounded style={{ color: 'var(--primary-color)' }} sx={{ fontSize: 13 }} /> Lưu
+                        </div>
+                        <Typography sx={{ fontSize: 10 }} style={{ color: 'var(--black-color)' }}>
+                          (Vui lòng đăng nhập để xử dụng chức năng)
+                        </Typography>
+                      </div>
+                    </Button>
+                  </>
+                )}
                 <div style={{ paddingTop: '20px' }}>
                   <Select value={selectedTitle} onChange={(event) => setSelectedTitle(event.target.value)}>
                     {packages

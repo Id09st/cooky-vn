@@ -25,15 +25,9 @@ const LoginForm = ({ onClose, onLoginSuccess }) => {
       name = payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
       role = payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
 
-      console.log(name); // "thinh"
-      console.log(role); // "User"
-
-      // Lưu token vào localStorage
       localStorage.setItem('role', role);
       localStorage.setItem('name', name);
-      // localStorage.setItem('token', token);
 
-      // Chuyển hướng nếu role là 'User'
       if (role === 'User') {
         navigate('/shoping-cart');
         localStorage.setItem('isLoggedIn', 'true');
@@ -73,8 +67,6 @@ const LoginForm = ({ onClose, onLoginSuccess }) => {
 
       if (response.ok) {
         const responseData = await response.json();
-        // const token = localStorage.getItem('token', responseData);
-        // Đây là token của bạn // Đây là token của bạn
         if (responseData.token) {
           decodeAndStoreToken(responseData.token);
         } else {

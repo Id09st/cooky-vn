@@ -24,7 +24,6 @@ import {
   AccountCircle,
   Call,
   CallOutlined,
-  Close,
   HomeOutlined,
   Login,
   Logout,
@@ -45,7 +44,7 @@ const Search = styled('div')(({ theme }) => ({
   marginLeft: theme.spacing(2),
   width: '100%',
   [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1), 
+    marginLeft: theme.spacing(1),
     width: 'auto',
   },
 }));
@@ -86,6 +85,7 @@ export default function Header() {
   const [openLoginDialog, setOpenLoginDialog] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const role = localStorage.getItem('role');
 
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn');
@@ -231,29 +231,23 @@ export default function Header() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem onClick={handleMobileMenuClose}>
-        <IconButton size="large" aria-label="show 17 new shoping cart" color="inherit">
-          <Link to="/shoping-cart" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Badge badgeContent={cartItems.length} color="error">
+        {role === 'User' || role === 'Admin' ? (
+          <IconButton size="large" color="inherit">
+            <Link to="/shoping-cart" style={{ textDecoration: 'none', color: 'inherit' }}>
               <ShoppingCartOutlined style={{ borderRadius: '50%', color: 'black' }} />
-            </Badge>
-          </Link>
-        </IconButton>
-      </MenuItem>
-      <MenuItem onClick={handleMobileMenuClose}>
-        <IconButton size="large" aria-label="Contact" color="inherit">
+            </Link>
+          </IconButton>
+        ) : (
+          <></>
+        )}
+        <IconButton size="large" color="inherit">
           <Link to="/contact" style={{ textDecoration: 'none', color: 'inherit' }}>
             <CallOutlined style={{ borderRadius: '50%', color: 'black' }} />
           </Link>
         </IconButton>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
+        <IconButton size="large" aria-haspopup="true" color="inherit">
           <AccountCircle style={{ borderRadius: '50%' }} />
         </IconButton>
       </MenuItem>
@@ -309,13 +303,15 @@ export default function Header() {
                   </Search>
                   <Box sx={{ flexGrow: 1 }} />
                   <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                    <IconButton size="large">
-                      <Link to="/shoping-cart">
-                        <Badge badgeContent={cartItems.length} color="error">
+                    {role === 'User' || role === 'Admin' ? (
+                      <IconButton size="large">
+                        <Link to="/shoping-cart">
                           <ShoppingCartOutlined sx={{ color: 'var(--white-color)' }} />
-                        </Badge>
-                      </Link>
-                    </IconButton>
+                        </Link>
+                      </IconButton>
+                    ) : (
+                      <></>
+                    )}
                     <IconButton size="large">
                       <Link to="/contact">
                         <Call sx={{ color: 'var(--white-color)' }} />
@@ -390,26 +386,21 @@ export default function Header() {
                   </Search>
                   <Box sx={{ flexGrow: 1 }} />
                   <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                    <IconButton size="large">
-                      <Link to="/shoping-cart">
-                        <Badge badgeContent={cartItems.length} color="error">
+                    {role === 'User' || role === 'Admin' ? (
+                      <IconButton size="large">
+                        <Link to="/shoping-cart">
                           <ShoppingCartOutlined sx={{ color: 'var(--white-color)' }} />
-                        </Badge>
-                      </Link>
-                    </IconButton>
+                        </Link>
+                      </IconButton>
+                    ) : (
+                      <></>
+                    )}
                     <IconButton size="large">
                       <Link to="/contact">
                         <Call sx={{ color: 'var(--white-color)' }} />
                       </Link>
                     </IconButton>
-                    <IconButton
-                      size="large"
-                      edge="end"
-                      aria-label="account of current user"
-                      aria-controls={menuId}
-                      aria-haspopup="true"
-                      onClick={handleProfileMenuOpen}
-                    >
+                    <IconButton size="large" edge="end" aria-haspopup="true" onClick={handleProfileMenuOpen}>
                       <AccountCircle sx={{ color: 'var(--white-color)' }} />
                     </IconButton>
                   </Box>

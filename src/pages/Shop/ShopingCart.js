@@ -66,7 +66,7 @@ export default function ShoppingCart() {
 
     fetchUser();
   }, []);
-  
+
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
@@ -169,13 +169,9 @@ export default function ShoppingCart() {
   const totalSales = cartItems.reduce((total, item) => total + item.package.sales * item.quantity, 0);
   const totalPayment = totalPrice - totalSales;
 
-  const role = localStorage.getItem('role');
-  const name = localStorage.getItem('name');
-  console.log(role);
-  console.log(name);
   return (
     <>
-      {isMobile && (role === 'Admin' || role === 'User') ? (
+      {isMobile ? (
         <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '55px' }}>
           {/* Bắt đầu breadcrumb Mobile*/}
           <Box
@@ -325,7 +321,7 @@ export default function ShoppingCart() {
             </Button>
           </div>
         </Container>
-      ) : role === 'Admin' || role === 'User' ? (
+      ) : (
         <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '70px' }}>
           {/* Bắt đầu breadcrumb Tablet pc*/}
           <Box
@@ -506,8 +502,6 @@ export default function ShoppingCart() {
             </div>
           </TableContainer>
         </Container>
-      ) : (
-        <Container style={{ paddingTop: '100px' }}>Bạn không có quyền truy cập</Container>
       )}
       ;
       {deleteItemId && (
