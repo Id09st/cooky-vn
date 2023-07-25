@@ -20,10 +20,14 @@ export default function Review() {
         const user = users.find((user) => user.username === nameFromStorage);
         const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
         const data = await userResponse.json();
-        const orderResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${data.orders[0].id}`);
-        const dataOrder = await orderResponse.json();
-        setOrder(dataOrder);
-        setCartItems(dataOrder.items);
+
+        const onCartOrder = data.orders.find((order) => order.status === 'On-cart');
+        if (onCartOrder) {
+          const orderResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${onCartOrder.id}`);
+          const dataOrder = await orderResponse.json();
+          setOrder(dataOrder);
+          setCartItems(dataOrder.items);
+        }
 
         if (user) {
           setUser(user);
@@ -74,7 +78,7 @@ export default function Review() {
       {order && (
         <>
           <Typography variant="h6" gutterBottom>
-            Tóm tắt đơn hàng
+            Tóm tắt đơn hàng # {order.id}
           </Typography>
 
           <List disablePadding>

@@ -43,8 +43,10 @@ export default function Home() {
         const user = users.find((user) => user.username === nameFromStorage);
         const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
         const data = await userResponse.json();
-
-        setOrderId(data.orders[0].id);
+        const onCartOrder = data.orders.find((order) => order.status === 'On-cart');
+        if (onCartOrder) {
+          setOrderId(onCartOrder.id);
+        }
       } catch (error) {
         console.log('Error fetching user:', error);
       }

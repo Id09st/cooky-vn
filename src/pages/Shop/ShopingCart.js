@@ -19,6 +19,9 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Snackbar,
+  Alert,
+  DialogContentText,
 } from '@mui/material';
 import { Add, Delete, Remove } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
@@ -29,6 +32,7 @@ export default function ShoppingCart() {
   const [packages, setPackages] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [orderId, setOrderId] = useState('');
+  const [openOrder, setOpenOrder] = useState(false);
 
   const handleQuantityChange = (itemId, value) => {
     const updatedPackages = packages.map((item) => {
@@ -54,11 +58,13 @@ export default function ShoppingCart() {
         const user = users.find((user) => user.username === nameFromStorage);
         const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
         const data = await userResponse.json();
-        const orderResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${data.orders[0].id}`);
-        const dataOrder = await orderResponse.json();
-        setOrderId(data.orders[0].id);
-
-        setCartItems(dataOrder.items);
+        const onCartOrder = data.orders.find((order) => order.status === 'On-cart');
+        if (onCartOrder) {
+          setOrderId(onCartOrder.id);
+          const orderResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${onCartOrder.id}`);
+          const dataOrder = await orderResponse.json();
+          setCartItems(dataOrder.items);
+        }
       } catch (error) {
         console.log('Error fetching user:', error);
       }
@@ -315,7 +321,12 @@ export default function ShoppingCart() {
               variant="contained"
               style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
               component={Link}
-              to="/checkout"
+              to={cartItems.length > 0 ? '/checkout' : '#'}
+              onClick={() => {
+                if (cartItems.length === 0) {
+                  setOpenOrder(true);
+                }
+              }}
             >
               Đặt hàng
             </Button>
@@ -494,7 +505,12 @@ export default function ShoppingCart() {
                     borderRadius: '7px',
                   }}
                   component={Link}
-                  to="/checkout"
+                  to={cartItems.length > 0 ? '/checkout' : '#'}
+                  onClick={() => {
+                    if (cartItems.length === 0) {
+                      setOpenOrder(true);
+                    }
+                  }}
                 >
                   Đặt hàng
                 </Button>
@@ -503,7 +519,29 @@ export default function ShoppingCart() {
           </TableContainer>
         </Container>
       )}
-      ;
+      {/* Noti chưa có gì trong giỏ hàng */}
+      <Dialog open={openOrder} onClose={() => setOpenOrder(false)}>
+        <DialogTitle>{'Thông báo'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Vui lòng đặt tối thiểu một package</DialogContentText>
+          <Box display="flex" justifyContent="flex-end">
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: 'var(--primary-color)',
+                color: 'var(--white-color)',
+                borderRadius: '7px',
+                marginTop: '20px',
+              }}
+              component={Link}
+              to="/"
+            >
+              Tiếp tục mua sắm
+            </Button>
+          </Box>
+        </DialogContent>
+      </Dialog>
+      {/* Xóa sản phẩm */}
       {deleteItemId && (
         <Dialog open={true} onClose={handleCancelDelete}>
           <DialogTitle>Xóa sản phẩm</DialogTitle>

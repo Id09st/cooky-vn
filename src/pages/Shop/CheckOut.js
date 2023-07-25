@@ -41,11 +41,14 @@ export default function Checkout() {
         const user = users.find((user) => user.username === nameFromStorage);
         const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
         const data = await userResponse.json();
-        const orderResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${data.orders[0].id}`);
-        const dataOrder = await orderResponse.json();
-        setOrderId(data.orders[0].id);
-        setCartItems(dataOrder.items);
 
+        const onCartOrder = data.orders.find((order) => order.status === 'On-cart');
+        if (onCartOrder) {
+          setOrderId(onCartOrder.id);
+          const orderResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${onCartOrder.id}`);
+          const dataOrder = await orderResponse.json();
+          setCartItems(dataOrder.items);
+        }
         if (user) {
           setId(user.id);
         }
@@ -91,6 +94,7 @@ export default function Checkout() {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      const getCartResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/GetCartByUser/${id}`);
     }
 
     setActiveStep(activeStep + 1);
