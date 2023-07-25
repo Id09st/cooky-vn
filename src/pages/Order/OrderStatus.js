@@ -29,11 +29,14 @@ export default function OrderStatus() {
         const user = users.find((user) => user.username === nameFromStorage);
         const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
         const data = await userResponse.json();
+      
         for (let i = 0; i < data.orders.length; i++) {
           if (data.orders[i].status === 'Pending') {
+            console.log(data.orders[i]);
             setOrders((prevOrders) => [...prevOrders, data.orders[i]]);
           }
         }
+
         if (user) {
           setId(user.id);
         }
@@ -78,7 +81,7 @@ export default function OrderStatus() {
   return (
     <Container style={{ paddingTop: '90px' }}>
       <Box sx={{ width: '100%' }}>
-        {orders.slice(0, orders.length / 2).map((order) => (
+        {orders.map((order) => (
           <Card key={order.id} sx={{ my: 2, p: 2 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
