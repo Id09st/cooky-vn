@@ -190,7 +190,7 @@ export default function Header() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <Button sx={{ color: 'black' }} startIcon={<Person />}>
+        <Button style={{ color: 'black' }} component={Link} to="/user" startIcon={<Person />}>
           Tài khoản
         </Button>
       </MenuItem>
