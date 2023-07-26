@@ -189,27 +189,29 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>
-        <Button style={{ color: 'black' }} component={Link} to="/user" startIcon={<Person />}>
-          Tài khoản
-        </Button>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        {isLoggedIn ? (
-          <>
+      {isLoggedIn ? (
+        <>
+          <MenuItem onClick={handleMenuClose}>
+            <Button style={{ color: 'black' }} component={Link} to="/user" startIcon={<Person />}>
+              Tài khoản
+            </Button>
+          </MenuItem>
+          <MenuItem onClick={handleMenuClose}>
             <Button onClick={handleLogout} sx={{ color: 'black' }} startIcon={<Logout />}>
               Đăng xuất
             </Button>
-          </>
-        ) : (
+          </MenuItem>
+        </>
+      ) : (
+        <MenuItem onClick={handleMenuClose}>
           <Button onClick={handleOpen} sx={{ color: 'black' }} startIcon={<Login />}>
             Đăng nhập
           </Button>
-        )}
-        <Dialog open={openLoginDialog} onClose={handleRegisterClick}>
-          <LoginForm onClose={handleRegisterClick} onLoginSuccess={handleLoginSuccess} />
-        </Dialog>
-      </MenuItem>
+        </MenuItem>
+      )}
+      <Dialog open={openLoginDialog} onClose={handleRegisterClick}>
+        <LoginForm onClose={handleRegisterClick} onLoginSuccess={handleLoginSuccess} />
+      </Dialog>
     </Menu>
   );
 
@@ -230,17 +232,17 @@ export default function Header() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={handleMobileMenuClose}>
-        {role === 'User' || role === 'Admin' ? (
+      {role === 'User' || role === 'Admin' ? (
+        <MenuItem onClick={handleMobileMenuClose}>
           <IconButton size="large" color="inherit">
             <Link to="/shoping-cart" style={{ textDecoration: 'none', color: 'inherit' }}>
               <ShoppingCartOutlined style={{ borderRadius: '50%', color: 'black' }} />
             </Link>
           </IconButton>
-        ) : (
-          <></>
-        )}
-      </MenuItem>
+        </MenuItem>
+      ) : (
+        <></>
+      )}
       <MenuItem onClick={handleMobileMenuClose}>
         <IconButton size="large" color="inherit">
           <Link to="/contact" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -248,7 +250,6 @@ export default function Header() {
           </Link>
         </IconButton>
       </MenuItem>
-
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton size="large" aria-haspopup="true" color="inherit">
           <AccountCircle style={{ borderRadius: '50%' }} />
