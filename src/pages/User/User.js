@@ -94,7 +94,11 @@ export default function User() {
           setEmail(user.email);
         }
         for (let i = 0; i < data.orders.length; i++) {
-          if (data.orders[i].status === 'Pending' || data.orders[i].status === 'Completed') {
+          if (
+            data.orders[i].status === 'Pending' ||
+            data.orders[i].status === 'Completed' ||
+            data.orders[i].status === 'Canceled'
+          ) {
             console.log(data.orders[i]);
             setOrders((prevOrders) => [...prevOrders, data.orders[i]]);
           }
@@ -196,10 +200,10 @@ export default function User() {
             <Grid item xs={5}>
               <Item>
                 <Box display="flex" justifyContent="center">
-                  <Avatar sx={{ width: '180px', height: '180px' }}>H</Avatar>
+                  <Avatar sx={{ width: '180px', height: '180px' }}></Avatar>
                 </Box>
                 <Typography style={{ marginTop: '20px' }} variant="h4">
-                  Trần Minh Thiện
+                  {name}
                 </Typography>
 
                 <Tabs
@@ -364,11 +368,14 @@ export default function User() {
                             align="right"
                             style={{ marginRight: '40px' }}
                           >
-                            Tình trạng đơn hàng: &nbsp;
                             {order.status === 'Pending' ? (
-                              <span style={{ color: 'var(--primary-color)' }}>Đang xử lý</span>
+                              <Typography style={{ color: 'var(--primary-color)' }}>Đang xử lý</Typography>
+                            ) : order.status === 'Completed' ? (
+                              <Typography color="green">Hoàn tất</Typography>
+                            ) : order.status === 'Canceled' ? (
+                              <Typography color="error">Đã hủy</Typography>
                             ) : (
-                              <span style={{ color: 'green' }}>Hoàn tất</span>
+                              <></>
                             )}
                           </Typography>
                         </Grid>
@@ -380,15 +387,20 @@ export default function User() {
                                 <TableRow key={item.id}>
                                   <TableCell>
                                     <Grid container>
-                                      <Grid item xs={3}>
+                                      <Grid item xs={2}>
                                         <img
                                           src={item.recipe.image.split('\n')[0]}
                                           alt={item.recipe.title}
                                           style={{ width: '100px', height: '100px' }}
                                         />
                                       </Grid>
-                                      <Grid item xs={9}>
-                                        <Grid container direction="column" alignItems="flex-start">
+                                      <Grid item xs={10}>
+                                        <Grid
+                                          container
+                                          direction="column"
+                                          alignItems="flex-start"
+                                          style={{ marginLeft: '10px' }}
+                                        >
                                           <Grid item>
                                             <Typography variant="h6" component="h6">
                                               {item.recipe.title}

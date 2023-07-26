@@ -30,6 +30,7 @@ import {
   MoreHorizOutlined,
   Person,
   SearchOutlined,
+  ShoppingBag,
   ShoppingCartOutlined,
 } from '@mui/icons-material';
 
@@ -193,19 +194,24 @@ export default function Header() {
         <>
           <MenuItem onClick={handleMenuClose}>
             <Button style={{ color: 'black' }} component={Link} to="/user" startIcon={<Person />}>
-              Tài khoản
+              Tài Khoản
+            </Button>
+          </MenuItem>
+          <MenuItem onClick={handleMenuClose}>
+            <Button style={{ color: 'black' }} component={Link} to="/order" startIcon={<ShoppingBag />}>
+              Đơn Mua
             </Button>
           </MenuItem>
           <MenuItem onClick={handleMenuClose}>
             <Button onClick={handleLogout} sx={{ color: 'black' }} startIcon={<Logout />}>
-              Đăng xuất
+              Đăng Xuất
             </Button>
           </MenuItem>
         </>
       ) : (
         <MenuItem onClick={handleMenuClose}>
           <Button onClick={handleOpen} sx={{ color: 'black' }} startIcon={<Login />}>
-            Đăng nhập
+            Đăng Nhập
           </Button>
         </MenuItem>
       )}

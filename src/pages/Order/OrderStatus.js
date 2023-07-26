@@ -68,7 +68,6 @@ export default function OrderStatus() {
     const fetchUser = async () => {
       try {
         const nameFromStorage = localStorage.getItem('name');
-
         const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/');
         const users = await response.json();
         const user = users.find((user) => user.username === nameFromStorage);
@@ -176,11 +175,14 @@ export default function OrderStatus() {
                   </Grid>
                   <Grid item xs={6}>
                     <Typography variant="body1">
-                      Trạng thái đơn hàng:{' '}
                       {order.status === 'Pending' ? (
-                        <span style={{ color: 'var(--primary-color)' }}>Đang xử lý</span>
+                        <Typography style={{ color: 'var(--primary-color)' }}>Đang xử lý</Typography>
+                      ) : order.status === 'Completed' ? (
+                        <Typography color="green">Hoàn tất</Typography>
+                      ) : order.status === 'Canceled' ? (
+                        <Typography color="error">Đã hủy</Typography>
                       ) : (
-                        <span style={{ color: 'green' }}>Hoàn tất</span>
+                        <></>
                       )}
                     </Typography>
                     <Typography variant="body1">
@@ -274,13 +276,8 @@ export default function OrderStatus() {
                   <Typography variant="body1">Tổng thanh toán: {order.totalPrice.toLocaleString('vi-VN')}₫</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">
-                    Trạng thái đơn hàng:{' '}
-                    {order.status === 'Pending' ? (
-                      <span style={{ color: 'var(--primary-color)' }}>Đang xử lý</span>
-                    ) : (
-                      <span style={{ color: 'green' }}>Hoàn tất</span>
-                    )}
+                  <Typography variant="body1" style={{ color: 'var(--primary-color)' }}>
+                    Đang xử lý
                   </Typography>
                   <Typography variant="body1">
                     Thời gian nhận hàng dự kiến:{' '}
@@ -372,13 +369,9 @@ export default function OrderStatus() {
                   <Typography variant="body1">Tổng thanh toán: {order.totalPrice.toLocaleString('vi-VN')}₫</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">
-                    Trạng thái đơn hàng:{' '}
-                    {order.status === 'Pending' ? (
-                      <span style={{ color: 'var(--primary-color)' }}>Đang xử lý</span>
-                    ) : (
-                      <span style={{ color: 'green' }}>Hoàn tất</span>
-                    )}
+                  <Typography variant="body1"></Typography>
+                  <Typography variant="body1" style={{ color: 'green' }}>
+                    Hoàn tất
                   </Typography>
                   <Typography variant="body1">
                     Thời gian nhận hàng dự kiến:{' '}
@@ -470,13 +463,8 @@ export default function OrderStatus() {
                   <Typography variant="body1">Tổng thanh toán: {order.totalPrice.toLocaleString('vi-VN')}₫</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">
-                    Trạng thái đơn hàng:{' '}
-                    {order.status === 'Pending' ? (
-                      <span style={{ color: 'var(--primary-color)' }}>Đang xử lý</span>
-                    ) : (
-                      <span style={{ color: 'green' }}>Hoàn tất</span>
-                    )}
+                  <Typography variant="body1" color="error">
+                    Đã hủy
                   </Typography>
                   <Typography variant="body1">
                     Thời gian nhận hàng dự kiến:{' '}
