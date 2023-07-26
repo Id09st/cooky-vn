@@ -198,7 +198,7 @@ export default function OrderStatus() {
         </Box>
         <CustomTabPanel value={value} index={0}>
           <>
-            {all.map((order) => (
+            {[...all].reverse().map((order) => (
               <Card key={order.id} sx={{ my: 2, p: 2 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
@@ -340,7 +340,7 @@ export default function OrderStatus() {
           </>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          {pending.map((order) => (
+          {[...pending].reverse().map((order) => (
             <Card key={order.id} sx={{ my: 2, p: 2 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -467,7 +467,7 @@ export default function OrderStatus() {
           ))}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-          {completed.map((order) => (
+          {[...completed].reverse().map((order) => (
             <Card key={order.id} sx={{ my: 2, p: 2 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -561,7 +561,7 @@ export default function OrderStatus() {
           ))}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={3}>
-          {canceled.map((order) => (
+          {[...canceled].reverse().map((order) => (
             <Card key={order.id} sx={{ my: 2, p: 2 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>

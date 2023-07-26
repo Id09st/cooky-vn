@@ -15,6 +15,9 @@ import {
   TableCell,
   TableRow,
   Card,
+  Dialog,
+  DialogTitle,
+  DialogActions,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { CommentBankOutlined, Person, ShoppingBag } from '@mui/icons-material';
@@ -72,76 +75,74 @@ export default function User() {
   const [address, setAddress] = useState('');
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
+  const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const nameFromStorage = localStorage.getItem('name');
+  const fetchUser = async () => {
+    try {
+      const nameFromStorage = localStorage.getItem('name');
 
-        const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/');
-        const users = await response.json();
-        const user = users.find((user) => user.username === nameFromStorage);
-        const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
-        const data = await userResponse.json();
+      const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/');
+      const users = await response.json();
+      const user = users.find((user) => user.username === nameFromStorage);
+      const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
+      const data = await userResponse.json();
 
-        if (user) {
-          setId(user.id);
-          setUserName(user.username);
-          setPassWord(user.password);
-          setName(user.name);
-          setAddress(user.address);
-          setPhone(user.phone);
-          setEmail(user.email);
+      if (user) {
+        setId(user.id);
+        setUserName(user.username);
+        setPassWord(user.password);
+        setName(user.name);
+        setAddress(user.address);
+        setPhone(user.phone);
+        setEmail(user.email);
+      }
+      for (let i = 0; i < data.orders.length; i++) {
+        if (
+          data.orders[i].status === 'Pending' ||
+          data.orders[i].status === 'Completed' ||
+          data.orders[i].status === 'Canceled'
+        ) {
+          console.log(data.orders[i]);
+          setOrders((prevOrders) => [...prevOrders, data.orders[i]]);
         }
-        for (let i = 0; i < data.orders.length; i++) {
-          if (
-            data.orders[i].status === 'Pending' ||
-            data.orders[i].status === 'Completed' ||
-            data.orders[i].status === 'Canceled'
-          ) {
-            console.log(data.orders[i]);
-            setOrders((prevOrders) => [...prevOrders, data.orders[i]]);
+      }
+
+      if (user) {
+        setId(user.id);
+      }
+    } catch (error) {
+      console.log('Error fetching user:', error);
+    }
+  };
+
+  const fetchOrderItems = async () => {
+    try {
+      const response = await fetch('https://cookyzz.azurewebsites.net/api/OrderItems');
+      const data = await response.json();
+
+      const packagesResponse = await fetch('https://cookyzz.azurewebsites.net/api/Packages');
+      const packagesData = await packagesResponse.json();
+
+      const enrichedData = await Promise.all(
+        data.map(async (item) => {
+          const pkg = packagesData.find((p) => p.id === item.packageId);
+          if (pkg) {
+            const recipeResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Recipes/${pkg.recipeId}`);
+            const recipeData = await recipeResponse.json();
+            return { ...item, recipe: recipeData };
           }
-        }
+          return item;
+        }),
+      );
 
-        if (user) {
-          setId(user.id);
-        }
-      } catch (error) {
-        console.log('Error fetching user:', error);
-      }
-    };
-
-    fetchUser();
-  }, []);
+      setOrderItems(enrichedData);
+    } catch (error) {
+      console.log('Error fetching order items:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchOrderItems = async () => {
-      try {
-        const response = await fetch('https://cookyzz.azurewebsites.net/api/OrderItems');
-        const data = await response.json();
-
-        const packagesResponse = await fetch('https://cookyzz.azurewebsites.net/api/Packages');
-        const packagesData = await packagesResponse.json();
-
-        const enrichedData = await Promise.all(
-          data.map(async (item) => {
-            const pkg = packagesData.find((p) => p.id === item.packageId);
-            if (pkg) {
-              const recipeResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Recipes/${pkg.recipeId}`);
-              const recipeData = await recipeResponse.json();
-              return { ...item, recipe: recipeData };
-            }
-            return item;
-          }),
-        );
-
-        setOrderItems(enrichedData);
-      } catch (error) {
-        console.log('Error fetching order items:', error);
-      }
-    };
-
+    fetchUser();
     fetchOrderItems();
   }, []);
 
@@ -190,6 +191,51 @@ export default function User() {
     } catch (error) {
       console.error('Error:', error);
     }
+  };
+
+  async function cancelOrder(order, callback) {
+    try {
+      const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${order.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: order.id,
+          userId: order.userId,
+          orderDate: order.orderDate,
+          totalPrice: order.totalPrice,
+          status: 'Canceled',
+          shipDate: order.shipDate,
+          paymentMethod: order.paymentMethod,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      // Clear the arrays
+      setOrders([]);
+      setOrderItems([]);
+
+      // Call the callback function after successfully canceling the order
+      callback();
+
+      // Fetch data again after canceling the order
+      fetchUser();
+      fetchOrderItems();
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -352,7 +398,7 @@ export default function User() {
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={1}>
                   <Typography variant="h4">Thông tin đơn hàng</Typography>
-                  {orders.map((order) => (
+                  {[...orders].reverse().map((order) => (
                     <Card key={order.id} sx={{ my: 2, p: 2 }}>
                       <Grid container spacing={2}>
                         <Grid item xs={6}>
@@ -420,6 +466,44 @@ export default function User() {
                                 </TableRow>
                               ))}
                           </Table>
+                          {order.status === 'Pending' ? (
+                            <Grid container justifyContent="flex-end">
+                              <Grid container justifyContent="flex-end">
+                                <Button
+                                  variant="contained"
+                                  style={{
+                                    color: 'var(--white-color)',
+                                    backgroundColor: 'var(--primary-color)',
+                                    marginTop: '10px',
+                                  }}
+                                  onClick={handleOpen}
+                                >
+                                  Hủy đơn hàng
+                                </Button>
+
+                                <Dialog open={open} onClose={handleClose}>
+                                  <DialogTitle>Bạn có chắc chắn muốn hủy đơn hàng #{order.id} không?</DialogTitle>
+                                  <DialogActions>
+                                    <Button onClick={handleClose} color="error">
+                                      Không
+                                    </Button>
+                                    <Button
+                                      onClick={() => {
+                                        cancelOrder(order, () => setValue(1));
+                                        handleClose();
+                                      }}
+                                      autoFocus
+                                      color="success"
+                                    >
+                                      Có
+                                    </Button>
+                                  </DialogActions>
+                                </Dialog>
+                              </Grid>
+                            </Grid>
+                          ) : (
+                            <></>
+                          )}
                           <Grid item xs={12}>
                             <Typography
                               variant="h6"
