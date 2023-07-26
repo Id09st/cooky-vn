@@ -16,6 +16,7 @@ const RegisterForm = ({ onClose }) => {
       email: email.value,
       phone: phone.value,
       address: address.value,
+      role: 1,
     };
 
     try {

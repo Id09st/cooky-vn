@@ -12,15 +12,12 @@ import {
   Button,
   TextField,
   Table,
-  TableBody,
   TableCell,
-  TableContainer,
-  TableHead,
   TableRow,
   Card,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { AccountBalanceOutlined, CommentBankOutlined, Person, ShoppingBag } from '@mui/icons-material';
+import { CommentBankOutlined, Person, ShoppingBag } from '@mui/icons-material';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -63,19 +60,6 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const getStatusColor = (status) => {
-  switch (status) {
-    case 'On-cart':
-      return 'grey';
-    case 'Complete':
-      return 'green';
-    case 'Pending':
-      return 'orange';
-    default:
-      return 'black';
-  }
-};
-
 export default function User() {
   const [value, setValue] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
@@ -88,7 +72,6 @@ export default function User() {
   const [address, setAddress] = useState('');
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
-  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -111,7 +94,7 @@ export default function User() {
           setEmail(user.email);
         }
         for (let i = 0; i < data.orders.length; i++) {
-          if (data.orders[i].status === 'Pending') {
+          if (data.orders[i].status === 'Pending' || data.orders[i].status === 'Completed') {
             console.log(data.orders[i]);
             setOrders((prevOrders) => [...prevOrders, data.orders[i]]);
           }
@@ -183,6 +166,7 @@ export default function User() {
           email: email,
           phone: phone,
           address: address,
+          role: 1,
         }),
       });
 
@@ -194,11 +178,6 @@ export default function User() {
         const data = await response.json();
         console.log(data); // Log the response data to the console
       }
-
-      setShowSuccess(true);
-      setTimeout(() => {
-        setShowSuccess(false);
-      }, 3000);
 
       const data = await response.json();
       console.log(data); // Log the response data to the console
@@ -374,7 +353,7 @@ export default function User() {
                       <Grid container spacing={2}>
                         <Grid item xs={6}>
                           <Typography variant="h6" gutterBottom component="div" style={{ marginRight: '100px' }}>
-                            Order ID: {order.id}
+                            Mã đơn hàng: #{order.id}
                           </Typography>
                         </Grid>
                         <Grid item xs={6}>
@@ -385,8 +364,12 @@ export default function User() {
                             align="right"
                             style={{ marginRight: '40px' }}
                           >
-                            Tình trạng:&nbsp;
-                            <span style={{ color: getStatusColor(order.status) }}>{order.status}</span>
+                            Tình trạng đơn hàng: &nbsp;
+                            {order.status === 'Pending' ? (
+                              <span style={{ color: 'var(--primary-color)' }}>Đang xử lý</span>
+                            ) : (
+                              <span style={{ color: 'green' }}>Hoàn tất</span>
+                            )}
                           </Typography>
                         </Grid>
                         <Grid item xs={12}>
@@ -413,13 +396,8 @@ export default function User() {
                                           </Grid>
                                           <Grid item>
                                             <Box mt={1}>
-                                              <Typography variant="body1">Số lượng: {item.quantity}</Typography>
-                                            </Box>
-                                          </Grid>
-                                          <Grid item>
-                                            <Box mt={1}>
                                               <Typography variant="body1">
-                                                {(item.price / item.quantity).toLocaleString('vi-VN')}₫
+                                                {(item.price / item.quantity).toLocaleString('vi-VN')}₫ x{item.quantity}
                                               </Typography>
                                             </Box>
                                           </Grid>
@@ -438,7 +416,7 @@ export default function User() {
                               align="right"
                               style={{ marginTop: '10px' }}
                             >
-                              Tổng tiền:
+                              Tổng tiền thanh toán:{' '}
                               {orderItems
                                 .filter((item) => item.orderId === order.id)
                                 .reduce((total, item) => total + item.price, 0)

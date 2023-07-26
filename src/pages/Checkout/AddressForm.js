@@ -58,6 +58,7 @@ export default function AddressForm() {
           email: email,
           phone: phone,
           address: address,
+          role: 1,
         }),
       });
 
