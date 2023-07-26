@@ -428,7 +428,7 @@ export default function User() {
                               align="right"
                               style={{ marginTop: '10px' }}
                             >
-                              Tổng tiền thanh toán:{' '}
+                              Thành tiền:{' '}
                               {orderItems
                                 .filter((item) => item.orderId === order.id)
                                 .reduce((total, item) => total + item.price, 0)
