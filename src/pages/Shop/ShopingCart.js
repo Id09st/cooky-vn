@@ -533,7 +533,7 @@ export default function ShoppingCart() {
           <Dialog open={openOrder} onClose={() => setOpenOrder(false)}>
             <DialogTitle>{'Thông báo'}</DialogTitle>
             <DialogContent>
-              <DialogContentText>Vui lòng đặt tối thiểu một package</DialogContentText>
+              <DialogContentText>Vui lòng thêm tối thiểu một món ăn vào giỏ hàng.</DialogContentText>
               <Box display="flex" justifyContent="flex-end">
                 <Button
                   variant="contained"

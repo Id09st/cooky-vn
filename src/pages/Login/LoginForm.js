@@ -29,7 +29,7 @@ const LoginForm = ({ onClose, onLoginSuccess }) => {
       localStorage.setItem('name', name);
 
       if (role === 'User') {
-        navigate('/shoping-cart');
+        navigate('/');
         localStorage.setItem('isLoggedIn', 'true');
         if (onClose) {
           onClose();

@@ -30,6 +30,7 @@ import {
   MoreHorizOutlined,
   Person,
   SearchOutlined,
+  ShoppingBag,
   ShoppingCartOutlined,
 } from '@mui/icons-material';
 
@@ -189,27 +190,34 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>
-        <Button style={{ color: 'black' }} component={Link} to="/user" startIcon={<Person />}>
-          Tài khoản
-        </Button>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        {isLoggedIn ? (
-          <>
-            <Button onClick={handleLogout} sx={{ color: 'black' }} startIcon={<Logout />}>
-              Đăng xuất
+      {isLoggedIn ? (
+        <>
+          <MenuItem onClick={handleMenuClose}>
+            <Button style={{ color: 'black' }} component={Link} to="/user" startIcon={<Person />}>
+              Tài Khoản
             </Button>
-          </>
-        ) : (
+          </MenuItem>
+          <MenuItem onClick={handleMenuClose}>
+            <Button style={{ color: 'black' }} component={Link} to="/order" startIcon={<ShoppingBag />}>
+              Đơn Mua
+            </Button>
+          </MenuItem>
+          <MenuItem onClick={handleMenuClose}>
+            <Button onClick={handleLogout} sx={{ color: 'black' }} startIcon={<Logout />}>
+              Đăng Xuất
+            </Button>
+          </MenuItem>
+        </>
+      ) : (
+        <MenuItem onClick={handleMenuClose}>
           <Button onClick={handleOpen} sx={{ color: 'black' }} startIcon={<Login />}>
-            Đăng nhập
+            Đăng Nhập
           </Button>
-        )}
-        <Dialog open={openLoginDialog} onClose={handleRegisterClick}>
-          <LoginForm onClose={handleRegisterClick} onLoginSuccess={handleLoginSuccess} />
-        </Dialog>
-      </MenuItem>
+        </MenuItem>
+      )}
+      <Dialog open={openLoginDialog} onClose={handleRegisterClick}>
+        <LoginForm onClose={handleRegisterClick} onLoginSuccess={handleLoginSuccess} />
+      </Dialog>
     </Menu>
   );
 
@@ -230,16 +238,18 @@ export default function Header() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={handleMobileMenuClose}>
-        {role === 'User' || role === 'Admin' ? (
+      {role === 'User' || role === 'Admin' ? (
+        <MenuItem onClick={handleMobileMenuClose}>
           <IconButton size="large" color="inherit">
             <Link to="/shoping-cart" style={{ textDecoration: 'none', color: 'inherit' }}>
               <ShoppingCartOutlined style={{ borderRadius: '50%', color: 'black' }} />
             </Link>
           </IconButton>
-        ) : (
-          <></>
-        )}
+        </MenuItem>
+      ) : (
+        <></>
+      )}
+      <MenuItem onClick={handleMobileMenuClose}>
         <IconButton size="large" color="inherit">
           <Link to="/contact" style={{ textDecoration: 'none', color: 'inherit' }}>
             <CallOutlined style={{ borderRadius: '50%', color: 'black' }} />
@@ -304,11 +314,13 @@ export default function Header() {
                   <Box sx={{ flexGrow: 1 }} />
                   <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                     {role === 'User' || role === 'Admin' ? (
-                      <IconButton size="large">
-                        <Link to="/shoping-cart">
-                          <ShoppingCartOutlined sx={{ color: 'var(--white-color)' }} />
-                        </Link>
-                      </IconButton>
+                      <>
+                        <IconButton size="large">
+                          <Link to="/shoping-cart">
+                            <ShoppingCartOutlined sx={{ color: 'var(--white-color)' }} />
+                          </Link>
+                        </IconButton>
+                      </>
                     ) : (
                       <></>
                     )}

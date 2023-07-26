@@ -78,7 +78,7 @@ export default function Review() {
       {order && (
         <>
           <Typography variant="h6" gutterBottom>
-            Tóm tắt đơn hàng # {order.id}
+            Đơn hàng #{order.id}
           </Typography>
 
           <List disablePadding>

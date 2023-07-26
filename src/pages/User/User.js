@@ -12,15 +12,15 @@ import {
   Button,
   TextField,
   Table,
-  TableBody,
   TableCell,
-  TableContainer,
-  TableHead,
   TableRow,
   Card,
+  Dialog,
+  DialogTitle,
+  DialogActions,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { AccountBalanceOutlined, CommentBankOutlined, Person, ShoppingBag } from '@mui/icons-material';
+import { CommentBankOutlined, Person, ShoppingBag } from '@mui/icons-material';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -63,87 +63,86 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const getStatusColor = (status) => {
-  switch (status) {
-    case 'On-cart':
-      return 'grey';
-    case 'Complete':
-      return 'green';
-    case 'Pending':
-      return 'orange';
-    default:
-      return 'black';
-  }
-};
-
 export default function User() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
-  const [userName, setUserName] = useState('Trần Minh Thiện');
-  const [name, setName] = useState('Trần Minh Thiện');
-  const [email, setEmail] = useState('thien@example.com');
-  const [phone, setPhone] = useState('0123456789');
-  const [address, setAddress] = useState('Hà Nội, Việt Nam');
   const [id, setId] = useState(null);
+  const [userName, setUserName] = useState('');
+  const [passWord, setPassWord] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
+  const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const nameFromStorage = localStorage.getItem('name');
+  const fetchUser = async () => {
+    try {
+      const nameFromStorage = localStorage.getItem('name');
 
-        const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/');
-        const users = await response.json();
-        const user = users.find((user) => user.username === nameFromStorage);
-        const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
-        const data = await userResponse.json();
+      const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/');
+      const users = await response.json();
+      const user = users.find((user) => user.username === nameFromStorage);
+      const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
+      const data = await userResponse.json();
 
-        for (let i = 0; i < data.orders.length; i++) {
-          if (data.orders[i].status === 'Pending') {
-            console.log(data.orders[i]);
-            setOrders((prevOrders) => [...prevOrders, data.orders[i]]);
+      if (user) {
+        setId(user.id);
+        setUserName(user.username);
+        setPassWord(user.password);
+        setName(user.name);
+        setAddress(user.address);
+        setPhone(user.phone);
+        setEmail(user.email);
+      }
+      for (let i = 0; i < data.orders.length; i++) {
+        if (
+          data.orders[i].status === 'Pending' ||
+          data.orders[i].status === 'Completed' ||
+          data.orders[i].status === 'Canceled'
+        ) {
+          console.log(data.orders[i]);
+          setOrders((prevOrders) => [...prevOrders, data.orders[i]]);
+        }
+      }
+
+      if (user) {
+        setId(user.id);
+      }
+    } catch (error) {
+      console.log('Error fetching user:', error);
+    }
+  };
+
+  const fetchOrderItems = async () => {
+    try {
+      const response = await fetch('https://cookyzz.azurewebsites.net/api/OrderItems');
+      const data = await response.json();
+
+      const packagesResponse = await fetch('https://cookyzz.azurewebsites.net/api/Packages');
+      const packagesData = await packagesResponse.json();
+
+      const enrichedData = await Promise.all(
+        data.map(async (item) => {
+          const pkg = packagesData.find((p) => p.id === item.packageId);
+          if (pkg) {
+            const recipeResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Recipes/${pkg.recipeId}`);
+            const recipeData = await recipeResponse.json();
+            return { ...item, recipe: recipeData };
           }
-        }
+          return item;
+        }),
+      );
 
-        if (user) {
-          setId(user.id);
-        }
-      } catch (error) {
-        console.log('Error fetching user:', error);
-      }
-    };
-
-    fetchUser();
-  }, []);
+      setOrderItems(enrichedData);
+    } catch (error) {
+      console.log('Error fetching order items:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchOrderItems = async () => {
-      try {
-        const response = await fetch('https://cookyzz.azurewebsites.net/api/OrderItems');
-        const data = await response.json();
-
-        const packagesResponse = await fetch('https://cookyzz.azurewebsites.net/api/Packages');
-        const packagesData = await packagesResponse.json();
-
-        const enrichedData = await Promise.all(
-          data.map(async (item) => {
-            const pkg = packagesData.find((p) => p.id === item.packageId);
-            if (pkg) {
-              const recipeResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Recipes/${pkg.recipeId}`);
-              const recipeData = await recipeResponse.json();
-              return { ...item, recipe: recipeData };
-            }
-            return item;
-          }),
-        );
-
-        setOrderItems(enrichedData);
-      } catch (error) {
-        console.log('Error fetching order items:', error);
-      }
-    };
-
+    fetchUser();
     fetchOrderItems();
   }, []);
 
@@ -155,9 +154,88 @@ export default function User() {
     setIsEditing(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async (e) => {
+    e.preventDefault();
     setIsEditing(false);
-    // Cập nhật thông tin tại đây
+    try {
+      const response = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: id,
+          username: userName,
+          password: passWord,
+          name: name,
+          email: email,
+          phone: phone,
+          address: address,
+          role: 1,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status);
+      }
+
+      if (response.headers.get('content-type') && response.headers.get('content-type').includes('application/json')) {
+        const data = await response.json();
+        console.log(data); // Log the response data to the console
+      }
+
+      const data = await response.json();
+      console.log(data); // Log the response data to the console
+
+      alert('Cập nhật thông tin thành công!');
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  async function cancelOrder(order, callback) {
+    try {
+      const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${order.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: order.id,
+          userId: order.userId,
+          orderDate: order.orderDate,
+          totalPrice: order.totalPrice,
+          status: 'Canceled',
+          shipDate: order.shipDate,
+          paymentMethod: order.paymentMethod,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      // Clear the arrays
+      setOrders([]);
+      setOrderItems([]);
+
+      // Call the callback function after successfully canceling the order
+      callback();
+
+      // Fetch data again after canceling the order
+      fetchUser();
+      fetchOrderItems();
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -168,10 +246,10 @@ export default function User() {
             <Grid item xs={5}>
               <Item>
                 <Box display="flex" justifyContent="center">
-                  <Avatar sx={{ width: '180px', height: '180px' }}>H</Avatar>
+                  <Avatar sx={{ width: '180px', height: '180px' }}></Avatar>
                 </Box>
                 <Typography style={{ marginTop: '20px' }} variant="h4">
-                  Trần Minh Thiện
+                  {name}
                 </Typography>
 
                 <Tabs
@@ -241,12 +319,12 @@ export default function User() {
                         required
                         fullWidth
                         id="userName"
-                        label="UserName"
+                        label="Tài khoản đăng nhập"
                         name="userName"
                         autoComplete="userName"
                         autoFocus
                         value={userName}
-                        disabled={!isEditing}
+                        disabled
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -255,9 +333,10 @@ export default function User() {
                         required
                         fullWidth
                         id="name"
-                        label="Name"
+                        label="Họ và Tên"
                         name="name"
                         autoComplete="name"
+                        onChange={(e) => setName(e.target.value)}
                         autoFocus
                         value={name}
                         disabled={!isEditing}
@@ -269,9 +348,10 @@ export default function User() {
                         required
                         fullWidth
                         id="email"
-                        label="Email"
+                        label="Địa chỉ email"
                         name="email"
                         autoComplete="email"
+                        onChange={(e) => setEmail(e.target.value)}
                         autoFocus
                         value={email}
                         disabled={!isEditing}
@@ -283,9 +363,10 @@ export default function User() {
                         required
                         fullWidth
                         id="phone"
-                        label="Phone"
+                        label="Số điện thoại"
                         name="phone"
                         autoComplete="phone"
+                        onChange={(e) => setPhone(e.target.value)}
                         autoFocus
                         value={phone}
                         disabled={!isEditing}
@@ -297,9 +378,10 @@ export default function User() {
                         required
                         fullWidth
                         id="address"
-                        label="Address"
+                        label="Địa chỉ"
                         name="address"
                         autoComplete="address"
+                        onChange={(e) => setAddress(e.target.value)}
                         autoFocus
                         value={address}
                         disabled={!isEditing}
@@ -316,12 +398,12 @@ export default function User() {
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={1}>
                   <Typography variant="h4">Thông tin đơn hàng</Typography>
-                  {orders.map((order) => (
+                  {[...orders].reverse().map((order) => (
                     <Card key={order.id} sx={{ my: 2, p: 2 }}>
                       <Grid container spacing={2}>
                         <Grid item xs={6}>
                           <Typography variant="h6" gutterBottom component="div" style={{ marginRight: '100px' }}>
-                            Order ID: {order.id}
+                            Mã đơn hàng: #{order.id}
                           </Typography>
                         </Grid>
                         <Grid item xs={6}>
@@ -332,8 +414,15 @@ export default function User() {
                             align="right"
                             style={{ marginRight: '40px' }}
                           >
-                            Tình trạng:&nbsp;
-                            <span style={{ color: getStatusColor(order.status) }}>{order.status}</span>
+                            {order.status === 'Pending' ? (
+                              <Typography style={{ color: 'var(--primary-color)' }}>Đang xử lý</Typography>
+                            ) : order.status === 'Completed' ? (
+                              <Typography color="green">Hoàn tất</Typography>
+                            ) : order.status === 'Canceled' ? (
+                              <Typography color="error">Đã hủy</Typography>
+                            ) : (
+                              <></>
+                            )}
                           </Typography>
                         </Grid>
                         <Grid item xs={12}>
@@ -344,15 +433,20 @@ export default function User() {
                                 <TableRow key={item.id}>
                                   <TableCell>
                                     <Grid container>
-                                      <Grid item xs={3}>
+                                      <Grid item xs={2}>
                                         <img
                                           src={item.recipe.image.split('\n')[0]}
                                           alt={item.recipe.title}
                                           style={{ width: '100px', height: '100px' }}
                                         />
                                       </Grid>
-                                      <Grid item xs={9}>
-                                        <Grid container direction="column" alignItems="flex-start">
+                                      <Grid item xs={10}>
+                                        <Grid
+                                          container
+                                          direction="column"
+                                          alignItems="flex-start"
+                                          style={{ marginLeft: '10px' }}
+                                        >
                                           <Grid item>
                                             <Typography variant="h6" component="h6">
                                               {item.recipe.title}
@@ -360,13 +454,8 @@ export default function User() {
                                           </Grid>
                                           <Grid item>
                                             <Box mt={1}>
-                                              <Typography variant="body1">Số lượng: {item.quantity}</Typography>
-                                            </Box>
-                                          </Grid>
-                                          <Grid item>
-                                            <Box mt={1}>
                                               <Typography variant="body1">
-                                                {(item.price / item.quantity).toLocaleString('vi-VN')}₫
+                                                {(item.price / item.quantity).toLocaleString('vi-VN')}₫ x{item.quantity}
                                               </Typography>
                                             </Box>
                                           </Grid>
@@ -377,6 +466,44 @@ export default function User() {
                                 </TableRow>
                               ))}
                           </Table>
+                          {order.status === 'Pending' ? (
+                            <Grid container justifyContent="flex-end">
+                              <Grid container justifyContent="flex-end">
+                                <Button
+                                  variant="contained"
+                                  style={{
+                                    color: 'var(--white-color)',
+                                    backgroundColor: 'var(--primary-color)',
+                                    marginTop: '10px',
+                                  }}
+                                  onClick={handleOpen}
+                                >
+                                  Hủy đơn hàng
+                                </Button>
+
+                                <Dialog open={open} onClose={handleClose}>
+                                  <DialogTitle>Bạn có chắc chắn muốn hủy đơn hàng #{order.id} không?</DialogTitle>
+                                  <DialogActions>
+                                    <Button onClick={handleClose} color="error">
+                                      Không
+                                    </Button>
+                                    <Button
+                                      onClick={() => {
+                                        cancelOrder(order, () => setValue(1));
+                                        handleClose();
+                                      }}
+                                      autoFocus
+                                      color="success"
+                                    >
+                                      Có
+                                    </Button>
+                                  </DialogActions>
+                                </Dialog>
+                              </Grid>
+                            </Grid>
+                          ) : (
+                            <></>
+                          )}
                           <Grid item xs={12}>
                             <Typography
                               variant="h6"
@@ -385,7 +512,7 @@ export default function User() {
                               align="right"
                               style={{ marginTop: '10px' }}
                             >
-                              Tổng tiền:
+                              Thành tiền:{' '}
                               {orderItems
                                 .filter((item) => item.orderId === order.id)
                                 .reduce((total, item) => total + item.price, 0)
