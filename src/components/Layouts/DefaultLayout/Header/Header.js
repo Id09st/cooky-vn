@@ -240,12 +240,15 @@ export default function Header() {
         ) : (
           <></>
         )}
+      </MenuItem>
+      <MenuItem onClick={handleMobileMenuClose}>
         <IconButton size="large" color="inherit">
           <Link to="/contact" style={{ textDecoration: 'none', color: 'inherit' }}>
             <CallOutlined style={{ borderRadius: '50%', color: 'black' }} />
           </Link>
         </IconButton>
       </MenuItem>
+
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton size="large" aria-haspopup="true" color="inherit">
           <AccountCircle style={{ borderRadius: '50%' }} />
@@ -304,11 +307,13 @@ export default function Header() {
                   <Box sx={{ flexGrow: 1 }} />
                   <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                     {role === 'User' || role === 'Admin' ? (
-                      <IconButton size="large">
-                        <Link to="/shoping-cart">
-                          <ShoppingCartOutlined sx={{ color: 'var(--white-color)' }} />
-                        </Link>
-                      </IconButton>
+                      <>
+                        <IconButton size="large">
+                          <Link to="/shoping-cart">
+                            <ShoppingCartOutlined sx={{ color: 'var(--white-color)' }} />
+                          </Link>
+                        </IconButton>
+                      </>
                     ) : (
                       <></>
                     )}

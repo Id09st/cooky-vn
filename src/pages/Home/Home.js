@@ -246,16 +246,17 @@ export default function Home() {
               <div className="row">
                 <div className="col-lg-6 col-md-6 col-sm-6">
                   <div className="banner__pic">
-                    <img src="img/banner/banner-1.jpg" alt="" />
+                    <img src="img/banner/banner-1.jpg" alt="" style={{ borderRadius: '15px' }} />
                   </div>
                 </div>
                 <div className="col-lg-6 col-md-6 col-sm-6">
-                  <div className="banner__pic">
-                    <img src="img/banner/banner-2.jpg" alt="" />
+                  <div className="banner__pic" style={{ marginTop: '10px' }}>
+                    <img src="img/banner/banner-2.jpg" alt="" style={{ borderRadius: '15px' }} />
                   </div>
                 </div>
               </div>
             </div>
+
             {/* Banner End */}
           </Container>
         </>
@@ -410,12 +411,20 @@ export default function Home() {
               <div className="row">
                 <div className="col-lg-6 col-md-6 col-sm-6">
                   <div className="banner__pic">
-                    <img src="img/banner/banner-1.jpg" alt="" />
+                    <img
+                      src="img/banner/banner-1.jpg"
+                      alt=""
+                      style={{ height: '300px', width: '565px', borderRadius: '15px' }}
+                    />
                   </div>
                 </div>
                 <div className="col-lg-6 col-md-6 col-sm-6">
                   <div className="banner__pic">
-                    <img src="img/banner/banner-2.jpg" alt="" />
+                    <img
+                      src="img/banner/banner-2.jpg"
+                      alt=""
+                      style={{ height: '300px', width: '565px', borderRadius: '15px' }}
+                    />
                   </div>
                 </div>
               </div>
@@ -424,7 +433,6 @@ export default function Home() {
           </Container>
         </>
       )}
-      ;
     </>
   );
 }

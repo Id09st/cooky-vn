@@ -77,16 +77,18 @@ const getStatusColor = (status) => {
 };
 
 export default function User() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
-  const [userName, setUserName] = useState('Trần Minh Thiện');
-  const [name, setName] = useState('Trần Minh Thiện');
-  const [email, setEmail] = useState('thien@example.com');
-  const [phone, setPhone] = useState('0123456789');
-  const [address, setAddress] = useState('Hà Nội, Việt Nam');
   const [id, setId] = useState(null);
+  const [userName, setUserName] = useState('');
+  const [passWord, setPassWord] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -99,6 +101,15 @@ export default function User() {
         const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
         const data = await userResponse.json();
 
+        if (user) {
+          setId(user.id);
+          setUserName(user.username);
+          setPassWord(user.password);
+          setName(user.name);
+          setAddress(user.address);
+          setPhone(user.phone);
+          setEmail(user.email);
+        }
         for (let i = 0; i < data.orders.length; i++) {
           if (data.orders[i].status === 'Pending') {
             console.log(data.orders[i]);
@@ -155,9 +166,47 @@ export default function User() {
     setIsEditing(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async (e) => {
+    e.preventDefault();
     setIsEditing(false);
-    // Cập nhật thông tin tại đây
+    try {
+      const response = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: id,
+          username: userName,
+          password: passWord,
+          name: name,
+          email: email,
+          phone: phone,
+          address: address,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status);
+      }
+
+      if (response.headers.get('content-type') && response.headers.get('content-type').includes('application/json')) {
+        const data = await response.json();
+        console.log(data); // Log the response data to the console
+      }
+
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+      }, 3000);
+
+      const data = await response.json();
+      console.log(data); // Log the response data to the console
+
+      alert('Cập nhật thông tin thành công!');
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -241,12 +290,12 @@ export default function User() {
                         required
                         fullWidth
                         id="userName"
-                        label="UserName"
+                        label="Tài khoản đăng nhập"
                         name="userName"
                         autoComplete="userName"
                         autoFocus
                         value={userName}
-                        disabled={!isEditing}
+                        disabled
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -255,9 +304,10 @@ export default function User() {
                         required
                         fullWidth
                         id="name"
-                        label="Name"
+                        label="Họ và Tên"
                         name="name"
                         autoComplete="name"
+                        onChange={(e) => setName(e.target.value)}
                         autoFocus
                         value={name}
                         disabled={!isEditing}
@@ -269,9 +319,10 @@ export default function User() {
                         required
                         fullWidth
                         id="email"
-                        label="Email"
+                        label="Địa chỉ email"
                         name="email"
                         autoComplete="email"
+                        onChange={(e) => setEmail(e.target.value)}
                         autoFocus
                         value={email}
                         disabled={!isEditing}
@@ -283,9 +334,10 @@ export default function User() {
                         required
                         fullWidth
                         id="phone"
-                        label="Phone"
+                        label="Số điện thoại"
                         name="phone"
                         autoComplete="phone"
+                        onChange={(e) => setPhone(e.target.value)}
                         autoFocus
                         value={phone}
                         disabled={!isEditing}
@@ -297,9 +349,10 @@ export default function User() {
                         required
                         fullWidth
                         id="address"
-                        label="Address"
+                        label="Địa chỉ"
                         name="address"
                         autoComplete="address"
+                        onChange={(e) => setAddress(e.target.value)}
                         autoFocus
                         value={address}
                         disabled={!isEditing}
