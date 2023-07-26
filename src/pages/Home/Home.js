@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FullscreenOutlined, FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
 import { Slider, Featured, Lasted } from './HomImage';
-import { Button, CardContent, Container, Grid, Typography, useMediaQuery } from '@mui/material';
+import { Button, CardContent, Container, Grid, Typography, useMediaQuery, Tabs, Tab, Box } from '@mui/material';
 import ImageSlider from './Slider/ImageSlider';
 import 'src/sass/_slide.scss';
 
@@ -11,6 +11,9 @@ export default function Home() {
   const [recipes, setRecipes] = useState([]);
   const [packages, setPackages] = useState([]);
   const [orderId, setOrderId] = useState('');
+  const [displayedRecipes, setDisplayedRecipes] = useState(8);
+  const [showMore, setShowMore] = useState(false);
+  const [selectedRegion, setSelectedRegion] = useState('Tất cả');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,6 +95,32 @@ export default function Home() {
     }
   };
 
+  const handleTabChange = (event, newValue) => {
+    setSelectedRegion(newValue);
+  };
+
+  const regions = ['Tất cả', 'Miền Bắc', 'Miền Trung', 'Miền Nam', 'Miền Tây'];
+
+  const filteredRecipes = recipes.filter((recipe) => {
+    if (selectedRegion === 'Tất cả') {
+      return true;
+    } else {
+      return recipe.categories.some((category) => category.name === selectedRegion);
+    }
+  });
+
+  const visibleRecipes = filteredRecipes.slice(0, displayedRecipes);
+
+  const handleViewMoreClick = () => {
+    setDisplayedRecipes(filteredRecipes.length);
+    setShowMore(true);
+  };
+
+  const handleHideMoreClick = () => {
+    setShowMore(false);
+    setDisplayedRecipes(8);
+  };
+
   const isMobile = useMediaQuery('(max-width: 601px)');
   const role = localStorage.getItem('role');
 
@@ -142,8 +171,22 @@ export default function Home() {
               </div>
             </div>
 
+            <Tabs
+              value={selectedRegion}
+              onChange={handleTabChange}
+              variant="fullWidth"
+              indicatorColor="primary"
+              textColor="primary"
+              aria-label="Recipe Tabs"
+              style={{ marginBottom: '40px' }}
+            >
+              {regions.map((region, index) => (
+                <Tab key={index} label={region} value={region} style={{ fontSize: '20px' }} />
+              ))}
+            </Tabs>
+
             <div className="row featured__filter">
-              {recipes.map((recipe) => {
+              {filteredRecipes.map((recipe) => {
                 const pkg = packages.find((pkg) => pkg.recipeId === recipe.id);
                 if (pkg) {
                   return (
@@ -306,8 +349,22 @@ export default function Home() {
               </div>
             </div>
 
+            <Tabs
+              value={selectedRegion}
+              onChange={handleTabChange}
+              variant="fullWidth"
+              indicatorColor="primary"
+              textColor="primary"
+              aria-label="Recipe Tabs"
+              style={{ marginBottom: '40px' }}
+            >
+              {regions.map((region, index) => (
+                <Tab key={index} label={region} value={region} style={{ fontSize: '20px' }} />
+              ))}
+            </Tabs>
+
             <div className="row featured__filter">
-              {recipes.map((recipe) => {
+              {visibleRecipes.map((recipe) => {
                 const pkg = packages.find((pkg) => pkg.recipeId === recipe.id);
                 if (pkg) {
                   return (
@@ -403,6 +460,20 @@ export default function Home() {
                 return null;
               })}
             </div>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+              {showMore ? (
+                <Button variant="outlined" color="primary" onClick={handleHideMoreClick} style={{ width: '100%' }}>
+                  Ẩn bớt
+                </Button>
+              ) : (
+                displayedRecipes < filteredRecipes.length && (
+                  <Button variant="outlined" color="primary" onClick={handleViewMoreClick} style={{ width: '100%' }}>
+                    Xem thêm
+                  </Button>
+                )
+              )}
+            </div>
+
             {/* Featured Section End */}
 
             {/* Banner Begin */}
