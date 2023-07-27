@@ -531,7 +531,7 @@ export default function ShoppingCart() {
           )}
           {/* Noti chưa có gì trong giỏ hàng */}
           <Dialog open={openOrder} onClose={() => setOpenOrder(false)}>
-            <DialogTitle>{'Thông báo'}</DialogTitle>
+            <DialogTitle>{'Xin chào bạn !'}</DialogTitle>
             <DialogContent>
               <DialogContentText>Vui lòng thêm tối thiểu một món ăn vào giỏ hàng.</DialogContentText>
               <Box display="flex" justifyContent="flex-end">

@@ -64,6 +64,7 @@ export default function OrderStatus() {
   const [orderItems, setOrderItems] = useState([]);
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
+  const [currentOrder, setCurrentOrder] = useState(null);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -137,52 +138,56 @@ export default function OrderStatus() {
     fetchOrderItems();
   }, []);
 
-  async function cancelOrder(order, callback) {
-    try {
-      const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${order.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: order.id,
-          userId: order.userId,
-          orderDate: order.orderDate,
-          totalPrice: order.totalPrice,
-          status: 'Canceled',
-          shipDate: order.shipDate,
-          paymentMethod: order.paymentMethod,
-        }),
-      });
+  async function cancelOrder(callback) {
+    if (currentOrder) {
+      try {
+        const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${currentOrder.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: currentOrder.id,
+            userId: currentOrder.userId,
+            orderDate: currentOrder.orderDate,
+            totalPrice: currentOrder.totalPrice,
+            status: 'Canceled',
+            shipDate: currentOrder.shipDate,
+            paymentMethod: currentOrder.paymentMethod,
+          }),
+        });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        // Clear the arrays
+        setAll([]);
+        setPending([]);
+        setCompleted([]);
+        setCanceled([]);
+        setOrderItems([]);
+
+        // Call the callback function after successfully canceling the order
+        callback();
+
+        // Fetch data again after canceling the order
+        fetchUser();
+        fetchOrderItems();
+      } catch (error) {
+        console.error('Error:', error);
       }
-
-      // Clear the arrays
-      setAll([]);
-      setPending([]);
-      setCompleted([]);
-      setCanceled([]);
-      setOrderItems([]);
-
-      // Call the callback function after successfully canceling the order
-      callback();
-
-      // Fetch data again after canceling the order
-      fetchUser();
-      fetchOrderItems();
-    } catch (error) {
-      console.error('Error:', error);
     }
   }
 
-  const handleOpen = () => {
+  const handleOpen = (order) => {
     setOpen(true);
+    setCurrentOrder(order);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setCurrentOrder(null);
   };
 
   return (
@@ -304,29 +309,10 @@ export default function OrderStatus() {
                             style={{
                               marginTop: '10px',
                             }}
-                            onClick={handleOpen}
+                            onClick={() => handleOpen(order)}
                           >
                             Hủy đơn hàng
                           </Button>
-
-                          <Dialog open={open} onClose={handleClose}>
-                            <DialogTitle>Bạn có chắc chắn muốn hủy đơn hàng #{order.id} không?</DialogTitle>
-                            <DialogActions>
-                              <Button onClick={handleClose} color="error">
-                                Không
-                              </Button>
-                              <Button
-                                onClick={() => {
-                                  cancelOrder(order, () => setValue(3));
-                                  handleClose();
-                                }}
-                                autoFocus
-                                color="success"
-                              >
-                                Có
-                              </Button>
-                            </DialogActions>
-                          </Dialog>
                         </Grid>
                       </Grid>
                     ) : (
@@ -434,29 +420,10 @@ export default function OrderStatus() {
                         style={{
                           marginTop: '10px',
                         }}
-                        onClick={handleOpen}
+                        onClick={() => handleOpen(order)}
                       >
                         Hủy đơn hàng
                       </Button>
-
-                      <Dialog open={open} onClose={handleClose}>
-                        <DialogTitle>Bạn có chắc chắn muốn hủy đơn hàng #{order.id} không?</DialogTitle>
-                        <DialogActions>
-                          <Button onClick={handleClose} color="error">
-                            Không
-                          </Button>
-                          <Button
-                            onClick={() => {
-                              cancelOrder(order, () => setValue(3));
-                              handleClose();
-                            }}
-                            autoFocus
-                            color="success"
-                          >
-                            Có
-                          </Button>
-                        </DialogActions>
-                      </Dialog>
                     </Grid>
                   </Grid>
                 </Grid>
@@ -652,6 +619,24 @@ export default function OrderStatus() {
           ))}
         </CustomTabPanel>
       </Box>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Bạn có chắc chắn muốn hủy đơn hàng này không?</DialogTitle>
+        <DialogActions>
+          <Button onClick={handleClose} color="error">
+            Không
+          </Button>
+          <Button
+            onClick={() => {
+              cancelOrder(() => setValue(3));
+              handleClose();
+            }}
+            autoFocus
+            color="success"
+          >
+            Có
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 }
