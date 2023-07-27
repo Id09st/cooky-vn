@@ -300,9 +300,8 @@ export default function OrderStatus() {
                         <Grid container justifyContent="flex-end">
                           <Button
                             variant="contained"
+                            color="error"
                             style={{
-                              color: 'var(--white-color)',
-                              backgroundColor: 'var(--primary-color)',
                               marginTop: '10px',
                             }}
                             onClick={handleOpen}
@@ -431,9 +430,8 @@ export default function OrderStatus() {
                     <Grid container justifyContent="flex-end">
                       <Button
                         variant="contained"
+                        color="error"
                         style={{
-                          color: 'var(--white-color)',
-                          backgroundColor: 'var(--primary-color)',
                           marginTop: '10px',
                         }}
                         onClick={handleOpen}

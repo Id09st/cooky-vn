@@ -99,6 +99,7 @@ export default function Checkout() {
 
     setActiveStep(activeStep + 1);
   };
+  
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);

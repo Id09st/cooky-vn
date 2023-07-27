@@ -154,13 +154,10 @@ export default function AddressForm() {
         <Grid item xs={12}>
           <Button
             type="submit"
-            sx={{
-              backgroundColor: 'var(--primary-color)',
-              color: 'var(--white-color)',
-              borderRadius: '7px',
-            }}
+            variant="outlined"
+            color="primary"
+            style={{ width: '100px', float: 'right', borderRadius: '7px' }}
           >
-            {' '}
             Lưu
           </Button>
         </Grid>

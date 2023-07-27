@@ -24,6 +24,7 @@ import {
   DialogContentText,
   LinearProgress,
 } from '@mui/material';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { Add, Delete, Remove } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
@@ -488,7 +489,7 @@ export default function ShoppingCart() {
                     );
                   })}
                 </Table>
-                <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '10px' }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '10px' }}>
                   <Button
                     variant="contained"
                     sx={{
@@ -498,6 +499,8 @@ export default function ShoppingCart() {
                     }}
                     component={Link}
                     to="/"
+                    startIcon={<HomeOutlinedIcon />}
+                    onClick={() => window.scrollTo(0, 0)}
                   >
                     Tiếp tục mua sắm
                   </Button>
@@ -520,6 +523,7 @@ export default function ShoppingCart() {
                         if (cartItems.length === 0) {
                           setOpenOrder(true);
                         }
+                        window.scrollTo(0, 0);
                       }}
                     >
                       Đặt hàng

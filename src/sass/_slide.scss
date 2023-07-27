@@ -1,10 +1,11 @@
 .slider {
   position: relative;
   height: 330px;
-  display: inline-block;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+}
+
+.slides-container {
+  display: flex;
+  transition: transform 1s ease;
 }
 
 .image {
@@ -13,55 +14,50 @@
   border-radius: 10px;
 }
 
-.right-arrow {
-  position: absolute;
-  top: 40%;
-  right: -70px;
-  font-size: 3rem;
-  color: #000;
-  z-index: 10;
+.dots-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: rgb(158, 142, 142);
+  border-radius: 50%;
+  margin: 0 5px;
   cursor: pointer;
-  user-select: none;
-  opacity: 1;
+  transition: background-color 0.3s ease;
 }
 
-.left-arrow {
+.dot.active {
+  background-color: rgba(255, 132, 38, 0.9);
+}
+
+/* Adjust the position of the dots below the slides */
+.dots-container {
   position: absolute;
-  top: 40%;
-  left: -65px;
-  font-size: 3rem;
-  color: #000;
-  z-index: 10;
-  cursor: pointer;
-  user-select: none;
-  opacity: 1;
-}
-
-.slide {
-  opacity: 0;
-  transition-duration: 1s ease;
-}
-
-.slide.active {
-  opacity: 1;
-  transition-duration: 1s;
-  transform: scale(1.08);
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /// Thiện
 .slider {
   position: relative;
+  transition-duration: 1s ease;
+  transition: opacity 1s ease, transform 1s ease;
 }
 
 .slider-icon {
   position: absolute;
   top: 70%;
-  transform: translateY(-50%);
+  transform: translateY(-100%);
   cursor: pointer;
 }
 
 .left-arrow {
-  left: 1px;
+  left: 6px;
   color: var(--white-color);
 }
 

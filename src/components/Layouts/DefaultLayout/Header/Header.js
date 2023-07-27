@@ -157,11 +157,21 @@ export default function Header() {
   };
 
   const handleSearchIconClick = () => {
-    navigate(`/results/${searchTerm}`);
+    if (searchTerm.trim() !== '') {
+      navigate(`/results/${searchTerm}`);
+      setSearchTerm('');
+    }
   };
 
   const handleInputChange = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter' && searchTerm.trim() !== '') {
+      navigate(`/results/${searchTerm}`);
+      setSearchTerm('');
+    }
   };
 
   const handleRegisterClick = () => {
@@ -385,6 +395,7 @@ export default function Header() {
                     <StyledInputBase
                       value={searchTerm}
                       onChange={handleInputChange}
+                      onKeyPress={handleKeyPress}
                       placeholder="Tìm kiếm công thức hoặc sản phẩm ..."
                       inputProps={{ 'aria-label': 'search' }}
                       style={{

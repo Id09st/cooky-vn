@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Card, CardContent, Typography, CardMedia, Grid, Container } from '@mui/material';
+import { CardContent, Typography, Container } from '@mui/material';
 import { FavoriteBorderRounded, FullscreenOutlined, ShoppingCartOutlined } from '@mui/icons-material';
 
 export default function Search() {

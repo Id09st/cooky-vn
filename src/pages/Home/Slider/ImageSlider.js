@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Slider } from '../HomImage';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const ImageSlider = ({ slides }) => {
   const [current, setCurrent] = useState(0);
@@ -16,7 +14,7 @@ const ImageSlider = ({ slides }) => {
   };
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, 3000); // Chuyển slide sau mỗi 3 giây
+    const interval = setInterval(nextSlide, 10000); // Change slide every 10 seconds
     return () => {
       clearInterval(interval);
     };
@@ -28,15 +26,20 @@ const ImageSlider = ({ slides }) => {
 
   return (
     <section className="slider">
-      <ArrowBackIosIcon className="left-arrow" onClick={prevSlide} />
-      <ArrowForwardIosIcon className="right-arrow" onClick={nextSlide} />
-      {Slider.map((slider, index) => {
-        return (
-          <div className={index === current ? 'slide active' : 'slide'} key={index}>
-            {index === current && <img src={slider.url} alt="food" className="image" />}
-          </div>
-        );
-      })}
+      <div className="slides-container">
+        {slides.map((slider, index) => {
+          return (
+            <div className={index === current ? 'slide active' : 'slide'} key={index}>
+              {index === current && <img src={slider.url} alt="food" className="image" />}
+            </div>
+          );
+        })}
+        <div className="dots-container" style={{ paddingBottom: '20px' }}>
+          {slides.map((_, index) => (
+            <div key={index} className={index === current ? 'dot active' : 'dot'} onClick={() => setCurrent(index)} />
+          ))}
+        </div>
+      </div>
     </section>
   );
 };

@@ -11,7 +11,7 @@ export default function Home() {
   const [recipes, setRecipes] = useState([]);
   const [packages, setPackages] = useState([]);
   const [orderId, setOrderId] = useState('');
-  const [displayedRecipes, setDisplayedRecipes] = useState(8);
+  const [displayedRecipes, setDisplayedRecipes] = useState(12);
   const [showMore, setShowMore] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState('Tất cả');
 
@@ -93,6 +93,7 @@ export default function Home() {
       console.error('Response status:', response.status, 'status text:', response.statusText);
       throw new Error('Error adding to cart');
     }
+    window.scrollTo(0, 0); 
   };
 
   const handleTabChange = (event, newValue) => {
@@ -305,28 +306,36 @@ export default function Home() {
         </>
       ) : (
         <>
-          <Container maxWidth="lg" style={{ padding: '20px', paddingTop: '80px' }}>
+          <Container maxWidth="lg" style={{ padding: '10px', paddingTop: '80px' }}>
             <ImageSlider slides={Slider} style={{ padding: '20px', paddingTop: '67px' }} />
-
             {/* Categories Section Begin */}
             <section>
-              <Grid container spacing={3}>
+              <Grid container spacing={1}>
                 {categories &&
                   categories.map((category) => (
-                    <Grid item xs={4} sm={3} md={2} lg={2} key={category.id} component={Link} to="/">
+                    <Grid
+                      item
+                      xs={4}
+                      sm={3}
+                      md={2}
+                      lg={2}
+                      key={category.id}
+                      component={Link}
+                      to={`/results/${category.tag}`}
+                    >
                       <div
                         style={{
-                          width: '156px',
-                          height: '117px',
+                          width: '100%',
+                          height: '100%',
                           display: 'flex',
                           flexDirection: 'column',
                           justifyContent: 'center',
                           alignItems: 'center',
                         }}
                       >
-                        <img src={category.images} alt="Category" style={{ width: '90px', height: '90px' }} />
+                        <img src={category.images} alt="Category" style={{ width: '50px', height: '50px' }} />
                         <div style={{ width: '156px', height: '27px' }}>
-                          <Typography variant="h6" align="center" style={{ marginTop: '10px' }}>
+                          <Typography variant="h6" align="center" style={{ marginBottom: '20px' }}>
                             {category.name}
                           </Typography>
                         </div>
@@ -343,7 +352,7 @@ export default function Home() {
                 <Typography
                   className="my-title"
                   variant="h4"
-                  style={{ marginTop: '50px', marginBottom: '50px', fontWeight: 'bold' }}
+                  style={{ marginTop: '5px', marginBottom: '30px', fontWeight: 'bold' }}
                 >
                   Mừng bạn đến với Nice Cook
                 </Typography>
