@@ -8,6 +8,7 @@ export default function Search() {
   const [results, setResults] = useState([]);
   const [packages, setPackages] = useState([]);
   const [quantity, setQuantity] = useState([]);
+  const [orderId, setOrderId] = useState('');
 
   useEffect(() => {
     fetch('https://cookyzz.azurewebsites.net/api/Recipes')
@@ -32,27 +33,48 @@ export default function Search() {
     return priceSale;
   };
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const nameFromStorage = localStorage.getItem('name');
+        const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/');
+        const users = await response.json();
+        const user = users.find((user) => user.username === nameFromStorage);
+        const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
+        const data = await userResponse.json();
+        const onCartOrder = data.orders.find((order) => order.status === 'On-cart');
+        if (onCartOrder) {
+          setOrderId(onCartOrder.id);
+        }
+      } catch (error) {
+        console.log('Error fetching user:', error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
   const handleAddToCart = async (pkg) => {
-    const responseOders = await fetch('https://cookyzz.azurewebsites.net/api/Orders/15');
+    const responseOders = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${orderId}`);
     const data = await responseOders.json();
-    setQuantity(data.items);
 
     const currentItem = data.items.find((item) => item.packageId === pkg.id);
     const currentQuantity = currentItem ? currentItem.quantity : 0;
 
-    const response = await fetch('https://cookyzz.azurewebsites.net/api/Orders/addCart/15', {
+    const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/addCart/${orderId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
 
       body: JSON.stringify({
-        orderId: 15,
+        orderId: orderId,
         packageId: pkg.id,
         quantity: currentQuantity + 1,
-        price: pkg.price,
+        price: (pkg.price - pkg.sales) * (currentQuantity + 1),
       }),
     });
+
     if (!response.ok) {
       console.error('Response status:', response.status, 'status text:', response.statusText);
       throw new Error('Error adding to cart');
