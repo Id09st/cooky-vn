@@ -122,6 +122,10 @@ export default function Home() {
     setDisplayedRecipes(8);
   };
 
+  function scrollToTop() {
+    window.scrollTo(0, 0);
+  }
+
   const isMobile = useMediaQuery('(max-width: 601px)');
   const role = localStorage.getItem('role');
 
@@ -401,7 +405,7 @@ export default function Home() {
                                 </Link>
                               </li>
                               <li>
-                                <Link to={`shop-detail/${recipe.id}`}>
+                                <Link to={`shop-detail/${recipe.id}`} onClick={scrollToTop}>
                                   <FullscreenOutlined />
                                 </Link>
                               </li>
