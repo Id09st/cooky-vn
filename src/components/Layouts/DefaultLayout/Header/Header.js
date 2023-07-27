@@ -160,6 +160,7 @@ export default function Header() {
     if (searchTerm.trim() !== '') {
       navigate(`/results/${searchTerm}`);
       setSearchTerm('');
+      window.scrollTo(0, 0);
     }
   };
 
@@ -171,6 +172,7 @@ export default function Header() {
     if (event.key === 'Enter' && searchTerm.trim() !== '') {
       navigate(`/results/${searchTerm}`);
       setSearchTerm('');
+      window.scrollTo(0, 0);
     }
   };
 
