@@ -134,7 +134,16 @@ export default function Home() {
               <Grid container spacing={1}>
                 {categories &&
                   categories.map((category) => (
-                    <Grid item xs={4} sm={3} md={2} lg={2} key={category.id} component={Link} to="/">
+                    <Grid
+                      item
+                      xs={4}
+                      sm={3}
+                      md={2}
+                      lg={2}
+                      key={category.id}
+                      component={Link}
+                      to={`/results/${category.tag}`}
+                    >
                       <div
                         style={{
                           width: '100%',
@@ -313,7 +322,16 @@ export default function Home() {
               <Grid container spacing={3}>
                 {categories &&
                   categories.map((category) => (
-                    <Grid item xs={4} sm={3} md={2} lg={2} key={category.id} component={Link} to="/">
+                    <Grid
+                      item
+                      xs={4}
+                      sm={3}
+                      md={2}
+                      lg={2}
+                      key={category.id}
+                      component={Link}
+                      to={`/results/${category.tag}`}
+                    >
                       <div
                         style={{
                           width: '156px',

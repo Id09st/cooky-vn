@@ -51,45 +51,41 @@ export default function ShoppingCart() {
     setPackages(updatedPackages);
   };
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const nameFromStorage = localStorage.getItem('name');
-        const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/');
-        const users = await response.json();
-        const user = users.find((user) => user.username === nameFromStorage);
-        const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
-        const data = await userResponse.json();
-        const onCartOrder = data.orders.find((order) => order.status === 'On-cart');
-        if (onCartOrder) {
-          setOrderId(onCartOrder.id);
-          const orderResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${onCartOrder.id}`);
-          const dataOrder = await orderResponse.json();
-          setCartItems(dataOrder.items);
-        }
-      } catch (error) {
-        console.log('Error fetching user:', error);
+  const fetchUser = async () => {
+    try {
+      const nameFromStorage = localStorage.getItem('name');
+      const response = await fetch('https://cookyzz.azurewebsites.net/api/Users/');
+      const users = await response.json();
+      const user = users.find((user) => user.username === nameFromStorage);
+      const userResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Users/${user.id}`);
+      const data = await userResponse.json();
+      const onCartOrder = data.orders.find((order) => order.status === 'On-cart');
+      if (onCartOrder) {
+        setOrderId(onCartOrder.id);
+        const orderResponse = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${onCartOrder.id}`);
+        const dataOrder = await orderResponse.json();
+        setCartItems(dataOrder.items);
       }
-    };
+    } catch (error) {
+      console.log('Error fetching user:', error);
+    }
+  };
+  const fetchCartItems = async () => {
+    setIsLoading(true);
+    try {
+      // Fetch data from orders.json or API endpoint
 
+      const recipeResponse = await fetch('https://cookyzz.azurewebsites.net/api/Recipes');
+      const recipeData = await recipeResponse.json();
+      setRecipes(recipeData);
+    } catch (error) {
+      console.error('Error fetching cart items:', error);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
     fetchUser();
-  }, []);
-
-  useEffect(() => {
-    const fetchCartItems = async () => {
-      setIsLoading(true);
-      try {
-        // Fetch data from orders.json or API endpoint
-
-        const recipeResponse = await fetch('https://cookyzz.azurewebsites.net/api/Recipes');
-        const recipeData = await recipeResponse.json();
-        setRecipes(recipeData);
-      } catch (error) {
-        console.error('Error fetching cart items:', error);
-      }
-      setIsLoading(false);
-    };
-
     fetchCartItems();
   }, []);
 
