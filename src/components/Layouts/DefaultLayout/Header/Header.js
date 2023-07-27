@@ -160,6 +160,7 @@ export default function Header() {
     if (searchTerm.trim() !== '') {
       navigate(`/results/${searchTerm}`);
       setSearchTerm('');
+      window.scrollTo(0, 0);
     }
   };
 
@@ -171,6 +172,7 @@ export default function Header() {
     if (event.key === 'Enter' && searchTerm.trim() !== '') {
       navigate(`/results/${searchTerm}`);
       setSearchTerm('');
+      window.scrollTo(0, 0);
     }
   };
 
@@ -410,18 +412,19 @@ export default function Header() {
                   <Box sx={{ flexGrow: 1 }} />
                   <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                     {role === 'User' || role === 'Admin' ? (
-                      <IconButton size="large">
-                        <Link to="/shoping-cart">
-                          <ShoppingCartOutlined sx={{ color: 'var(--white-color)' }} />
-                        </Link>
+                      <IconButton
+                        size="large"
+                        component={Link}
+                        to="/shoping-cart"
+                        onClick={() => window.scrollTo(0, 0)}
+                      >
+                        <ShoppingCartOutlined sx={{ color: 'var(--white-color)' }} />
                       </IconButton>
                     ) : (
                       <></>
                     )}
-                    <IconButton size="large">
-                      <Link to="/contact">
-                        <Call sx={{ color: 'var(--white-color)' }} />
-                      </Link>
+                    <IconButton size="large" component={Link} to="/contact" onClick={() => window.scrollTo(0, 0)}>
+                      <Call sx={{ color: 'var(--white-color)' }} />
                     </IconButton>
                     <IconButton size="large" edge="end" aria-haspopup="true" onClick={handleProfileMenuOpen}>
                       <AccountCircle sx={{ color: 'var(--white-color)' }} />

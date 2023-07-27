@@ -97,8 +97,7 @@ export default function Home() {
       console.error('Response status:', response.status, 'status text:', response.statusText);
       throw new Error('Error adding to cart');
     }
-    window.scrollTo(0, 0);
-    navigate('/shoping-cart');
+    window.scrollTo(0, 0); 
   };
 
   const handleTabChange = (event, newValue) => {
@@ -126,6 +125,10 @@ export default function Home() {
     setShowMore(false);
     setDisplayedRecipes(8);
   };
+
+  function scrollToTop() {
+    window.scrollTo(0, 0);
+  }
 
   const isMobile = useMediaQuery('(max-width: 601px)');
   const role = localStorage.getItem('role');
@@ -347,7 +350,7 @@ export default function Home() {
                           alignItems: 'center',
                         }}
                       >
-                        <img src={category.images} alt="Category" style={{ width: '50px', height: '50px' }} />
+                        <img src={category.images} alt="Category" style={{ width: '90px', height: '90px' }} />
                         <div style={{ width: '156px', height: '27px' }}>
                           <Typography variant="h6" align="center" style={{ marginBottom: '20px' }}>
                             {category.name}
@@ -406,7 +409,7 @@ export default function Home() {
                                 </Link>
                               </li>
                               <li>
-                                <Link to={`shop-detail/${recipe.id}`}>
+                                <Link to={`shop-detail/${recipe.id}`} onClick={scrollToTop}>
                                   <FullscreenOutlined />
                                 </Link>
                               </li>
