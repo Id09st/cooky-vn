@@ -97,7 +97,8 @@ export default function Home() {
       console.error('Response status:', response.status, 'status text:', response.statusText);
       throw new Error('Error adding to cart');
     }
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);
+    navigate('/shoping-cart');
   };
 
   const handleTabChange = (event, newValue) => {
@@ -414,7 +415,7 @@ export default function Home() {
                                 </Link>
                               </li>
                               <li>
-                                <Link to="/shoping-cart" onClick={(event) => handleAddToCart(pkg, event)}>  
+                                <Link to="/shoping-cart" onClick={(event) => handleAddToCart(pkg, event)}>
                                   <ShoppingCartOutlined />
                                 </Link>
                               </li>
