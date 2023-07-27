@@ -5,6 +5,7 @@ import { Slider, Featured, Lasted } from './HomImage';
 import { Button, CardContent, Container, Grid, Typography, useMediaQuery, Tabs, Tab, Box } from '@mui/material';
 import ImageSlider from './Slider/ImageSlider';
 import 'src/sass/_slide.scss';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
   const [categories, setCategories] = useState([]);
@@ -14,6 +15,7 @@ export default function Home() {
   const [displayedRecipes, setDisplayedRecipes] = useState(12);
   const [showMore, setShowMore] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState('Tất cả');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,7 +70,9 @@ export default function Home() {
     return priceSale;
   };
 
-  const handleAddToCart = async (pkg) => {
+  const handleAddToCart = async (pkg, event) => {
+    console.log('dfsbahjfbgdjshfb ', event);
+    event.preventDefault();
     const responseOders = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${orderId}`);
     const data = await responseOders.json();
 
@@ -93,7 +97,8 @@ export default function Home() {
       console.error('Response status:', response.status, 'status text:', response.statusText);
       throw new Error('Error adding to cart');
     }
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);
+    navigate('/shoping-cart');
   };
 
   const handleTabChange = (event, newValue) => {
@@ -219,7 +224,7 @@ export default function Home() {
                                 </Link>
                               </li>
                               <li>
-                                <Link to="/shoping-cart" onClick={() => handleAddToCart(pkg)}>
+                                <Link to="/shoping-cart" onClick={(event) => handleAddToCart(pkg, event)}>
                                   <ShoppingCartOutlined />
                                 </Link>
                               </li>
@@ -406,7 +411,7 @@ export default function Home() {
                                 </Link>
                               </li>
                               <li>
-                                <Link to="/shoping-cart" onClick={() => handleAddToCart(pkg)}>
+                                <Link to="/shoping-cart" onClick={(event) => handleAddToCart(pkg, event)}>  
                                   <ShoppingCartOutlined />
                                 </Link>
                               </li>

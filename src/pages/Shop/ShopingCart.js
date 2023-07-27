@@ -74,8 +74,6 @@ export default function ShoppingCart() {
   const fetchCartItems = async () => {
     setIsLoading(true);
     try {
-      // Fetch data from orders.json or API endpoint
-
       const recipeResponse = await fetch('https://cookyzz.azurewebsites.net/api/Recipes');
       const recipeData = await recipeResponse.json();
       setRecipes(recipeData);

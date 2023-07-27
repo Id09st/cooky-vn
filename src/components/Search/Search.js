@@ -9,6 +9,7 @@ export default function Search() {
   const [packages, setPackages] = useState([]);
   const [quantity, setQuantity] = useState([]);
   const [orderId, setOrderId] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('https://cookyzz.azurewebsites.net/api/Recipes')
@@ -79,6 +80,8 @@ export default function Search() {
       console.error('Response status:', response.status, 'status text:', response.statusText);
       throw new Error('Error adding to cart');
     }
+    window.scrollTo(0, 0);
+    navigate('/shoping-cart');
   };
 
   const role = localStorage.getItem('role');
@@ -119,7 +122,7 @@ export default function Search() {
                           </Link>
                         </li>
                         <li>
-                          <Link to="/shoping-cart" onClick={() => handleAddToCart(pkg)}>
+                          <Link to="/shoping-cart" onClick={(event) => handleAddToCart(pkg, event)}>
                             <ShoppingCartOutlined />
                           </Link>
                         </li>
