@@ -142,11 +142,6 @@ export default function Review() {
               </Typography>
               <Grid container>
                 <div key={order.name}>
-                  <Grid item xs={6}>
-                    <Typography gutterBottom color="success">
-                      {order.status}
-                    </Typography>
-                  </Grid>
                   <Grid item xs={12}>
                     <Typography gutterBottom>Dự kiến nhận hàng: {expectedDeliveryDate}</Typography>
                   </Grid>
