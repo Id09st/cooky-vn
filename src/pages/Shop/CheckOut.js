@@ -72,11 +72,13 @@ export default function Checkout() {
       const orderDate = new Date();
       // const shipDate = new Date();
       // shipDate.setDate(orderDate.getDate() + 3);
+      orderDate.setHours(orderDate.getHours() + 7);
+      const vnOrderDate = orderDate.toISOString();
 
       const data = {
         id: orderId,
         userId: id,
-        orderDate: orderDate.toISOString(),
+        orderDate: vnOrderDate,
         totalPrice: totalPayment,
         status: 'Pending',
         // shipDate: shipDate.toISOString(), ////////////
@@ -99,7 +101,6 @@ export default function Checkout() {
 
     setActiveStep(activeStep + 1);
   };
-  
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
