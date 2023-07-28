@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FullscreenOutlined, FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
-import { Slider } from './HomImage';
+import { Slider, Featured, Lasted } from './HomImage';
 import {
   Button,
   CardContent,
@@ -11,9 +11,12 @@ import {
   useMediaQuery,
   Tabs,
   Tab,
-  Snackbar,
-  Alert,
-  AlertTitle,
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from '@mui/material';
 import ImageSlider from './Slider/ImageSlider';
 import 'src/sass/_slide.scss';
@@ -26,9 +29,8 @@ export default function Home() {
   const [orderId, setOrderId] = useState('');
   const [displayedRecipes, setDisplayedRecipes] = useState(12);
   const [showMore, setShowMore] = useState(false);
-  const [openAlert, setOpenAlert] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('Tất cả');
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -87,40 +89,31 @@ export default function Home() {
   const handleAddToCart = async (pkg, event) => {
     console.log('dfsbahjfbgdjshfb ', event);
     event.preventDefault();
+    const responseOders = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${orderId}`);
+    const data = await responseOders.json();
 
-    try {
-      const responseOders = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${orderId}`);
-      const data = await responseOders.json();
+    const currentItem = data.items.find((item) => item.packageId === pkg.id);
+    const currentQuantity = currentItem ? currentItem.quantity : 0;
 
-      const currentItem = data.items.find((item) => item.packageId === pkg.id);
-      const currentQuantity = currentItem ? currentItem.quantity : 0;
+    const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/addCart/${orderId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
 
-      const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/addCart/${orderId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          orderId: orderId,
-          packageId: pkg.id,
-          quantity: currentQuantity + 1,
-          price: (pkg.price - pkg.sales) * (currentQuantity + 1),
-        }),
-      });
+      body: JSON.stringify({
+        orderId: orderId,
+        packageId: pkg.id,
+        quantity: currentQuantity + 1,
+        price: (pkg.price - pkg.sales) * (currentQuantity + 1),
+      }),
+    });
 
-      if (!response.ok) {
-        console.error('Response status:', response.status, 'status text:', response.statusText);
-        throw new Error('Error adding to cart');
-      }
-
-      window.scrollTo(0, 0);
-      navigate('/shoping-cart');
-    } catch (error) {
-      // Show the error message using the Alert component
-      setOpenAlert(true);
-      setErrorMessage(error.response?.data || 'Đã hết hàng');
-      console.log('Đã hết hàng');
+    if (!response.ok) {
+      console.error('Response status:', response.status, 'status text:', response.statusText);
+      throw new Error('Error adding to cart');
     }
+    scrollToTop();
   };
 
   const handleTabChange = (event, newValue) => {
@@ -152,6 +145,23 @@ export default function Home() {
   function scrollToTop() {
     window.scrollTo(0, 0);
   }
+
+  // Hàm mở Dialog
+  const handleClickOpen = (pkg, event) => {
+    event.preventDefault();
+    handleAddToCart(pkg, event);
+    setOpen(true);
+  };
+
+  // Hàm đóng Dialog
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  // Hàm điều hướng đến /shoping-cart
+  const handleGoToCart = () => {
+    navigate('/shoping-cart');
+  };
 
   const isMobile = useMediaQuery('(max-width: 601px)');
   const role = localStorage.getItem('role');
@@ -205,7 +215,7 @@ export default function Home() {
                 <Typography
                   className="my-title"
                   variant="h6"
-                  style={{ marginTop: '30px', marginBottom: '50px', fontWeight: 'bold' }}
+                  style={{ marginTop: '10px', marginBottom: '30px', fontWeight: 'bold' }}
                 >
                   Mừng bạn đến với <br /> Nice Cook
                 </Typography>
@@ -250,7 +260,7 @@ export default function Home() {
                                 </Link>
                               </li>
                               <li>
-                                <Link to="/shoping-cart" onClick={(event) => handleAddToCart(pkg, event)}>
+                                <Link onClick={(event) => handleClickOpen(pkg, event)}>
                                   <ShoppingCartOutlined />
                                 </Link>
                               </li>
@@ -392,7 +402,7 @@ export default function Home() {
                 <Typography
                   className="my-title"
                   variant="h4"
-                  style={{ marginTop: '25px', marginBottom: '50px', fontWeight: 'bold' }}
+                  style={{ marginTop: '5px', marginBottom: '30px', fontWeight: 'bold' }}
                 >
                   Mừng bạn đến với Nice Cook
                 </Typography>
@@ -437,7 +447,7 @@ export default function Home() {
                                 </Link>
                               </li>
                               <li>
-                                <Link to="/shoping-cart" onClick={(event) => handleAddToCart(pkg, event)}>
+                                <Link onClick={(event) => handleClickOpen(pkg, event)}>
                                   <ShoppingCartOutlined />
                                 </Link>
                               </li>
@@ -551,25 +561,18 @@ export default function Home() {
             </div>
             {/* Banner End */}
           </Container>
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>{'Thêm vào giỏ hàng'}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>Sản phẩm đã được thêm vào giỏ hàng. Bạn có muốn xem giỏ hàng không?</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Tiếp tục mua sắm</Button>
+              <Button onClick={handleGoToCart}>Đi tới giỏ hàng</Button>
+            </DialogActions>
+          </Dialog>
         </>
       )}
-
-      {/* Thông Báo Lỗi Trả Về Từ Phía Backend */}
-      <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 9999 }}>
-        {openAlert && (
-          <Snackbar
-            open={openAlert}
-            autoHideDuration={6000}
-            onClose={() => setOpenAlert(false)}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          >
-            <Alert severity="error" onClose={() => setOpenAlert(false)}>
-              <AlertTitle>Error</AlertTitle>
-              {errorMessage}
-            </Alert>
-          </Snackbar>
-        )}
-      </div>
     </>
   );
 }
