@@ -12,6 +12,7 @@ import {
   Home,
   Whatshot,
   Grain,
+  HomeOutlined,
 } from '@mui/icons-material';
 import {
   Box,
@@ -495,13 +496,29 @@ export default function ShopDetail() {
       >
         <DialogTitle id="alert-dialog-title">{'Thông báo'}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">Bạn có muốn đi đến giỏ hàng?</DialogContentText>
+          <DialogContentText id="alert-dialog-description">
+            Thêm giỏ hàng thành công! Bạn có muốn đi đến giỏ hàng?
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button component={Link} to="/" onClick={handleCloseDialog} color="primary">
+          <Button
+            component={Link}
+            to="/"
+            onClick={handleCloseDialog}
+            color="primary"
+            startIcon={<HomeOutlined />}
+            style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
+          >
             Tiếp tục mua sắm
           </Button>
-          <Button component={Link} to="/shoping-cart" color="primary" autoFocus>
+          <Button
+            component={Link}
+            to="/shoping-cart"
+            color="primary"
+            startIcon={<ShoppingCartOutlined />}
+            style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
+            autoFocus
+          >
             Đi đến giỏ hàng
           </Button>
         </DialogActions>

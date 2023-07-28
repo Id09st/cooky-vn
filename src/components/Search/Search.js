@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { CardContent, Typography, Container, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Snackbar, Alert, AlertTitle } from '@mui/material';
-import { FavoriteBorderRounded, FullscreenOutlined, ShoppingCartOutlined } from '@mui/icons-material';
+import {
+  CardContent,
+  Typography,
+  Container,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+  Snackbar,
+  Alert,
+  AlertTitle,
+} from '@mui/material';
+import { FavoriteBorderRounded, FullscreenOutlined, HomeOutlined, ShoppingCartOutlined } from '@mui/icons-material';
 
 export default function Search() {
   const { searchTerm } = useParams();
@@ -88,7 +101,6 @@ export default function Search() {
       }
 
       window.scrollTo(0, 0);
-      
     } catch (error) {
       // Show the error message using the Alert component
       setOpenAlert(true);
@@ -118,142 +130,154 @@ export default function Search() {
 
   return (
     <>
-    <Container style={{ marginTop: '80px' }}>
-      <div className="row">
-        <div className="col-lg-12">
-          <Typography
-            className="my-title"
-            variant="h4"
-            style={{ marginTop: '50px', marginBottom: '50px', fontWeight: 'bold' }}
-          >
-            Kết Quả Tìm Kiếm của "{searchTerm}"
-          </Typography>
-        </div>
+      <Container style={{ marginTop: '80px' }}>
+        <div className="row">
+          <div className="col-lg-12">
+            <Typography
+              className="my-title"
+              variant="h4"
+              style={{ marginTop: '50px', marginBottom: '50px', fontWeight: 'bold' }}
+            >
+              Kết Quả Tìm Kiếm của "{searchTerm}"
+            </Typography>
+          </div>
 
-        {results.map((result) => {
-          const pkg = packages.find((pkg) => pkg.recipeId === result.id);
-          if (pkg) {
-            return (
-              <div key={result.id} className={`col-lg-3 col-md-4 col-sm-6 mix ${result.title}`}>
-                <div className="featured__item">
-                  <div
-                    className="featured__item__pic set-bg"
-                    style={{ backgroundImage: `url(${result.image.split('\n')[0]})` }}
-                  >
-                    {role === 'User' || role === 'Admin' ? (
-                      <ul className="featured__item__pic__hover">
-                        <li>
-                          <Link to="/">
-                            <FavoriteBorderRounded />
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to={`/shop-detail/${result.id}`}>
-                            <FullscreenOutlined />
-                          </Link>
-                        </li>
-                        <li>
-                          <Link onClick={(event) => handleClickOpen(pkg, event)}>
-                            <ShoppingCartOutlined />
-                          </Link>
-                        </li>
-                      </ul>
-                    ) : (
-                      <ul className="featured__item__pic__hover">
-                        <li>
-                          <Link to={`/shop-detail/${result.id}`}>
-                            <FullscreenOutlined />
-                          </Link>
-                        </li>
-                      </ul>
-                    )}
-                  </div>
-                  <CardContent style={{ paddingTop: '15px' }}>
-                    <Typography
-                      variant="h6"
-                      component={Link}
-                      style={{
-                        color: 'var(--black-color)',
-                        fontSize: '18px',
-                        fontWeight: '700',
-                        height: '48px',
-                        paddingTop: '10px',
-                        marginBottom: '5px',
-                      }}
-                      to={`/shop-detail/${result.id}`}
+          {results.map((result) => {
+            const pkg = packages.find((pkg) => pkg.recipeId === result.id);
+            if (pkg) {
+              return (
+                <div key={result.id} className={`col-lg-3 col-md-4 col-sm-6 mix ${result.title}`}>
+                  <div className="featured__item">
+                    <div
+                      className="featured__item__pic set-bg"
+                      style={{ backgroundImage: `url(${result.image.split('\n')[0]})` }}
                     >
-                      {result.title}
-                    </Typography>
-                    <Typography variant="subtitle1" style={{}}>
-                      {calculatePriceSale(pkg.price, pkg.sales).toLocaleString('vi-VN')}₫
-                      {pkg.sales >= 1000 ? (
-                        <s
-                          style={{
-                            marginLeft: '10px',
-                            fontSize: '14px',
-                            lineHeight: '20px',
-                            textDecorationLine: 'line-through',
-                            color: 'var(--sale-color)',
-                            position: 'relative',
-                            marginBottom: '5px',
-                          }}
-                        >
-                          {pkg.sales / 1000}k
-                        </s>
-                      ) : pkg.sales === 0 ? (
-                        <></>
+                      {role === 'User' || role === 'Admin' ? (
+                        <ul className="featured__item__pic__hover">
+                          <li>
+                            <Link to="/">
+                              <FavoriteBorderRounded />
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to={`/shop-detail/${result.id}`}>
+                              <FullscreenOutlined />
+                            </Link>
+                          </li>
+                          <li>
+                            <Link onClick={(event) => handleClickOpen(pkg, event)}>
+                              <ShoppingCartOutlined />
+                            </Link>
+                          </li>
+                        </ul>
                       ) : (
-                        <s
-                          style={{
-                            marginLeft: '10px',
-                            fontSize: '14px',
-                            lineHeight: '20px',
-                            textDecorationLine: 'line-through',
-                            color: 'var(--sale-color)',
-                            position: 'relative',
-                            marginBottom: '5px',
-                          }}
-                        >
-                          {pkg.sales}₫
-                        </s>
+                        <ul className="featured__item__pic__hover">
+                          <li>
+                            <Link to={`/shop-detail/${result.id}`}>
+                              <FullscreenOutlined />
+                            </Link>
+                          </li>
+                        </ul>
                       )}
-                    </Typography>
-                  </CardContent>
+                    </div>
+                    <CardContent style={{ paddingTop: '15px' }}>
+                      <Typography
+                        variant="h6"
+                        component={Link}
+                        style={{
+                          color: 'var(--black-color)',
+                          fontSize: '18px',
+                          fontWeight: '700',
+                          height: '48px',
+                          paddingTop: '10px',
+                          marginBottom: '5px',
+                        }}
+                        to={`/shop-detail/${result.id}`}
+                      >
+                        {result.title}
+                      </Typography>
+                      <Typography variant="subtitle1" style={{}}>
+                        {calculatePriceSale(pkg.price, pkg.sales).toLocaleString('vi-VN')}₫
+                        {pkg.sales >= 1000 ? (
+                          <s
+                            style={{
+                              marginLeft: '10px',
+                              fontSize: '14px',
+                              lineHeight: '20px',
+                              textDecorationLine: 'line-through',
+                              color: 'var(--sale-color)',
+                              position: 'relative',
+                              marginBottom: '5px',
+                            }}
+                          >
+                            {pkg.sales / 1000}k
+                          </s>
+                        ) : pkg.sales === 0 ? (
+                          <></>
+                        ) : (
+                          <s
+                            style={{
+                              marginLeft: '10px',
+                              fontSize: '14px',
+                              lineHeight: '20px',
+                              textDecorationLine: 'line-through',
+                              color: 'var(--sale-color)',
+                              position: 'relative',
+                              marginBottom: '5px',
+                            }}
+                          >
+                            {pkg.sales}₫
+                          </s>
+                        )}
+                      </Typography>
+                    </CardContent>
+                  </div>
                 </div>
-              </div>
-            );
-          }
-          return null;
-        })}
+              );
+            }
+            return null;
+          })}
+        </div>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>{'Thêm vào giỏ hàng'}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Sản phẩm đã được thêm vào giỏ hàng. Bạn có muốn xem giỏ hàng không?</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              component={Link}
+              to="/"
+              onClick={handleClose}
+              startIcon={<HomeOutlined />}
+              style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)', marginRight: '20px' }}
+            >
+              Tiếp tục mua sắm
+            </Button>
+            <Button
+              onClick={handleGoToCart}
+              startIcon={<ShoppingCartOutlined />}
+              style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
+            >
+              Đi tới giỏ hàng
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Container>
+      <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 9999 }}>
+        {openAlert && (
+          <Snackbar
+            open={openAlert}
+            autoHideDuration={6000}
+            onClose={() => setOpenAlert(false)}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          >
+            <Alert severity="error" onClose={() => setOpenAlert(false)}>
+              <AlertTitle>Error</AlertTitle>
+              {errorMessage}
+            </Alert>
+          </Snackbar>
+        )}
       </div>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{'Thêm vào giỏ hàng'}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Sản phẩm đã được thêm vào giỏ hàng. Bạn có muốn xem giỏ hàng không?</DialogContentText>
-        </DialogContent>
-        <DialogActions  >
-          <Button onClick={handleClose}>Tiếp tục mua sắm</Button>
-          <Button onClick={handleGoToCart}>Đi tới giỏ hàng</Button>
-        </DialogActions>
-      </Dialog>
-
-      
-    </Container>
-    <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 9999 }}>
-    {openAlert && (
-      <Snackbar
-        open={openAlert}
-        autoHideDuration={6000}
-        onClose={() => setOpenAlert(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        <Alert severity="error" onClose={() => setOpenAlert(false)}>
-          <AlertTitle>Error</AlertTitle>
-          {errorMessage}
-        </Alert>
-      </Snackbar>
-    )}
-  </div>
-  </>
+    </>
   );
 }

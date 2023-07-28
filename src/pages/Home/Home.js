@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FullscreenOutlined, FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
+import { FullscreenOutlined, FavoriteBorderRounded, ShoppingCartOutlined, HomeOutlined } from '@mui/icons-material';
 import { Slider, Featured, Lasted } from './HomImage';
 import {
   Button,
@@ -92,7 +92,6 @@ export default function Home() {
   };
 
   const handleAddToCart = async (pkg, event) => {
-    
     event.preventDefault();
 
     try {
@@ -579,8 +578,22 @@ export default function Home() {
               <DialogContentText>Sản phẩm đã được thêm vào giỏ hàng. Bạn có muốn xem giỏ hàng không?</DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose}>Tiếp tục mua sắm</Button>
-              <Button onClick={handleGoToCart}>Đi tới giỏ hàng</Button>
+              <Button
+                component={Link}
+                to="/"
+                onClick={handleClose}
+                startIcon={<HomeOutlined />}
+                style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)', marginRight: '20px' }}
+              >
+                Tiếp tục mua sắm
+              </Button>
+              <Button
+                onClick={handleGoToCart}
+                startIcon={<ShoppingCartOutlined />}
+                style={{ backgroundColor: 'var(--primary-color)', color: 'var(--white-color)' }}
+              >
+                Đi tới giỏ hàng
+              </Button>
             </DialogActions>
           </Dialog>
         </>
