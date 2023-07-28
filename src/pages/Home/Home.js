@@ -1,8 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FullscreenOutlined, FavoriteBorderRounded, ShoppingCartOutlined } from '@mui/icons-material';
-import { Slider, Featured, Lasted } from './HomImage';
-import { Button, CardContent, Container, Grid, Typography, useMediaQuery, Tabs, Tab, Box } from '@mui/material';
+import { Slider } from './HomImage';
+import {
+  Button,
+  CardContent,
+  Container,
+  Grid,
+  Typography,
+  useMediaQuery,
+  Tabs,
+  Tab,
+  Snackbar,
+  Alert,
+  AlertTitle,
+} from '@mui/material';
 import ImageSlider from './Slider/ImageSlider';
 import 'src/sass/_slide.scss';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +26,8 @@ export default function Home() {
   const [orderId, setOrderId] = useState('');
   const [displayedRecipes, setDisplayedRecipes] = useState(12);
   const [showMore, setShowMore] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('Tất cả');
   const navigate = useNavigate();
 
@@ -73,32 +87,40 @@ export default function Home() {
   const handleAddToCart = async (pkg, event) => {
     console.log('dfsbahjfbgdjshfb ', event);
     event.preventDefault();
-    const responseOders = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${orderId}`);
-    const data = await responseOders.json();
 
-    const currentItem = data.items.find((item) => item.packageId === pkg.id);
-    const currentQuantity = currentItem ? currentItem.quantity : 0;
+    try {
+      const responseOders = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${orderId}`);
+      const data = await responseOders.json();
 
-    const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/addCart/${orderId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      const currentItem = data.items.find((item) => item.packageId === pkg.id);
+      const currentQuantity = currentItem ? currentItem.quantity : 0;
 
-      body: JSON.stringify({
-        orderId: orderId,
-        packageId: pkg.id,
-        quantity: currentQuantity + 1,
-        price: (pkg.price - pkg.sales) * (currentQuantity + 1),
-      }),
-    });
+      const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/addCart/${orderId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          orderId: orderId,
+          packageId: pkg.id,
+          quantity: currentQuantity + 1,
+          price: (pkg.price - pkg.sales) * (currentQuantity + 1),
+        }),
+      });
 
-    if (!response.ok) {
-      console.error('Response status:', response.status, 'status text:', response.statusText);
-      throw new Error('Error adding to cart');
+      if (!response.ok) {
+        console.error('Response status:', response.status, 'status text:', response.statusText);
+        throw new Error('Error adding to cart');
+      }
+
+      window.scrollTo(0, 0);
+      navigate('/shoping-cart');
+    } catch (error) {
+      // Show the error message using the Alert component
+      setOpenAlert(true);
+      setErrorMessage(error.response?.data || 'Đã hết hàng');
+      console.log('Đã hết hàng');
     }
-    window.scrollTo(0, 0);
-    navigate('/shoping-cart');
   };
 
   const handleTabChange = (event, newValue) => {
@@ -183,7 +205,7 @@ export default function Home() {
                 <Typography
                   className="my-title"
                   variant="h6"
-                  style={{ marginTop: '10px', marginBottom: '30px', fontWeight: 'bold' }}
+                  style={{ marginTop: '30px', marginBottom: '50px', fontWeight: 'bold' }}
                 >
                   Mừng bạn đến với <br /> Nice Cook
                 </Typography>
@@ -370,7 +392,7 @@ export default function Home() {
                 <Typography
                   className="my-title"
                   variant="h4"
-                  style={{ marginTop: '5px', marginBottom: '30px', fontWeight: 'bold' }}
+                  style={{ marginTop: '25px', marginBottom: '50px', fontWeight: 'bold' }}
                 >
                   Mừng bạn đến với Nice Cook
                 </Typography>
@@ -531,6 +553,23 @@ export default function Home() {
           </Container>
         </>
       )}
+
+      {/* Thông Báo Lỗi Trả Về Từ Phía Backend */}
+      <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 9999 }}>
+        {openAlert && (
+          <Snackbar
+            open={openAlert}
+            autoHideDuration={6000}
+            onClose={() => setOpenAlert(false)}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          >
+            <Alert severity="error" onClose={() => setOpenAlert(false)}>
+              <AlertTitle>Error</AlertTitle>
+              {errorMessage}
+            </Alert>
+          </Snackbar>
+        )}
+      </div>
     </>
   );
 }
