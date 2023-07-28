@@ -20,7 +20,7 @@ import {
   DialogActions,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { CommentBankOutlined, Person, ShoppingBag } from '@mui/icons-material';
+import { Person, ShoppingBag } from '@mui/icons-material';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -34,7 +34,7 @@ function CustomTabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 2 }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -76,6 +76,7 @@ export default function User() {
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
   const [open, setOpen] = useState(false);
+  const [currentOrder, setCurrentOrder] = useState(null);
 
   const fetchUser = async () => {
     try {
@@ -193,49 +194,53 @@ export default function User() {
     }
   };
 
-  async function cancelOrder(order, callback) {
-    try {
-      const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${order.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: order.id,
-          userId: order.userId,
-          orderDate: order.orderDate,
-          totalPrice: order.totalPrice,
-          status: 'Canceled',
-          shipDate: order.shipDate,
-          paymentMethod: order.paymentMethod,
-        }),
-      });
+  async function cancelOrder(callback) {
+    if (currentOrder) {
+      try {
+        const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${currentOrder.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: currentOrder.id,
+            userId: currentOrder.userId,
+            orderDate: currentOrder.orderDate,
+            totalPrice: currentOrder.totalPrice,
+            status: 'Canceled',
+            shipDate: currentOrder.shipDate,
+            paymentMethod: currentOrder.paymentMethod,
+          }),
+        });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        // Clear the arrays
+        setOrders([]);
+        setOrderItems([]);
+
+        // Call the callback function after successfully canceling the order
+        callback();
+
+        // Fetch data again after canceling the order
+        fetchUser();
+        fetchOrderItems();
+      } catch (error) {
+        console.error('Error:', error);
       }
-
-      // Clear the arrays
-      setOrders([]);
-      setOrderItems([]);
-
-      // Call the callback function after successfully canceling the order
-      callback();
-
-      // Fetch data again after canceling the order
-      fetchUser();
-      fetchOrderItems();
-    } catch (error) {
-      console.error('Error:', error);
     }
   }
 
-  const handleOpen = () => {
+  const handleOpen = (order) => {
     setOpen(true);
+    setCurrentOrder(order);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setCurrentOrder(null);
   };
 
   return (
@@ -288,21 +293,6 @@ export default function User() {
                       display: 'flex',
                       alignItems: 'flex-start',
                       borderBottom: '1px solid var(--para-color)',
-                    }}
-                  />
-
-                  <Tab
-                    label={
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <CommentBankOutlined style={{ marginRight: '10px' }} />
-                        Đánh giá đơn hàng
-                      </Box>
-                    }
-                    {...a11yProps(2)}
-                    sx={{
-                      width: '100%',
-                      display: 'flex',
-                      alignItems: 'flex-start',
                     }}
                   />
                 </Tabs>
@@ -475,29 +465,10 @@ export default function User() {
                                   style={{
                                     marginTop: '10px',
                                   }}
-                                  onClick={handleOpen}
+                                  onClick={() => handleOpen(order)}
                                 >
                                   Hủy đơn hàng
                                 </Button>
-
-                                <Dialog open={open} onClose={handleClose}>
-                                  <DialogTitle>Bạn có chắc chắn muốn hủy đơn hàng #{order.id} không?</DialogTitle>
-                                  <DialogActions>
-                                    <Button onClick={handleClose} color="error">
-                                      Không
-                                    </Button>
-                                    <Button
-                                      onClick={() => {
-                                        cancelOrder(order, () => setValue(1));
-                                        handleClose();
-                                      }}
-                                      autoFocus
-                                      color="success"
-                                    >
-                                      Có
-                                    </Button>
-                                  </DialogActions>
-                                </Dialog>
                               </Grid>
                             </Grid>
                           ) : (
@@ -524,13 +495,28 @@ export default function User() {
                     </Card>
                   ))}
                 </CustomTabPanel>
-                <CustomTabPanel value={value} index={2}>
-                  Đánh giá đơn hàng
-                </CustomTabPanel>
               </Item>
             </Grid>
           </Grid>
         </Box>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Bạn có chắc chắn muốn hủy đơn hàng này không?</DialogTitle>
+          <DialogActions>
+            <Button onClick={handleClose} color="error">
+              Không
+            </Button>
+            <Button
+              onClick={() => {
+                cancelOrder(() => setValue(1));
+                handleClose();
+              }}
+              autoFocus
+              color="success"
+            >
+              Có
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </>
   );

@@ -76,6 +76,8 @@ export default function ShopDetail() {
   const [currentImage, setCurrentImage] = useState('');
   const [selectedTitle, setSelectedTitle] = useState('');
   const [orderId, setOrderId] = useState('');
+  const [openAlert, setOpenAlert] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -161,7 +163,9 @@ export default function ShopDetail() {
     });
 
     if (!response.ok) {
-      throw new Error('Error adding to cart');
+      setOpenAlert(true);
+      setErrorMessage('Đã hết hàng');
+      
     }
   };
 

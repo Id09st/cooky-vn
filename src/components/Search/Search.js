@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link,  useNavigate } from 'react-router-dom';
-import { CardContent, Typography, Container } from '@mui/material';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { CardContent, Typography, Container, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Snackbar, Alert, AlertTitle } from '@mui/material';
 import { FavoriteBorderRounded, FullscreenOutlined, ShoppingCartOutlined } from '@mui/icons-material';
 
 export default function Search() {
@@ -9,6 +9,9 @@ export default function Search() {
   const [packages, setPackages] = useState([]);
   const [quantity, setQuantity] = useState([]);
   const [orderId, setOrderId] = useState('');
+  const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -55,38 +58,66 @@ export default function Search() {
     fetchUser();
   }, []);
 
-  const handleAddToCart = async (pkg) => {
-    const responseOders = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${orderId}`);
-    const data = await responseOders.json();
+  const handleAddToCart = async (pkg, event) => {
+    console.log('dfsbahjfbgdjshfb ', event);
+    event.preventDefault();
 
-    const currentItem = data.items.find((item) => item.packageId === pkg.id);
-    const currentQuantity = currentItem ? currentItem.quantity : 0;
+    try {
+      const responseOders = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${orderId}`);
+      const data = await responseOders.json();
 
-    const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/addCart/${orderId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      const currentItem = data.items.find((item) => item.packageId === pkg.id);
+      const currentQuantity = currentItem ? currentItem.quantity : 0;
 
-      body: JSON.stringify({
-        orderId: orderId,
-        packageId: pkg.id,
-        quantity: currentQuantity + 1,
-        price: (pkg.price - pkg.sales) * (currentQuantity + 1),
-      }),
-    });
+      const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/addCart/${orderId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          orderId: orderId,
+          packageId: pkg.id,
+          quantity: currentQuantity + 1,
+          price: (pkg.price - pkg.sales) * (currentQuantity + 1),
+        }),
+      });
 
-    if (!response.ok) {
-      console.error('Response status:', response.status, 'status text:', response.statusText);
-      throw new Error('Error adding to cart');
+      if (!response.ok) {
+        console.error('Response status:', response.status, 'status text:', response.statusText);
+        throw new Error('Error adding to cart');
+      }
+
+      window.scrollTo(0, 0);
+      
+    } catch (error) {
+      // Show the error message using the Alert component
+      setOpenAlert(true);
+      setErrorMessage(error.response?.data || 'Đã hết hàng');
+      console.log('Đã hết hàng');
     }
-    window.scrollTo(0, 0);
+  };
+
+  // Hàm mở Dialog
+  const handleClickOpen = (pkg, event) => {
+    event.preventDefault();
+    handleAddToCart(pkg, event);
+    setOpen(true);
+  };
+
+  // Hàm đóng Dialog
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  // Hàm điều hướng đến /shoping-cart
+  const handleGoToCart = () => {
     navigate('/shoping-cart');
   };
 
   const role = localStorage.getItem('role');
 
   return (
+    <>
     <Container style={{ marginTop: '80px' }}>
       <div className="row">
         <div className="col-lg-12">
@@ -122,7 +153,7 @@ export default function Search() {
                           </Link>
                         </li>
                         <li>
-                          <Link to="/shoping-cart" onClick={(event) => handleAddToCart(pkg, event)}>
+                          <Link onClick={(event) => handleClickOpen(pkg, event)}>
                             <ShoppingCartOutlined />
                           </Link>
                         </li>
@@ -195,6 +226,34 @@ export default function Search() {
           return null;
         })}
       </div>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>{'Thêm vào giỏ hàng'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Sản phẩm đã được thêm vào giỏ hàng. Bạn có muốn xem giỏ hàng không?</DialogContentText>
+        </DialogContent>
+        <DialogActions  >
+          <Button onClick={handleClose}>Tiếp tục mua sắm</Button>
+          <Button onClick={handleGoToCart}>Đi tới giỏ hàng</Button>
+        </DialogActions>
+      </Dialog>
+
+      
     </Container>
+    <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 9999 }}>
+    {openAlert && (
+      <Snackbar
+        open={openAlert}
+        autoHideDuration={6000}
+        onClose={() => setOpenAlert(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert severity="error" onClose={() => setOpenAlert(false)}>
+          <AlertTitle>Error</AlertTitle>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
+    )}
+  </div>
+  </>
   );
 }

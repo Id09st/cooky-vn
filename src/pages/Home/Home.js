@@ -17,6 +17,9 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Snackbar,
+  Alert,
+  AlertTitle,
 } from '@mui/material';
 import ImageSlider from './Slider/ImageSlider';
 import 'src/sass/_slide.scss';
@@ -31,6 +34,8 @@ export default function Home() {
   const [showMore, setShowMore] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState('Tất cả');
   const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -89,31 +94,39 @@ export default function Home() {
   const handleAddToCart = async (pkg, event) => {
     console.log('dfsbahjfbgdjshfb ', event);
     event.preventDefault();
-    const responseOders = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${orderId}`);
-    const data = await responseOders.json();
 
-    const currentItem = data.items.find((item) => item.packageId === pkg.id);
-    const currentQuantity = currentItem ? currentItem.quantity : 0;
+    try {
+      const responseOders = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/${orderId}`);
+      const data = await responseOders.json();
 
-    const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/addCart/${orderId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      const currentItem = data.items.find((item) => item.packageId === pkg.id);
+      const currentQuantity = currentItem ? currentItem.quantity : 0;
 
-      body: JSON.stringify({
-        orderId: orderId,
-        packageId: pkg.id,
-        quantity: currentQuantity + 1,
-        price: (pkg.price - pkg.sales) * (currentQuantity + 1),
-      }),
-    });
+      const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/addCart/${orderId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          orderId: orderId,
+          packageId: pkg.id,
+          quantity: currentQuantity + 1,
+          price: (pkg.price - pkg.sales) * (currentQuantity + 1),
+        }),
+      });
 
-    if (!response.ok) {
-      console.error('Response status:', response.status, 'status text:', response.statusText);
-      throw new Error('Error adding to cart');
+      if (!response.ok) {
+        console.error('Response status:', response.status, 'status text:', response.statusText);
+        throw new Error('Error adding to cart');
+      }
+
+      window.scrollTo(0, 0);
+    } catch (error) {
+      // Show the error message using the Alert component
+      setOpenAlert(true);
+      setErrorMessage(error.response?.data || 'Đã hết hàng');
+      console.log('Đã hết hàng');
     }
-    scrollToTop();
   };
 
   const handleTabChange = (event, newValue) => {
@@ -533,7 +546,6 @@ export default function Home() {
                 )
               )}
             </div>
-
             {/* Featured Section End */}
 
             {/* Banner Begin */}
@@ -573,6 +585,21 @@ export default function Home() {
           </Dialog>
         </>
       )}
+      <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 9999 }}>
+        {openAlert && (
+          <Snackbar
+            open={openAlert}
+            autoHideDuration={6000}
+            onClose={() => setOpenAlert(false)}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          >
+            <Alert severity="error" onClose={() => setOpenAlert(false)}>
+              <AlertTitle>Error</AlertTitle>
+              {errorMessage}
+            </Alert>
+          </Snackbar>
+        )}
+      </div>
     </>
   );
 }
