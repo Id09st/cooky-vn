@@ -26,7 +26,7 @@ import {
   LinearProgress,
 } from '@mui/material';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import { Add, Delete, Remove } from '@mui/icons-material';
+import { Add, Delete, DeleteOutline, Remove } from '@mui/icons-material';
 
 import { Link } from 'react-router-dom';
 
@@ -75,7 +75,7 @@ export default function ShoppingCart() {
       console.log('Error fetching user:', error);
     }
   };
-  
+
   const fetchCartItems = async () => {
     setIsLoading(true);
     try {
@@ -310,7 +310,7 @@ export default function ShoppingCart() {
                           </div>
                         </div>
                         <IconButton onClick={() => handleDelete(item.id)}>
-                          <Delete />
+                          <DeleteOutline color="error" />
                         </IconButton>
                       </div>
                     </CardContent>
@@ -487,7 +487,7 @@ export default function ShoppingCart() {
                         </TableCell>
                         <TableCell>
                           <IconButton onClick={() => handleDelete(item.id)}>
-                            <Delete />
+                            <DeleteOutline color="error" />
                           </IconButton>
                         </TableCell>
                       </TableRow>

@@ -27,6 +27,11 @@ import {
   MenuItem,
   Select,
   CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
@@ -78,6 +83,7 @@ export default function ShopDetail() {
   const [orderId, setOrderId] = useState('');
   const [openAlert, setOpenAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -117,10 +123,6 @@ export default function ShopDetail() {
         if (relatedPackages.length > 0) {
           setSelectedTitle(relatedPackages[0].title);
         }
-        // const relatedPackages = packageData.filter((packageItem) => packageItem.recipeId === parseInt(id));
-        // if (relatedPackages.length > 0) {
-        //   setSelectedDetail(relatedPackages[0].detail.split('\n')[0]);
-        // }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -165,8 +167,14 @@ export default function ShopDetail() {
     if (!response.ok) {
       setOpenAlert(true);
       setErrorMessage('Đã hết hàng');
-      
     }
+  };
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   const isMobile = useMediaQuery('(max-width: 601px)');
@@ -327,12 +335,13 @@ export default function ShopDetail() {
                         marginRight: '20px',
                         marginTop: '10px',
                       }}
-                      component={Link}
-                      to="/shoping-cart"
                       startIcon={
                         <ShoppingCartOutlined style={{ color: 'var(--primary-color)' }} sx={{ fontSize: 30 }} />
                       }
-                      onClick={() => handleAddToCart(selectedPackage, priceSale)}
+                      onClick={() => {
+                        handleAddToCart(selectedPackage, priceSale);
+                        handleOpenDialog();
+                      }}
                     >
                       Thêm vào giỏ
                     </Button>
@@ -478,6 +487,25 @@ export default function ShopDetail() {
           </Container>
         </>
       )}
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'Thông báo'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">Bạn có muốn đi đến giỏ hàng?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button component={Link} to="/" onClick={handleCloseDialog} color="primary">
+            Tiếp tục mua sắm
+          </Button>
+          <Button component={Link} to="/shoping-cart" color="primary" autoFocus>
+            Đi đến giỏ hàng
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

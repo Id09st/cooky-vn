@@ -92,7 +92,7 @@ export default function Home() {
   };
 
   const handleAddToCart = async (pkg, event) => {
-    console.log('dfsbahjfbgdjshfb ', event);
+    
     event.preventDefault();
 
     try {
