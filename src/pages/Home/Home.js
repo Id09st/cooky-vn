@@ -119,7 +119,7 @@ export default function Home() {
 
   const handleHideMoreClick = () => {
     setShowMore(false);
-    setDisplayedRecipes(8);
+    setDisplayedRecipes(12);
   };
 
   function scrollToTop() {

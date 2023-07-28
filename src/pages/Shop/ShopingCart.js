@@ -21,11 +21,13 @@ import {
   DialogActions,
   Snackbar,
   Alert,
+  AlertTitle,
   DialogContentText,
   LinearProgress,
 } from '@mui/material';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { Add, Delete, Remove } from '@mui/icons-material';
+
 import { Link } from 'react-router-dom';
 
 export default function ShoppingCart() {
@@ -36,11 +38,13 @@ export default function ShoppingCart() {
   const [orderId, setOrderId] = useState('');
   const [openOrder, setOpenOrder] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleQuantityChange = (itemId, value) => {
     const updatedPackages = packages.map((item) => {
       if (item.id === itemId) {
-        const newQuantity = Math.max(0, Math.min(value, 1000));
+        const newQuantity = Math.max(1, Math.min(value, 1000));
         return {
           ...item,
           quantity: newQuantity,
@@ -71,6 +75,7 @@ export default function ShoppingCart() {
       console.log('Error fetching user:', error);
     }
   };
+  
   const fetchCartItems = async () => {
     setIsLoading(true);
     try {
@@ -104,30 +109,36 @@ export default function ShoppingCart() {
   };
 
   const handleAdd = async (item) => {
-    const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/addCart/${orderId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id: item.id,
-        orderId: orderId,
-        packageId: item.package.id,
-        quantity: item.quantity + 1,
-        price: (item.quantity + 1) * (item.package.price - item.package.sales),
-      }),
-    });
+    try {
+      const response = await fetch(`https://cookyzz.azurewebsites.net/api/Orders/addCart/${orderId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: item.id,
+          orderId: orderId,
+          packageId: item.package.id,
+          quantity: item.quantity + 1,
+          price: (item.quantity + 1) * (item.package.price - item.package.sales),
+        }),
+      });
 
-    if (!response.ok) {
-      throw new Error('Error adding item');
+      if (!response.ok) {
+        throw new Error('Error adding item');
+      }
+
+      // Cập nhật state sau khi thêm thành công
+      setCartItems(
+        cartItems.map((cartItem) =>
+          cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem,
+        ),
+      );
+    } catch (error) {
+      // Show the error message using the Alert component
+      setOpenAlert(true);
+      setErrorMessage(error.response?.data || 'Đã hết hàng');
     }
-
-    // Cập nhật state sau khi thêm thành công
-    setCartItems(
-      cartItems.map((cartItem) =>
-        cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem,
-      ),
-    );
   };
 
   const handleRemove = async (item) => {
@@ -568,6 +579,21 @@ export default function ShoppingCart() {
           )}
         </>
       )}
+      <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 9999 }}>
+        {openAlert && (
+          <Snackbar
+            open={openAlert}
+            autoHideDuration={6000}
+            onClose={() => setOpenAlert(false)}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          >
+            <Alert severity="error" onClose={() => setOpenAlert(false)}>
+              <AlertTitle>Error</AlertTitle>
+              {errorMessage}
+            </Alert>
+          </Snackbar>
+        )}
+      </div>
     </>
   );
 }
