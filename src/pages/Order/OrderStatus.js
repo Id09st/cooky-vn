@@ -240,15 +240,7 @@ export default function OrderStatus() {
                         <></>
                       )}
                     </Typography>
-                    <Typography variant="body1">
-                      Thời gian nhận hàng dự kiến:{' '}
-                      {new Date(order.shipDate).toLocaleString('en-US', {
-                        hour: 'numeric',
-                        minute: 'numeric',
-                        hour12: true,
-                      })}{' '}
-                      {new Date(order.shipDate).toLocaleDateString('vi-VN')}
-                    </Typography>
+
                     <Typography variant="body1">Hình thức thanh toán: {order.paymentMethod}</Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -352,15 +344,7 @@ export default function OrderStatus() {
                   <Typography variant="body1" style={{ color: 'var(--primary-color)' }}>
                     Đang xử lý
                   </Typography>
-                  <Typography variant="body1">
-                    Thời gian nhận hàng dự kiến:{' '}
-                    {new Date(order.shipDate).toLocaleString('en-US', {
-                      hour: 'numeric',
-                      minute: 'numeric',
-                      hour12: true,
-                    })}{' '}
-                    {new Date(order.shipDate).toLocaleDateString('vi-VN')}
-                  </Typography>
+
                   <Typography variant="body1">Hình thức thanh toán: {order.paymentMethod}</Typography>
                 </Grid>
                 <Grid item xs={12}>
@@ -460,15 +444,7 @@ export default function OrderStatus() {
                   <Typography variant="body1" style={{ color: 'green' }}>
                     Hoàn tất
                   </Typography>
-                  <Typography variant="body1">
-                    Thời gian nhận hàng dự kiến:{' '}
-                    {new Date(order.shipDate).toLocaleString('en-US', {
-                      hour: 'numeric',
-                      minute: 'numeric',
-                      hour12: true,
-                    })}{' '}
-                    {new Date(order.shipDate).toLocaleDateString('vi-VN')}
-                  </Typography>
+
                   <Typography variant="body1">Hình thức thanh toán: {order.paymentMethod}</Typography>
                 </Grid>
                 <Grid item xs={12}>
@@ -553,15 +529,7 @@ export default function OrderStatus() {
                   <Typography variant="body1" color="error">
                     Đã hủy
                   </Typography>
-                  <Typography variant="body1">
-                    Thời gian nhận hàng dự kiến:{' '}
-                    {new Date(order.shipDate).toLocaleString('en-US', {
-                      hour: 'numeric',
-                      minute: 'numeric',
-                      hour12: true,
-                    })}{' '}
-                    {new Date(order.shipDate).toLocaleDateString('vi-VN')}
-                  </Typography>
+
                   <Typography variant="body1">Hình thức thanh toán: {order.paymentMethod}</Typography>
                 </Grid>
                 <Grid item xs={12}>
